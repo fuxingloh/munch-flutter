@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:munch_app/screens/main_tabs/discover_tab.dart';
-import 'package:munch_app/styles/colors.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+
+import 'package:munch_app/styles/colors.dart';
+
+import 'package:munch_app/pages/discover/discover_page.dart';
+import 'package:munch_app/pages/feed/feed_page.dart';
+import 'package:munch_app/pages/tastebud/tastebud_page.dart';
 
 void main() => runApp(MunchApp());
 
@@ -28,12 +32,12 @@ class MunchTabPage extends StatefulWidget {
 class _MunchTabState extends State<MunchTabPage> {
   int _selectedTabIndex = 0;
   final List<Widget> _children = [
-    DiscoverTab(),
-    DiscoverTab(),
-    DiscoverTab(),
+    DiscoverPage(),
+    FeedPage(),
+    TastebudPage(),
   ];
 
-  void onTabTapped(int index) {
+  void onTab(int index) {
     setState(() {
       _selectedTabIndex = index;
     });
@@ -42,11 +46,12 @@ class _MunchTabState extends State<MunchTabPage> {
   PlatformNavBar getBottom() {
     return PlatformNavBar(
       currentIndex: _selectedTabIndex,
-      itemChanged: onTabTapped,
+      itemChanged: onTab,
+      backgroundColor: MColors.white,
       items: [
         BottomNavigationBarItem(
           icon: new Icon(Icons.favorite),
-          title: new Text('Home'),
+          title: new Text('Discover'),
         ),
         BottomNavigationBarItem(
           icon: new Icon(Icons.adb),
@@ -57,18 +62,19 @@ class _MunchTabState extends State<MunchTabPage> {
           title: new Text('Tastebud'),
         ),
       ],
+      android: (_) => MaterialNavBarData(
+        fixedColor: MColors.primary,
+        elevation: 16
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Munch"),
-          backgroundColor: MColors.primary,
-        ),
-        bottomNavigationBar: getBottom(),
-        body: _children[_selectedTabIndex]);
+      bottomNavigationBar: getBottom(),
+      body: _children[_selectedTabIndex],
+    );
   }
 }
 
