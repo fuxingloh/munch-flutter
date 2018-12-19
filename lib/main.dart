@@ -1,27 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:munch_app/screens/main_tabs/discover_tab.dart';
+import 'package:munch_app/styles/colors.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MunchApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+/// MunchApp: The Root Application
+class MunchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      title: 'Munch App',
+      color: MColors.secondary,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MunchTabPage(),
+      },
     );
+  }
+}
+
+class MunchTabPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _MunchTabState();
+}
+
+class _MunchTabState extends State<MunchTabPage> {
+  int _selectedTabIndex = 0;
+  final List<Widget> _children = [
+    DiscoverTab(),
+    DiscoverTab(),
+    DiscoverTab(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+  }
+
+  PlatformNavBar getBottom() {
+    return PlatformNavBar(
+      currentIndex: _selectedTabIndex,
+      itemChanged: onTabTapped,
+      items: [
+        BottomNavigationBarItem(
+          icon: new Icon(Icons.favorite),
+          title: new Text('Home'),
+        ),
+        BottomNavigationBarItem(
+          icon: new Icon(Icons.adb),
+          title: new Text('Feed'),
+        ),
+        BottomNavigationBarItem(
+          icon: new Icon(Icons.access_alarm),
+          title: new Text('Tastebud'),
+        ),
+      ],
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Munch"),
+          backgroundColor: MColors.primary,
+        ),
+        bottomNavigationBar: getBottom(),
+        body: _children[_selectedTabIndex]);
   }
 }
 
@@ -44,7 +91,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  int _counter = 11;
 
   void _incrementCounter() {
     setState(() {
@@ -53,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
+      _counter += 100;
     });
   }
 
