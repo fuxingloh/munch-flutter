@@ -38,6 +38,8 @@ class MColors extends ColorSwatch<int> {
     },
   );
 
+  static const Color voided = Color(0xFFF0F0F0);
+
   static const Color clear = Color(0x00FFFFFF);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black10 = Color(0x1A000000);
