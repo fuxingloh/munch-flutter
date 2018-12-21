@@ -18,18 +18,18 @@ class MunchApi {
     };
   }
 
-  String url(String path) {
+  String _url(String path) {
     return '$_url$path';
   }
 
   Future<RestfulResponse> get(String path) async {
-    final response = await http.get(url(path), headers: headers);
+    final response = await http.get(_url(path), headers: headers);
     return RestfulResponse._(response);
   }
 
   Future<RestfulResponse> put(String path, body) async {
     final response = await http.put(
-      url(path),
+      _url(path),
       headers: headers,
       body: body ? json.encode(body) : null,
     );
@@ -38,7 +38,7 @@ class MunchApi {
 
   Future<RestfulResponse> post(String path, body) async {
     final response = await http.post(
-      url(path),
+      _url(path),
       headers: headers,
       body: body ? json.encode(body) : null,
     );
@@ -46,7 +46,7 @@ class MunchApi {
   }
 
   Future<RestfulResponse> delete(String path) async {
-    final response = await http.delete(url(path), headers: headers);
+    final response = await http.delete(_url(path), headers: headers);
     return RestfulResponse._(response);
   }
 }

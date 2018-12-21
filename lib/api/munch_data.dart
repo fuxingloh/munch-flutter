@@ -1,453 +1,362 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
+import 'package:munch_app/api/file_api.dart';
 
 part 'munch_data.g.dart';
 
 @JsonSerializable()
 class Place {
-  Place(this.placeId);
+  Place(
+    this.placeId,
+    this.status,
+    this.name,
+    this.tags,
+    this.phone,
+    this.website,
+    this.description,
+    this.menu,
+    this.price,
+    this.location,
+    this.hours,
+    this.images,
+    this.areas,
+    this.createdMillis,
+  );
 
   String placeId;
+  PlaceStatus status;
+
+  String name;
+  List<Tag> tags;
+
+  String phone;
+  String website;
+  String description;
+
+  PlaceMenu menu;
+  PlacePrice price;
+
+  Location location;
+
+  List<Hour> hours;
+  List<Image> images;
+  List<Area> areas;
+
+  int createdMillis;
 
   factory Place.fromJson(Map<String, dynamic> json) => _$PlaceFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaceToJson(this);
 }
 
+enum PlaceStatusType { open, renovation, closed, moved }
 
+@JsonSerializable()
+class PlaceStatus {
+  PlaceStatus(this.type);
 
-//struct Place: ElasticObject, Codable {
-//    var placeId: String
-//    var status: Status
-//
-//    var name: String
-//    var tags: [Tag]
-//
-//    var phone: String?
-//    var website: String?
-//    var description: String?
-//
-//    var menu: Menu?
-//    var price: Price?
-//
-//    var location: Location
-//
-//    var hours: [Hour]
-//    var images: [Image]
-//    var areas: [Area]
-//
-//    var createdMillis: Int?
-//
-//    struct Status: Codable {
-//        var type: StatusType
-//        var moved: Moved?
-//        var updatedMillis: Int?
-//
-//        enum StatusType: String, Codable {
-//            case open
-//            case renovation
-//            case closed
-//            case moved
-//            case other
-//
-//            /// Defensive Decoding
-//            init(from decoder: Decoder) throws {
-//                switch try decoder.singleValueContainer().decode(String.self) {
-//                case "open": self = .open
-//                case "renovation": self = .renovation
-//                case "closed": self = .closed
-//                case "moved": self = .moved
-//                default: self = .other
-//                }
-//            }
-//
-//            var name: String {
-//                switch self {
-//                case .open: return "Open"
-//                case .closed: return "Perm Closed"
-//                case .renovation: return "On Renovation"
-//                case .moved: return "Perm Moved"
-//                case .other: return ""
-//                }
-//            }
-//        }
-//
-//        struct Moved: Codable {
-//            var placeId: String
-//        }
-//    }
-//
-//    struct Menu: Codable {
-//        var url: String?
-//    }
-//
-//    struct Price: Codable {
-//        var perPax: Double?
-//    }
-//}
-//
-//struct Area: ElasticObject, Codable {
-//    var areaId: String
-//    var type: AreaType
-//    var name: String
-//
-//    var website: String?
-//    var description: String?
-//
-//    var images: [Image]?
-//    var hour: [Hour]?
-//    var counts: Counts?
-//
-//    var location: Location?
-//
-//    enum AreaType: String, Codable {
-//        case City
-//        case Superset
-//        case Region
-//        case Cluster
-//        case Generated
-//        case Other
-//
-//        /// Defensive Decoding
-//        init(from decoder: Decoder) throws {
-//            switch try decoder.singleValueContainer().decode(String.self) {
-//            case "City": self = .City
-//            case "Superset": self = .Superset
-//            case "Region": self = .Region
-//            case "Cluster": self = .Cluster
-//            case "Generated": self = .Generated
-//            default: self = .Other
-//            }
-//        }
-//    }
-//
-//    struct Counts: Codable {
-//        var total: Int?
-//    }
-//}
-//
-//extension Area {
-//    public static var anywhere: Area {
-//        let points = ["1.26675774823,103.603134155", "1.32442122318,103.617553711", "1.38963424766,103.653259277", "1.41434608581,103.666305542", "1.42944763543,103.671798706", "1.43905766081,103.682785034", "1.44386265833,103.695831299", "1.45896401284,103.720550537", "1.45827758983,103.737716675", "1.44935407163,103.754196167", "1.45004049736,103.760375977", "1.47887018872,103.803634644", "1.4754381021,103.826980591", "1.45827758983,103.86680603", "1.43219336108,103.892211914", "1.4287612035,103.897018433", "1.42670190649,103.915557861", "1.43219336108,103.934783936", "1.42189687297,103.960189819", "1.42464260763,103.985595703", "1.42121043879,104.000701904", "1.43974408965,104.02130127", "1.44592193988,104.043960571", "1.42464260763,104.087219238", "1.39718511473,104.094772339", "1.35737118164,104.081039429", "1.29009788407,104.127044678", "1.277741368,104.127044678", "1.25371463932,103.982162476", "1.17545464492,103.812561035", "1.13014521522,103.736343384", "1.19055762617,103.653945923", "1.1960495989,103.565368652", "1.26675774823,103.603134155"]
-//        let location = Location(address: nil, street: nil, unitNumber: nil, neighbourhood: nil,
-//                city: "Singapore", country: "SGP", postcode: nil, latLng: "1.290270, 103.851959",
-//                polygon: Location.Polygon(points: points), landmarks: nil)
-//
-//        return Area(
-//                areaId: "30918bf3-eeaf-43f3-b27c-afc3128acd16",
-//                type: .City,
-//                name: "Singapore",
-//                website: nil,
-//                description: nil,
-//                images: nil,
-//                hour: nil,
-//                counts: nil,
-//                location: location)
-//    }
-//}
-//
-//struct Landmark: ElasticObject, Codable {
-//    var landmarkId: String
-//
-//    var type: LandmarkType
-//    var name: String
-//    var location: Location
-//
-//    enum LandmarkType: String, Codable {
-//        case train
-//        case other
-//
-//        /// Defensive Decoding
-//        init(from decoder: Decoder) throws {
-//            switch try decoder.singleValueContainer().decode(String.self) {
-//            case "train": self = .train
-//            default: self = .other
-//            }
-//        }
-//    }
-//}
-//
-//extension Tag {
-//    static let restaurant = Tag(tagId: "216e7264-f4c9-40a4-86a2-d49793fb49c9", name: "Restaurant", type: .Establishment)
-//}
-//
-//struct Tag: ElasticObject, Codable {
-//    var tagId: String
-//    var name: String
-//    var type: TagType
-//
-//    enum TagType: String, Codable {
-//        case Food
-//        case Cuisine
-//        case Establishment
-//        case Amenities
-//        case Timing
-//        case Requirement
-//        case Other
-//
-//        /// Defensive Decoding
-//        init(from decoder: Decoder) throws {
-//            switch try decoder.singleValueContainer().decode(String.self) {
-//            case "Food": self = .Food
-//            case "Cuisine": self = .Cuisine
-//            case "Establishment": self = .Establishment
-//            case "Amenities": self = .Amenities
-//            case "Timing": self = .Timing
-//            case "Requirement": self = .Requirement
-//            default: self = .Other
-//            }
-//        }
-//
-//        var text: String {
-//            return self.rawValue
-//        }
-//    }
-//}
-//
-//struct Location: Codable {
-//    var address: String?
-//    var street: String?
-//    var unitNumber: String?
-//    var neighbourhood: String?
-//
-//    var city: String?
-//    var country: String?
-//    var postcode: String?
-//
-//    var latLng: String?
-//    var polygon: Polygon?
-//
-//    var landmarks: [Landmark]?
-//
-//    struct Polygon: Codable {
-//        var points: [String]?
-//    }
-//}
-//
-//struct Hour: Codable {
-//    var day: Day
-//    var open: String
-//    var close: String
-//
-//    enum Day: String, Codable {
-//        case mon
-//        case tue
-//        case wed
-//        case thu
-//        case fri
-//        case sat
-//        case sun
-//        case other
-//
-//        /// Defensive Decoding
-//        init(from decoder: Decoder) throws {
-//            switch try decoder.singleValueContainer().decode(String.self) {
-//            case "mon": self = .mon
-//            case "tue": self = .tue
-//            case "wed": self = .wed
-//            case "thu": self = .thu
-//            case "fri": self = .fri
-//            case "sat": self = .sat
-//            case "sun": self = .sun
-//            default: self = .other
-//            }
-//        }
-//    }
-//
-//    enum IsOpen {
-//        case open
-//        case opening
-//        case closed
-//        case closing
-//        case none
-//
-//        var text: String {
-//            switch self {
-//            case .open: return "Open Now"
-//            case .opening: return "Opening Soon"
-//            case .closed: return "Closed Now"
-//            case .closing: return "Closing Soon"
-//            case .none: return "Closed"
-//            }
-//        }
-//    }
-//}
-//
-//extension Hour {
-//    public static let machineFormatter: DateFormatter = {
-//        let formatter = DateFormatter()
-//        formatter.locale = Locale(identifier: "en_US_POSIX")
-//        formatter.dateFormat = "HH:mm"
-//        return formatter
-//    }()
-//    public static let humanFormatter: DateFormatter = {
-//        let formatter = DateFormatter()
-//        formatter.locale = Locale(identifier: "en_US_POSIX")
-//        formatter.dateFormat = "h:mma"
-//        formatter.amSymbol = "am"
-//        formatter.pmSymbol = "pm"
-//        return formatter
-//    }()
-//
-//    var timeRange: String {
-//        return "\(Hour.parse(time: open)) - \(Hour.parse(time: close))"
-//    }
-//
-//    static func timeAs(int time: String?) -> Int? {
-//        if let time = time {
-//            let split = time.split(separator: ":")
-//            if let hour = split.get(0), let min = split.get(1) {
-//                if let h = Int(hour), let m = Int(min) {
-//                    return (h * 60) + m
-//                }
-//            }
-//        }
-//        return nil
-//    }
-//
-//    func isBetween(date: Date, opening: Int = 0, closing: Int = 0) -> Bool {
-//        let now = Hour.timeAs(int: Hour.machineFormatter.string(from: date))!
-//
-//        if let open = Hour.timeAs(int: self.open), let close = Hour.timeAs(int: self.close) {
-//            if (close < open) {
-//                return open - opening <= now && now + closing <= 2400
-//            }
-//            return open - opening <= now && now + closing <= close
-//        }
-//        return false
-//    }
-//
-//    private static func parse(time: String) -> String {
-//        // 24:00 problem
-//        if (time == "24:00" || time == "23:59") {
-//            return "Midnight"
-//        }
-//        let date = machineFormatter.date(from: time)
-//        return humanFormatter.string(from: date!)
-//    }
-//}
-//
-//extension Hour.Day {
-//    private static let dayFormatter: DateFormatter = {
-//        let formatter = DateFormatter()
-//        formatter.locale = Locale(identifier: "en_US_POSIX")
-//        formatter.dateFormat = "EEE"
-//        return formatter
-//    }()
-//
-//    var text: String {
-//        switch self {
-//        case .mon: return "Mon"
-//        case .tue: return "Tue"
-//        case .wed: return "Wed"
-//        case .thu: return "Thu"
-//        case .fri: return "Fri"
-//        case .sat: return "Sat"
-//        case .sun: return "Sun"
-//        case .other: return "Day"
-//        }
-//    }
-//
-//    static var today: Hour.Day {
-//        return self.add(days: 0)
-//    }
-//
-//    static func add(days: Int = 0) -> Hour.Day {
-//        if let date = Calendar.current.date(byAdding: .day, value: days, to: Date()) {
-//            switch dayFormatter.string(from: date).lowercased() {
-//            case "mon": return .mon
-//            case "tue": return .tue
-//            case "wed": return .wed
-//            case "thu": return .thu
-//            case "fri": return .fri
-//            case "sat": return .sat
-//            case "sun": return .sun
-//            default: return .other
-//            }
-//        }
-//        return .other
-//    }
-//
-//    var isToday: Bool {
-//        return Hour.Day.isToday(day: self)
-//    }
-//
-//    static func isToday(day: Hour.Day) -> Bool {
-//        return day == Hour.Day.today
-//    }
-//}
-//
-//extension Hour {
-//    class Grouped {
-//        private static let dateFormatter: DateFormatter = {
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "EEEE"
-//            formatter.locale = Locale(identifier: "en_US_POSIX")
-//
-//            return formatter
-//        }()
-//
-//        let hours: [Hour]
-//        let dayHours: [Hour.Day: String]
-//
-//        init(hours: [Hour]) {
-//            self.hours = hours
-//
-//            var dayHours = [Hour.Day: String]()
-//            for hour in hours.sorted(by: { $0.open < $1.open }) {
-//                if let timeRange = dayHours[hour.day] {
-//                    dayHours[hour.day] = timeRange + ", " + hour.timeRange
-//                } else {
-//                    dayHours[hour.day] = hour.timeRange
-//                }
-//            }
-//            self.dayHours = dayHours
-//        }
-//
-//        subscript(day: Hour.Day) -> String {
-//            get {
-//                return dayHours[day] ?? "Closed"
-//            }
-//        }
-//
-//        func isOpen(opening: Int = 30) -> Hour.IsOpen {
-//            return hours.isOpen(opening: opening)
-//        }
-//
-//        var todayDayTimeRange: String {
-//            let dayInWeek = Grouped.dateFormatter.string(from: Date())
-//            return dayInWeek.capitalized + ": " + self[Hour.Day.today]
-//        }
-//    }
-//}
-//
-//extension Array where Element == Hour {
-//    func isOpen(opening: Int = 30) -> Hour.IsOpen {
-//        if (self.isEmpty) {
-//            return .none
-//        }
-//
-//        let date = Date()
-//        let currentDay = Hour.Day.today
-//        let currentHours = self.filter({ $0.day == currentDay })
-//
-//        for hour in currentHours {
-//            if hour.isBetween(date: date) {
-//                if !hour.isBetween(date: date, closing: 30) {
-//                    return .closing
-//                }
-//                return .open
-//            } else if hour.isBetween(date: date, opening: 30) {
-//                return .opening
-//            }
-//        }
-//
-//        return .closed
-//    }
-//
-//    var grouped: Hour.Grouped {
-//        return Hour.Grouped(hours: self)
-//    }
-//}
-//
-//protocol ElasticObject: Codable {
-//}
+  PlaceStatusType type;
+
+  factory PlaceStatus.fromJson(Map<String, dynamic> json) =>
+      _$PlaceStatusFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaceStatusToJson(this);
+}
+
+@JsonSerializable()
+class PlaceMenu {
+  PlaceMenu(this.url);
+
+  String url;
+
+  factory PlaceMenu.fromJson(Map<String, dynamic> json) =>
+      _$PlaceMenuFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaceMenuToJson(this);
+}
+
+@JsonSerializable()
+class PlacePrice {
+  PlacePrice(this.perPax);
+
+  double perPax;
+
+  factory PlacePrice.fromJson(Map<String, dynamic> json) =>
+      _$PlacePriceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlacePriceToJson(this);
+}
+
+enum TagType { Food, Cuisine, Establishment, Amenities, Timing, Requirement }
+
+@JsonSerializable()
+class Tag {
+  Tag(this.tagId, this.name, this.type);
+
+  String tagId;
+  String name;
+  TagType type;
+
+  static Tag restaurant = Tag(
+    "216e7264-f4c9-40a4-86a2-d49793fb49c9",
+    "Restaurant",
+    TagType.Establishment,
+  );
+
+  factory Tag.fromJson(Map<String, dynamic> json) => _$TagFromJson(json);
+
+  Map<String, dynamic> toJson() => _$TagToJson(this);
+}
+
+enum LandmarkType { train, other }
+
+@JsonSerializable()
+class Landmark {
+  Landmark(this.landmarkId, this.type, this.name, this.location);
+
+  String landmarkId;
+  LandmarkType type;
+  String name;
+  Location location;
+
+  factory Landmark.fromJson(Map<String, dynamic> json) =>
+      _$LandmarkFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LandmarkToJson(this);
+}
+
+enum AreaType {
+  // TODO Test what happened with one removed
+  City,
+  Superset,
+  Region,
+  Cluster,
+  Generated
+}
+
+@JsonSerializable()
+class AreaCount {
+  AreaCount(this.total);
+
+  int total;
+
+  factory AreaCount.fromJson(Map<String, dynamic> json) =>
+      _$AreaCountFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AreaCountToJson(this);
+}
+
+@JsonSerializable()
+class Area {
+  Area(
+    this.areaId,
+    this.type,
+    this.name,
+    this.website,
+    this.description,
+    this.hours,
+    this.images,
+    this.counts,
+    this.location,
+  );
+
+  String areaId;
+  AreaType type;
+  String name;
+
+  String website;
+  String description;
+
+  List<Hour> hours;
+  List<Image> images;
+  AreaCount counts;
+
+  Location location;
+
+  factory Area.fromJson(Map<String, dynamic> json) => _$AreaFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AreaToJson(this);
+}
+
+@JsonSerializable()
+class Location {
+  Location(
+    this.address,
+    this.street,
+    this.unitNumber,
+    this.neighbourhood,
+    this.city,
+    this.country,
+    this.postcode,
+    this.latLng,
+    this.polygon,
+    this.landmarks,
+  );
+
+  String address;
+  String street;
+  String unitNumber;
+  String neighbourhood;
+
+  String city;
+  String country;
+  String postcode;
+
+  String latLng;
+  LocationPolygon polygon;
+
+  List<Landmark> landmarks;
+
+  factory Location.fromJson(Map<String, dynamic> json) =>
+      _$LocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LocationToJson(this);
+}
+
+@JsonSerializable()
+class LocationPolygon {
+  LocationPolygon(this.points);
+
+  List<String> points;
+
+  factory LocationPolygon.fromJson(Map<String, dynamic> json) =>
+      _$LocationPolygonFromJson(json);
+
+  Map<String, dynamic> toJson() => _$LocationPolygonToJson(this);
+}
+
+@JsonSerializable()
+class Hour {
+  Hour(this.day, this.open, this.close);
+
+  HourDay day;
+  String open;
+  String close;
+
+  factory Hour.fromJson(Map<String, dynamic> json) => _$HourFromJson(json);
+
+  Map<String, dynamic> toJson() => _$HourToJson(this);
+}
+
+enum HourDay { mon, tue, wed, thu, fri, sat, sun }
+
+HourDay _getToday() {
+  var weekday = DateTime.now().weekday;
+  switch (weekday) {
+    case DateTime.monday:
+      return HourDay.mon;
+    case DateTime.tuesday:
+      return HourDay.tue;
+    case DateTime.wednesday:
+      return HourDay.wed;
+    case DateTime.thursday:
+      return HourDay.thu;
+    case DateTime.friday:
+      return HourDay.fri;
+    case DateTime.saturday:
+      return HourDay.sat;
+    case DateTime.sunday:
+    default:
+      return HourDay.sun;
+  }
+}
+
+String _getTime(String time) {
+  if (time.startsWith("23:59")) {
+    return "Midnight";
+  }
+
+  if (time.startsWith("0") || time.startsWith("10") || time.startsWith("11")) {
+    return time + "am";
+  } else if (time.startsWith("12")) {
+    return time + "pm";
+  } else {
+    var split = time.split(":");
+    int hour = int.parse(split[0]) - 12;
+    return "$hour:${split[1]}pm";
+  }
+}
+
+class HourGrouped {
+  List<Hour> hours;
+  final HourDay _today = _getToday();
+  Map<HourDay, String> _days;
+
+  HourDay get today => _today;
+
+  bool isToday(HourDay day) => _today == day;
+
+  HourGrouped({@required this.hours}) {
+    hours.sort((Hour a, Hour b) => a.open.compareTo(b.open));
+    hours.forEach((Hour hour) {
+      String time = _days[hour.day];
+      if (time != null) {
+        _days[hour.day] =
+            "$time, ${_getTime(hour.open)} - ${_getTime(hour.close)}";
+      } else {
+        _days[hour.day] = "${_getTime(hour.open)} - ${_getTime(hour.close)}";
+      }
+    });
+  }
+
+  dynamic operator [](HourDay day) => _days[day] ?? "Closed";
+
+  String get todayTime => "${getDayText(_today)}: ${this[_today]}";
+
+  HourOpen isOpen({int opening = 30, int closing = 30}) {
+    if (hours.isEmpty) {
+      return HourOpen.none;
+    }
+
+    for (var hour in hours.where((h) => h.day == _today)) {
+      if (isBetween(hour)) {
+        if (!isBetween(hour, closing: closing)) {
+          return HourOpen.closing;
+        }
+        return HourOpen.open;
+      } else if (isBetween(hour, opening: opening)) {
+        return HourOpen.opening;
+      }
+    }
+    return HourOpen.closed;
+  }
+
+  String getDayText(HourDay day) {
+    switch (day) {
+      case HourDay.mon:
+        return "MON";
+      case HourDay.tue:
+        return "TUE";
+      case HourDay.wed:
+        return "WED";
+      case HourDay.thu:
+        return "THU";
+      case HourDay.fri:
+        return "FRI";
+      case HourDay.sat:
+        return "SAT";
+      case HourDay.sun:
+        return "SUN";
+    }
+  }
+
+  int timeAsInt(String time) {
+    var split = time.split(":");
+    return (int.parse(split[0]) * 60) + int.parse(split[1]);
+  }
+
+  bool isBetween(Hour hour, {int opening = 0, int closing = 0}) {
+    var date = DateTime.now();
+    var now = (date.hour * 60) + date.minute;
+
+    var open = timeAsInt(hour.open);
+    var close = timeAsInt(hour.close);
+
+    if (close < open) {
+      return open - opening <= now && now + closing <= 1440;
+    }
+    return open - opening <= now && now + closing <= close;
+  }
+}
+
+enum HourOpen { open, opening, closed, closing, none }
