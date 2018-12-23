@@ -115,7 +115,7 @@ class FeedManager {
     _loading = true;
 
     _api
-        .get("/feed/images?country=sgp&latLng=1.3521,103.8198&from=$_from")
+        .get("/feed/images?country=sgp&latLng=1.3521,103.8198&next.from=$_from")
         .then((res) {
       this._loading = false;
       this._from = res.next['from'];
