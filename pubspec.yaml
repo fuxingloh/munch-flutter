@@ -62,9 +62,9 @@ flutter:
   uses-material-design: true
 
   fonts:
-  - family:  MunchIcons
+  - family:  MIcons
     fonts:
-    - asset: fonts/MunchIcons.ttf
+    - asset: fonts/MIcons.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -18,7 +18,8 @@ class FeedPage extends StatefulWidget {
   State<StatefulWidget> createState() => _FeedState();
 }
 
-class _FeedState extends State<FeedPage> with AutomaticKeepAliveClientMixin<FeedPage> {
+class _FeedState extends State<FeedPage>
+    with AutomaticKeepAliveClientMixin<FeedPage> {
   final FeedManager manager = FeedManager();
   List<Object> items = [];
 
@@ -85,7 +86,6 @@ class FeedManager {
   final MunchApi _api = MunchApi();
 
   List<ImageFeedItem> _items = [];
-  Map<String, Place> _places = {};
   DateTime lastEventDate;
 
   int _from = 0;
@@ -101,7 +101,6 @@ class FeedManager {
 
   void reset() {
     _items.clear();
-    _places.clear();
     _from = 0;
     _loading = false;
     append();
@@ -121,8 +120,16 @@ class FeedManager {
       this._from = res.next['from'];
 
       ImageFeedResult result = ImageFeedResult.fromJson(res.data);
-      this._items.addAll(result.items);
-      this._places.addAll(result.places);
+      result.items.forEach((item) {
+        item.places = item.places
+            .map((p) => result.places[p.placeId])
+            .where((p) => p != null)
+            .toList(growable: false);
+
+        // Only Add Items that have places to ensure non null constraints
+        if (item.places.isEmpty) return;
+        this._items.add(item);
+      });
 
       _controller.add(collect());
     }).catchError((error) => _controller.addError(error));

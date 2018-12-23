@@ -8,6 +8,7 @@ class SeparatorWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SizedBox(
       height: 0.5,
+      width: double.infinity,
       child: const DecoratedBox(
         decoration: const BoxDecoration(color: MColors.black10),
       ),

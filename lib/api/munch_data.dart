@@ -280,7 +280,7 @@ String _getTime(String time) {
 class HourGrouped {
   List<Hour> hours;
   final HourDay _today = _getToday();
-  Map<HourDay, String> _days;
+  Map<HourDay, String> _days = {};
 
   HourDay get today => _today;
 

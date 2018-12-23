@@ -1,15 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/feed_api.dart';
-import 'package:munch_app/components/ShimmerCachedImage.dart';
+import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/feed/feed_item_page.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:shimmer/shimmer.dart';
 
 class FeedHeaderView extends StatelessWidget {
   @override
