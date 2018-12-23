@@ -9,6 +9,19 @@ class Image {
   String imageId;
   List<ImageSize> sizes;
 
+  @JsonKey(ignore: true)
+  ImageSize get maxSize {
+    return sizes.reduce((a, b) {
+      return a.width.compareTo(b.width) >= 0 ? a : b;
+    });
+  }
+
+  @JsonKey(ignore: true)
+  double get aspectRatio {
+    final max = maxSize;
+    return max.width.toDouble() / max.height.toDouble();
+  }
+
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ImageToJson(this);

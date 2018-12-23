@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:munch_app/api/structured_exception.dart';
 
 String _url = 'https://api.munch.app/v0.17.0';
-DateFormat _format = DateFormat("yyyy-mm-dd'T'HH:MM:ss");
+DateFormat _format = DateFormat("yyyy-MM-dd'T'HH:MM:ss");
 
 class MunchApi {
-  Map<String, String> get headers {
+  Map<String, String> get _headers {
     return {
       // 2018-12-20T05:18:57
       'user-local-time': _format.format(DateTime.now().toLocal()),
@@ -18,19 +18,19 @@ class MunchApi {
     };
   }
 
-  String _url(String path) {
+  String _path(String path) {
     return '$_url$path';
   }
 
   Future<RestfulResponse> get(String path) async {
-    final response = await http.get(_url(path), headers: headers);
+    final response = await http.get(_path(path), headers: _headers);
     return RestfulResponse._(response);
   }
 
   Future<RestfulResponse> put(String path, body) async {
     final response = await http.put(
-      _url(path),
-      headers: headers,
+      _path(path),
+      headers: _headers,
       body: body ? json.encode(body) : null,
     );
     return RestfulResponse._(response);
@@ -38,15 +38,15 @@ class MunchApi {
 
   Future<RestfulResponse> post(String path, body) async {
     final response = await http.post(
-      _url(path),
-      headers: headers,
+      _path(path),
+      headers: _headers,
       body: body ? json.encode(body) : null,
     );
     return RestfulResponse._(response);
   }
 
   Future<RestfulResponse> delete(String path) async {
-    final response = await http.delete(_url(path), headers: headers);
+    final response = await http.delete(_path(path), headers: _headers);
     return RestfulResponse._(response);
   }
 }

@@ -52,7 +52,7 @@ class MButtonStyle {
 
   static const MButtonStyle primary = MButtonStyle(
     textColor: MColors.white,
-    background: MColors.primary,
+    background: MColors.primary500,
     borderColor: MColors.clear,
     borderWidth: 0,
     height: _height,
@@ -62,7 +62,7 @@ class MButtonStyle {
 
   static const MButtonStyle primarySmall = MButtonStyle(
     textColor: MColors.white,
-    background: MColors.primary,
+    background: MColors.primary500,
     borderColor: MColors.clear,
     borderWidth: 0,
     height: _smallHeight,
@@ -71,9 +71,9 @@ class MButtonStyle {
   );
 
   static const MButtonStyle primaryOutline = MButtonStyle(
-    textColor: MColors.primary,
+    textColor: MColors.primary500,
     background: MColors.white,
-    borderColor: MColors.primary,
+    borderColor: MColors.primary500,
     borderWidth: 1,
     height: _height,
     padding: _padding,
@@ -82,7 +82,7 @@ class MButtonStyle {
 
   static const MButtonStyle secondary = MButtonStyle(
     textColor: MColors.white,
-    background: MColors.secondary,
+    background: MColors.secondary500,
     borderColor: MColors.clear,
     borderWidth: 0,
     height: _height,
@@ -92,7 +92,7 @@ class MButtonStyle {
 
   static const MButtonStyle secondarySmall = MButtonStyle(
     textColor: MColors.white,
-    background: MColors.secondary,
+    background: MColors.secondary500,
     borderColor: MColors.clear,
     borderWidth: 0,
     height: _smallHeight,
@@ -101,9 +101,9 @@ class MButtonStyle {
   );
 
   static const MButtonStyle secondaryOutline = MButtonStyle(
-    textColor: MColors.secondary,
+    textColor: MColors.secondary500,
     background: MColors.white,
-    borderColor: MColors.secondary,
+    borderColor: MColors.secondary500,
     borderWidth: 1,
     height: _height,
     padding: _padding,
