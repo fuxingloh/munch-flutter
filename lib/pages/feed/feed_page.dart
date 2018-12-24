@@ -83,7 +83,7 @@ class _FeedState extends State<FeedPage>
 enum FeedStaticCell { header, loading }
 
 class FeedManager {
-  final MunchApi _api = MunchApi();
+  final MunchApi _api = MunchApi.instance;
 
   List<ImageFeedItem> _items = [];
   DateTime lastEventDate;

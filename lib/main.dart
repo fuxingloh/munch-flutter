@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:munch_app/api/authentication.dart';
 
 import 'package:munch_app/styles/colors.dart';
 
@@ -38,15 +40,25 @@ class _MunchTabState extends State<MunchTabPage> {
   ];
 
   void onTab(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index == _children.length - 1) {
+      Authentication.instance.requireAuthentication(context).then((state) {
+        if (state == AuthenticationState.loggedIn) {
+          setState(() {
+            _currentIndex = index;
+          });
+        }
+      });
+    } else {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
-  BottomAppBar getBottom() {
+  BottomAppBar _buildBottom() {
     const style = TextStyle(
-        fontSize: 12,
-        height: 1.3,
+      fontSize: 12,
+      height: 1.3,
     );
 
     return BottomAppBar(
@@ -77,7 +89,7 @@ class _MunchTabState extends State<MunchTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: getBottom(),
+      bottomNavigationBar: _buildBottom(),
       body: Stack(
         children: List.generate(3, (index) {
           return Offstage(

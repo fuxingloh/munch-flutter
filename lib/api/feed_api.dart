@@ -5,17 +5,6 @@ import 'package:munch_app/api/munch_data.dart';
 
 part 'feed_api.g.dart';
 
-class FeedApi extends MunchApi {
-  Future<ImageFeedResult> query({
-    String country = "SGP",
-    String latLng = "1.3521,103.8198",
-    int from = 0,
-  }) async {
-    return get("/feed/images?country=$country&latLng=$latLng&from=$from")
-        .then((res) => ImageFeedResult.fromJson(res.data));
-  }
-}
-
 @JsonSerializable()
 class ImageFeedResult {
   ImageFeedResult(this.items, this.places);

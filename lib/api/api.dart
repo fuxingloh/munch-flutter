@@ -7,6 +7,10 @@ String _url = 'https://api.munch.app/v0.17.0';
 DateFormat _format = DateFormat("yyyy-MM-dd'T'HH:MM:ss");
 
 class MunchApi {
+  const MunchApi._();
+
+  static const instance = MunchApi._();
+
   Map<String, String> get _headers {
     return {
       // 2018-12-20T05:18:57
@@ -27,7 +31,7 @@ class MunchApi {
     return RestfulResponse._(response);
   }
 
-  Future<RestfulResponse> put(String path, body) async {
+  Future<RestfulResponse> put(String path, {body}) async {
     final response = await http.put(
       _path(path),
       headers: _headers,
@@ -36,7 +40,7 @@ class MunchApi {
     return RestfulResponse._(response);
   }
 
-  Future<RestfulResponse> post(String path, body) async {
+  Future<RestfulResponse> post(String path, {body}) async {
     final response = await http.post(
       _path(path),
       headers: _headers,
