@@ -14,15 +14,31 @@ String _formatDate(int millis) {
   return _format.format(DateTime.fromMillisecondsSinceEpoch(millis));
 }
 
-class FeedItemPage extends StatelessWidget {
+class FeedItemPage extends StatefulWidget {
   final ImageFeedItem item;
 
   const FeedItemPage({Key key, this.item}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  State<StatefulWidget> createState() => FeedItemPageState(item);
+}
+
+class FeedItemPageState extends State<FeedItemPage> {
+  FeedItemPageState(this.item);
+
+  final ImageFeedItem item;
+
+  ScrollController _controller;
+  Widget _body;
+  bool clear = true;
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
+    _body = Scaffold(
       body: ListView(
+        controller: _controller,
         padding: EdgeInsets.zero,
         children: <Widget>[
           _FeedItemImage(item: item),
@@ -30,6 +46,52 @@ class FeedItemPage extends StatelessWidget {
           _FeedItemPlace(item: item),
         ],
       ),
+    );
+    super.initState();
+  }
+
+  _scrollListener() {
+    if (_controller.offset > 120) {
+      if (!clear) return;
+      setState(() {
+        clear = false;
+      });
+    } else {
+      if (clear) return;
+      setState(() {
+        clear = true;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bar = AppBar(
+      title: Text(
+        item.places.first?.name,
+        textAlign: TextAlign.center,
+        style: MTextStyle.navHeader.copyWith(
+          color: clear ? MColors.white : MColors.black
+        ),
+      ),
+      backgroundColor: MColors.clear,
+      elevation: 0,
+      iconTheme: IconThemeData(color: clear ? MColors.white : MColors.black),
+    );
+
+    return Stack(
+      children: [
+        _body,
+        Container(
+          color: clear ? MColors.clear : MColors.white,
+          child: SafeArea(
+            child: SizedBox.fromSize(
+              child: bar,
+              size: bar.preferredSize,
+            ),
+          ),
+        )
+      ],
     );
   }
 }

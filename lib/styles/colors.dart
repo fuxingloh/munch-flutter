@@ -29,7 +29,7 @@ class MColors {
 
   static const Color voided = Color(0xFFF0F0F0);
 
-  static const Color clear = Color(0x00FFFFFF);
+  static const Color clear = Color(0x00);
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF000000);
 
