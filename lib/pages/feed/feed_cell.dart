@@ -61,7 +61,7 @@ class FeedLoadingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SpinKitThreeBounce(
-        color: MColors.secondary500,
+        color: MunchColors.secondary500,
         size: 24.0,
       ),
     );

@@ -39,7 +39,7 @@ class MunchTagStyle {
     this.textStyle = const TextStyle(
       fontSize: 13,
       fontWeight: FontWeight.w600,
-      color: MColors.black85,
+      color: MunchColors.black85,
     ),
     this.padding = const EdgeInsets.only(
       top: 4.5,
@@ -47,7 +47,7 @@ class MunchTagStyle {
       left: 8,
       right: 8,
     ),
-    this.backgroundColor = MColors.whisper100,
+    this.backgroundColor = MunchColors.whisper100,
   });
 
   final TextStyle textStyle;

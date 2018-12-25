@@ -7,11 +7,11 @@ import 'package:munch_app/styles/icons.dart';
 
 MunchTagView _buildTag(Place place) {
   const MunchTagStyle priceTagStyle = MunchTagStyle(
-    backgroundColor: MColors.peach100,
+    backgroundColor: MunchColors.peach100,
     textStyle: TextStyle(
       fontSize: 13,
       fontWeight: FontWeight.w700,
-      color: MColors.black85,
+      color: MunchColors.black85,
     ),
   );
   const MunchTagStyle tagStyle = MunchTagStyle();
@@ -38,32 +38,32 @@ RichText _buildLocation(Place place) {
   const style = const TextStyle(
     fontSize: 13,
     fontWeight: FontWeight.w500,
-    color: MColors.black75,
+    color: MunchColors.black75,
   );
 
   const period = TextSpan(
     text: "  •  ",
-    style: TextStyle(color: MColors.black, fontWeight: FontWeight.w700),
+    style: TextStyle(color: MunchColors.black, fontWeight: FontWeight.w700),
   );
 
   const closing = TextSpan(
     text: "Closing Soon",
-    style: TextStyle(color: MColors.close, fontWeight: FontWeight.w600),
+    style: TextStyle(color: MunchColors.close, fontWeight: FontWeight.w600),
   );
 
   const closed = TextSpan(
     text: "Closed Now",
-    style: TextStyle(color: MColors.close, fontWeight: FontWeight.w600),
+    style: TextStyle(color: MunchColors.close, fontWeight: FontWeight.w600),
   );
 
   const opening = TextSpan(
     text: "Opening Soon",
-    style: TextStyle(color: MColors.open, fontWeight: FontWeight.w600),
+    style: TextStyle(color: MunchColors.open, fontWeight: FontWeight.w600),
   );
 
   const open = TextSpan(
     text: "Open Now",
-    style: TextStyle(color: MColors.open, fontWeight: FontWeight.w600),
+    style: TextStyle(color: MunchColors.open, fontWeight: FontWeight.w600),
   );
 
   List<TextSpan> children = [];
@@ -109,9 +109,9 @@ class PlaceHeartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return const IconButton(
       onPressed: null,
-      icon: Icon(MIcons.rip_heart, color: MColors.white),
+      icon: Icon(MunchIcons.rip_heart, color: MunchColors.white),
       iconSize: 24,
-      color: MColors.white,
+      color: MunchColors.white,
       padding: EdgeInsets.all(8),
     );
   }
@@ -163,7 +163,7 @@ class PlaceCardState extends State<PlaceCard> {
             style: const TextStyle(
               fontSize: 21,
               fontWeight: FontWeight.w600,
-              color: MColors.black75,
+              color: MunchColors.black75,
             ),
           ),
         ),

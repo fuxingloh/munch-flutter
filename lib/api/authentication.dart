@@ -72,7 +72,7 @@ class Authentication {
 
   Future<void> _authenticate() async {
     return _api
-        .post("/user/authenticate")
+        .post("/users/authenticate")
         .then((res) => UserData.fromJson(res.data))
         .then((UserData data) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();

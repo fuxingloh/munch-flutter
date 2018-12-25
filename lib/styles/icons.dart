@@ -15,8 +15,8 @@
 ///
 import 'package:flutter/widgets.dart';
 
-class MIcons {
-  MIcons._();
+class MunchIcons {
+  MunchIcons._();
 
   static const _kFontFam = 'MIcons';
 
@@ -32,4 +32,5 @@ class MIcons {
   static const IconData tabbar_discover = const IconData(0xe809, fontFamily: _kFontFam);
   static const IconData tabbar_feed = const IconData(0xe80a, fontFamily: _kFontFam);
   static const IconData tabbar_profile = const IconData(0xe80b, fontFamily: _kFontFam);
+  static const IconData onboarding_facebook = const IconData(0xe80c, fontFamily: _kFontFam);
 }

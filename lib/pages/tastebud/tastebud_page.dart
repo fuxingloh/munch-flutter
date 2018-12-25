@@ -11,10 +11,10 @@ class TastebudPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: MColors.white,
-        title: MButton.text(
+        backgroundColor: MunchColors.white,
+        title: MunchButton.text(
           "Primary Button",
-          style: MButtonStyle.primary,
+          style: MunchButtonStyle.primary,
           onPressed: () {},
         ),
       ),
@@ -42,18 +42,18 @@ class TastebudPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Primary",
-              style: MButtonStyle.primary,
+              style: MunchButtonStyle.primary,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Extreme Long Ass Text Container Sizing Test",
-              style: MButtonStyle.primary,
+              style: MunchButtonStyle.primary,
               onPressed: () {},
             ),
           ),
@@ -61,63 +61,63 @@ class TastebudPage extends StatelessWidget {
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Primary Outline",
-              style: MButtonStyle.primaryOutline,
+              style: MunchButtonStyle.primaryOutline,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Primary Small",
-              style: MButtonStyle.primarySmall,
+              style: MunchButtonStyle.primarySmall,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child:  MButton.text(
+            child:  MunchButton.text(
               "Secondary Long Test",
-              style: MButtonStyle.secondary,
+              style: MunchButtonStyle.secondary,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Secondary Outline",
-              style: MButtonStyle.secondaryOutline,
+              style: MunchButtonStyle.secondaryOutline,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Secondary Small",
-              style: MButtonStyle.secondarySmall,
+              style: MunchButtonStyle.secondarySmall,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Border",
-              style: MButtonStyle.border,
+              style: MunchButtonStyle.border,
               onPressed: () {},
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 12, bottom: 12),
             alignment: Alignment.centerLeft,
-            child: MButton.text(
+            child: MunchButton.text(
               "Border Small",
-              style: MButtonStyle.borderSmall,
+              style: MunchButtonStyle.borderSmall,
               onPressed: () {},
             )
           ),

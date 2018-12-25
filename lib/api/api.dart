@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/structured_exception.dart';
 
 String _url = 'https://api.munch.app/v0.17.0';
@@ -11,15 +12,16 @@ class MunchApi {
 
   static const instance = MunchApi._();
 
-  Map<String, String> get _headers {
-    return {
-      // 2018-12-20T05:18:57
-      'user-local-time': _format.format(DateTime.now().toLocal()),
-      // TODO User Lat Lng
-      'user-lat-lng': null,
-      // TODO Authentication
-      'authorization': null,
-    };
+  Future<Map<String, String>> get _headers async {
+    return Authentication.instance.getToken().then((token) {
+      return {
+        // 2018-12-20T05:18:57
+        'user-local-time': _format.format(DateTime.now().toLocal()),
+        // TODO User Lat Lng
+        'user-lat-lng': null,
+        'authorization': token != null ? "Bearer $token}" : null,
+      };
+    });
   }
 
   String _path(String path) {
@@ -27,30 +29,34 @@ class MunchApi {
   }
 
   Future<RestfulResponse> get(String path) async {
-    final response = await http.get(_path(path), headers: _headers);
+    var headers = await _headers;
+    final response = await http.get(_path(path), headers: headers);
     return RestfulResponse._(response);
   }
 
   Future<RestfulResponse> put(String path, {body}) async {
+    var headers = await _headers;
     final response = await http.put(
       _path(path),
-      headers: _headers,
-      body: body ? json.encode(body) : null,
+      headers: headers,
+      body: body != null ? json.encode(body) : null,
     );
     return RestfulResponse._(response);
   }
 
   Future<RestfulResponse> post(String path, {body}) async {
+    var headers = await _headers;
     final response = await http.post(
       _path(path),
-      headers: _headers,
-      body: body ? json.encode(body) : null,
+      headers: headers,
+      body: body != null ? json.encode(body) : null,
     );
     return RestfulResponse._(response);
   }
 
   Future<RestfulResponse> delete(String path) async {
-    final response = await http.delete(_path(path), headers: _headers);
+    var headers = await _headers;
+    final response = await http.delete(_path(path), headers: headers);
     return RestfulResponse._(response);
   }
 }

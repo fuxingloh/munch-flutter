@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/styles/colors.dart';
 
-class MButtonStyle {
+class MunchButtonStyle {
   final Color textColor;
   final Color background;
   final Color borderColor;
@@ -10,7 +10,7 @@ class MButtonStyle {
   final double padding;
   final TextStyle textStyle;
 
-  const MButtonStyle({
+  const MunchButtonStyle({
     this.textColor,
     this.background,
     this.borderColor,
@@ -30,80 +30,80 @@ class MButtonStyle {
   static const TextStyle _smallTextStyle =
       TextStyle(fontSize: 15, fontWeight: FontWeight.w500);
 
-  static const MButtonStyle border = MButtonStyle(
-    textColor: MColors.black75,
+  static const MunchButtonStyle border = MunchButtonStyle(
+    textColor: MunchColors.black75,
     background: Color(0xFFFCFCFC),
-    borderColor: MColors.black15,
+    borderColor: MunchColors.black15,
     borderWidth: 1,
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
   );
 
-  static const MButtonStyle borderSmall = MButtonStyle(
-    textColor: MColors.black75,
+  static const MunchButtonStyle borderSmall = MunchButtonStyle(
+    textColor: MunchColors.black75,
     background: Color(0xFFFCFCFC),
-    borderColor: MColors.black15,
+    borderColor: MunchColors.black15,
     borderWidth: 1,
     height: _smallHeight,
     padding: _smallPadding,
     textStyle: _smallTextStyle,
   );
 
-  static const MButtonStyle primary = MButtonStyle(
-    textColor: MColors.white,
-    background: MColors.primary500,
-    borderColor: MColors.clear,
+  static const MunchButtonStyle primary = MunchButtonStyle(
+    textColor: MunchColors.white,
+    background: MunchColors.primary500,
+    borderColor: MunchColors.clear,
     borderWidth: 0,
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
   );
 
-  static const MButtonStyle primarySmall = MButtonStyle(
-    textColor: MColors.white,
-    background: MColors.primary500,
-    borderColor: MColors.clear,
+  static const MunchButtonStyle primarySmall = MunchButtonStyle(
+    textColor: MunchColors.white,
+    background: MunchColors.primary500,
+    borderColor: MunchColors.clear,
     borderWidth: 0,
     height: _smallHeight,
     padding: _smallPadding,
     textStyle: _smallTextStyle,
   );
 
-  static const MButtonStyle primaryOutline = MButtonStyle(
-    textColor: MColors.primary500,
-    background: MColors.white,
-    borderColor: MColors.primary500,
+  static const MunchButtonStyle primaryOutline = MunchButtonStyle(
+    textColor: MunchColors.primary500,
+    background: MunchColors.white,
+    borderColor: MunchColors.primary500,
     borderWidth: 1,
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
   );
 
-  static const MButtonStyle secondary = MButtonStyle(
-    textColor: MColors.white,
-    background: MColors.secondary500,
-    borderColor: MColors.clear,
+  static const MunchButtonStyle secondary = MunchButtonStyle(
+    textColor: MunchColors.white,
+    background: MunchColors.secondary500,
+    borderColor: MunchColors.clear,
     borderWidth: 0,
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
   );
 
-  static const MButtonStyle secondarySmall = MButtonStyle(
-    textColor: MColors.white,
-    background: MColors.secondary500,
-    borderColor: MColors.clear,
+  static const MunchButtonStyle secondarySmall = MunchButtonStyle(
+    textColor: MunchColors.white,
+    background: MunchColors.secondary500,
+    borderColor: MunchColors.clear,
     borderWidth: 0,
     height: _smallHeight,
     padding: _smallPadding,
     textStyle: _smallTextStyle,
   );
 
-  static const MButtonStyle secondaryOutline = MButtonStyle(
-    textColor: MColors.secondary500,
-    background: MColors.white,
-    borderColor: MColors.secondary500,
+  static const MunchButtonStyle secondaryOutline = MunchButtonStyle(
+    textColor: MunchColors.secondary500,
+    background: MunchColors.white,
+    borderColor: MunchColors.secondary500,
     borderWidth: 1,
     height: _height,
     padding: _padding,
@@ -111,12 +111,12 @@ class MButtonStyle {
   );
 }
 
-class MButton extends StatelessWidget {
-  MButton.text(
+class MunchButton extends StatelessWidget {
+  MunchButton.text(
     String text, {
     Key key,
     @required VoidCallback onPressed,
-    MButtonStyle style = MButtonStyle.primary,
+    MunchButtonStyle style = MunchButtonStyle.primary,
   }) : this(
           key: key,
           onPressed: onPressed,
@@ -124,15 +124,15 @@ class MButton extends StatelessWidget {
           child: Text(text, style: style.textStyle),
         );
 
-  MButton({
+  MunchButton({
     Key key,
     this.onPressed,
-    this.style = MButtonStyle.primary,
+    this.style = MunchButtonStyle.primary,
     this.child,
   }) : super(key: key);
 
   final VoidCallback onPressed;
-  final MButtonStyle style;
+  final MunchButtonStyle style;
   final Widget child;
 
   @override

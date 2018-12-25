@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/authentication.dart';
+import 'package:munch_app/components/dialog.dart';
 
 import 'package:munch_app/styles/colors.dart';
 
@@ -17,7 +18,7 @@ class MunchApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Munch App',
-      color: MColors.secondary500,
+      color: MunchColors.secondary500,
       initialRoute: '/',
       routes: {
         '/': (context) => MunchTabPage(),
@@ -47,6 +48,12 @@ class _MunchTabState extends State<MunchTabPage> {
             _currentIndex = index;
           });
         }
+      }).catchError((error) {
+        return showDialog(
+          context: context,
+          builder: (context) => MunchDialog.error(context,
+              title: 'Authentication Error', content: error),
+        );
       });
     } else {
       setState(() {
@@ -63,22 +70,22 @@ class _MunchTabState extends State<MunchTabPage> {
 
     return BottomAppBar(
       elevation: 16,
-      color: MColors.white,
+      color: MunchColors.white,
       child: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: onTab,
-        fixedColor: MColors.primary600,
+        fixedColor: MunchColors.primary600,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(MIcons.tabbar_discover),
+            icon: Icon(MunchIcons.tabbar_discover),
             title: Text('Discover', style: style),
           ),
           BottomNavigationBarItem(
-            icon: Icon(MIcons.tabbar_feed),
+            icon: Icon(MunchIcons.tabbar_feed),
             title: Text('Feed', style: style),
           ),
           BottomNavigationBarItem(
-            icon: Icon(MIcons.tabbar_profile),
+            icon: Icon(MunchIcons.tabbar_profile),
             title: Text('Tastebud', style: style),
           ),
         ],

@@ -35,6 +35,9 @@ class StructuredException implements Exception {
     }
 
     switch (response.statusCode) {
+      case 403:
+        return ForbiddenException();
+
       case 404:
         return NotFoundException();
 
@@ -53,7 +56,11 @@ class StructuredException implements Exception {
 }
 
 class UnknownException extends StructuredException {
-  UnknownException() : super(code: 500, type: "UnknownException");
+  UnknownException() : super(code: 500, type: "Unknown Exception");
+}
+
+class ForbiddenException extends StructuredException {
+  ForbiddenException() : super(code: 403, type: "Forbidden Exception");
 }
 
 class NotFoundException extends StructuredException {

@@ -71,19 +71,19 @@ class FeedItemPageState extends State<FeedItemPage> {
         item.places.first?.name,
         textAlign: TextAlign.center,
         style: MTextStyle.navHeader.copyWith(
-          color: clear ? MColors.white : MColors.black
+          color: clear ? MunchColors.white : MunchColors.black
         ),
       ),
-      backgroundColor: MColors.clear,
+      backgroundColor: MunchColors.clear,
       elevation: 0,
-      iconTheme: IconThemeData(color: clear ? MColors.white : MColors.black),
+      iconTheme: IconThemeData(color: clear ? MunchColors.white : MunchColors.black),
     );
 
     return Stack(
       children: [
         _body,
         Container(
-          color: clear ? MColors.clear : MColors.white,
+          color: clear ? MunchColors.clear : MunchColors.white,
           child: SafeArea(
             child: SizedBox.fromSize(
               child: bar,
@@ -137,7 +137,7 @@ class _FeedItemContent extends StatelessWidget {
             text: TextSpan(text: "by ", style: MTextStyle.h4, children: [
               TextSpan(
                 text: item.instagram.username,
-                style: TextStyle(color: MColors.secondary700),
+                style: TextStyle(color: MunchColors.secondary700),
               ),
               TextSpan(text: " on ${_formatDate(item.createdMillis)}"),
             ]),

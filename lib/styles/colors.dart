@@ -2,8 +2,8 @@ import 'dart:ui' show Color;
 
 import 'package:flutter/painting.dart';
 
-class MColors {
-  MColors._();
+class MunchColors {
+  MunchColors._();
 
   static const Color primary050 = Color(0xFFFACFC4);
   static const Color primary100 = Color(0xFFF7AF9D);

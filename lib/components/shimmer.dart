@@ -7,11 +7,11 @@ class ShimmerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
       child: Container(
-        color: MColors.whisper100,
+        color: MunchColors.whisper100,
       ),
       period: const Duration(milliseconds: 1300),
-      baseColor: MColors.whisper100,
-      highlightColor: MColors.whisper050,
+      baseColor: MunchColors.whisper100,
+      highlightColor: MunchColors.whisper050,
     );
   }
 }

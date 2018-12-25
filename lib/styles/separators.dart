@@ -10,7 +10,7 @@ class SeparatorWidget extends StatelessWidget {
       height: 0.5,
       width: double.infinity,
       child: const DecoratedBox(
-        decoration: const BoxDecoration(color: MColors.black10),
+        decoration: const BoxDecoration(color: MunchColors.black10),
       ),
     );
   }

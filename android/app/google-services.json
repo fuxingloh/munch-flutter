@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "951023944206",
+    "firebase_url": "https://munch-core.firebaseio.com",
+    "project_id": "munch-core",
+    "storage_bucket": "munch-core.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951023944206:android:80b64a953a7f4d0a",
+        "android_client_info": {
+          "package_name": "app.munch.munchapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951023944206-2re2mgdds79u61b0o6trpbp7g56ulur4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsMSKx0T2RvQrw4FSMOlLGGmHSeHbh9I0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
