@@ -105,9 +105,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
   }
 
   Widget _buildChecker(Tag tag) {
-    if (_searchPreference == null) {
-      return Container();
-    }
+    if (_searchPreference == null) return Container();
 
     bool checked =
         _searchPreference.requirements.any((t) => t.tagId == tag.tagId);

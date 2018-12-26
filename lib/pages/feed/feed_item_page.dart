@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/feed_api.dart';
-import 'package:munch_app/components/place_card.dart';
+import 'package:munch_app/pages/places/place_card.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/separators.dart';

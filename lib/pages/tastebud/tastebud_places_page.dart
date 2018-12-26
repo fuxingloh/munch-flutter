@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/components/dialog.dart';
-import 'package:munch_app/components/place_card.dart';
+import 'package:munch_app/pages/places/place_card.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/tastebud/tastebud_saved_place_database.dart';
 import 'package:munch_app/styles/buttons.dart';
