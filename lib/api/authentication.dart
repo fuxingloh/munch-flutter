@@ -5,6 +5,7 @@ import 'package:munch_app/api/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/pages/tastebud/onboarding_page.dart';
+import 'package:munch_app/pages/tastebud/tastebud_saved_place_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -80,6 +81,8 @@ class Authentication {
       prefs.setString("UserSetting", jsonEncode(data.setting.toJson()));
       prefs.setString(
           "UserSearchPreference", jsonEncode(data.searchPreference.toJson()));
+
+      PlaceSavedDatabase.instance.reset(reload: true);
     });
   }
 
@@ -88,6 +91,8 @@ class Authentication {
     prefs.remove("UserProfile");
     prefs.remove("UserSetting");
     prefs.remove("UserSearchPreference");
+
+    PlaceSavedDatabase.instance.reset(reload: false);
 
     return _auth.signOut();
   }

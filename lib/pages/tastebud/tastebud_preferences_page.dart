@@ -53,7 +53,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
     super.initState();
 
     SharedPreferences.getInstance().then((prefs) {
-      var string = prefs.getString("UserSearchPreference");
+      String string = prefs.getString("UserSearchPreference");
 
       setState(() {
         _searchPreference = UserSearchPreference.fromJson(jsonDecode(string));
@@ -67,10 +67,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
       _buildHeader(),
       Container(
         margin: EdgeInsets.fromLTRB(24, 12, 24, 12),
-        child: const Text(
-          "Requirements",
-          style: MTextStyle.h2,
-        ),
+        child: const Text("Requirements", style: MTextStyle.h2),
       )
     ];
 
@@ -83,7 +80,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
   Container _buildHeader() {
     return Container(
       margin: EdgeInsets.fromLTRB(24, 24, 24, 12),
-      padding: EdgeInsets.fromLTRB(24, 16, 24, 16),
+      padding: EdgeInsets.fromLTRB(24, 16, 24, 24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
         color: MunchColors.whisper100,
@@ -95,10 +92,13 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
             "Tastebud Preference",
             style: MTextStyle.h2,
           ),
-          const Text(
-            "Customise your Tastebud on Munch for a better experience.",
-            style: MTextStyle.h5,
-          ),
+          Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: const Text(
+              "Customise your Tastebud on Munch for a better experience.",
+              style: MTextStyle.h5,
+            ),
+          )
         ],
       ),
     );

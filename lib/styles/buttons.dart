@@ -116,7 +116,7 @@ class MunchButton extends StatelessWidget {
     String text, {
     Key key,
     @required VoidCallback onPressed,
-    MunchButtonStyle style = MunchButtonStyle.primary,
+    MunchButtonStyle style = MunchButtonStyle.secondary,
   }) : this(
           key: key,
           onPressed: onPressed,
@@ -127,7 +127,7 @@ class MunchButton extends StatelessWidget {
   MunchButton({
     Key key,
     this.onPressed,
-    this.style = MunchButtonStyle.primary,
+    this.style = MunchButtonStyle.secondary,
     this.child,
   }) : super(key: key);
 

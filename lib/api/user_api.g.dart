@@ -42,3 +42,23 @@ Map<String, dynamic> _$UserSearchPreferenceToJson(
       'requirements': instance.requirements,
       'updatedMillis': instance.updatedMillis
     };
+
+UserSavedPlace _$UserSavedPlaceFromJson(Map<String, dynamic> json) {
+  return UserSavedPlace(
+      json['userId'] as String,
+      json['placeId'] as String,
+      json['name'] as String,
+      json['createdMillis'] as int,
+      json['place'] == null
+          ? null
+          : Place.fromJson(json['place'] as Map<String, dynamic>));
+}
+
+Map<String, dynamic> _$UserSavedPlaceToJson(UserSavedPlace instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+      'placeId': instance.placeId,
+      'name': instance.name,
+      'createdMillis': instance.createdMillis,
+      'place': instance.place
+    };

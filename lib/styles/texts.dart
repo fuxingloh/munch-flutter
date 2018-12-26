@@ -16,25 +16,25 @@ class MTextStyle {
   );
   static const TextStyle h3 = TextStyle(
     fontSize: 20,
-    height: 1.4,
+    height: 1.3,
     fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );
   static const TextStyle h4 = TextStyle(
     fontSize: 18,
-    height: 1.4,
+    height: 1.3,
     fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );
   static const TextStyle h5 = TextStyle(
     fontSize: 16,
-    height: 1.4,
+    height: 1.3,
     fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );
   static const TextStyle h6 = TextStyle(
     fontSize: 14,
-    height: 1.4,
+    height: 1.3,
     fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );

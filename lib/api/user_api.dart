@@ -43,7 +43,25 @@ class UserSearchPreference {
   Map<String, dynamic> toJson() => _$UserSearchPreferenceToJson(this);
 }
 
-List<Tag> possibleTagRequirements = [
+@JsonSerializable()
+class UserSavedPlace {
+  UserSavedPlace(this.userId, this.placeId, this.name, this.createdMillis,
+      this.place);
+
+  String userId;
+  String placeId;
+  String name;
+
+  int createdMillis;
+  Place place;
+
+  factory UserSavedPlace.fromJson(Map<String, dynamic> json) =>
+      _$UserSavedPlaceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserSavedPlaceToJson(this);
+}
+
+final List<Tag> possibleTagRequirements = [
   Tag("abb22d3d-7d23-4677-b4ef-a3e09f2f9ada", "Halal", TagType.Requirement),
   Tag("fdf77b3b-8f90-419f-b711-dd25f97046fe", "Vegetarian Options", TagType.Requirement),
 ];

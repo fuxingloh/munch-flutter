@@ -40,6 +40,7 @@ class MunchTagStyle {
       fontSize: 13,
       fontWeight: FontWeight.w600,
       color: MunchColors.black85,
+      height: 1,
     ),
     this.padding = const EdgeInsets.only(
       top: 4.5,

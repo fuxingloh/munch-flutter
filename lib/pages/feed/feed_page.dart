@@ -6,6 +6,7 @@ import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/feed_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:munch_app/api/munch_data.dart';
+import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
 import 'package:munch_app/styles/texts.dart';
 
@@ -18,8 +19,7 @@ class FeedPage extends StatefulWidget {
   State<StatefulWidget> createState() => _FeedState();
 }
 
-class _FeedState extends State<FeedPage>
-    with AutomaticKeepAliveClientMixin<FeedPage> {
+class _FeedState extends State<FeedPage> {
   final FeedManager manager = FeedManager();
   List<Object> items = [];
 
@@ -32,7 +32,7 @@ class _FeedState extends State<FeedPage>
         this.items = items;
       });
     }, onError: (e, s) {
-      print("Error: $e");
+      MunchDialog.showError(context, e);
     }, onDone: () {
       print("Completed");
     });
@@ -75,9 +75,6 @@ class _FeedState extends State<FeedPage>
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 enum FeedStaticCell { header, loading }

@@ -22,6 +22,7 @@ ThemeData _buildTheme() {
 
     textTheme: TextTheme(
       body1: MTextStyle.regular
+          .copyWith(height: 1, color: Colors.black)
     )
   );
 }
