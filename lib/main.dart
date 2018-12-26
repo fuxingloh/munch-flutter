@@ -12,6 +12,15 @@ import 'package:munch_app/styles/icons.dart';
 
 void main() => runApp(MunchApp());
 
+ThemeData _buildTheme() {
+  return ThemeData(
+    brightness: Brightness.light,
+    primaryColor: MunchColors.white,
+    accentColor: MunchColors.secondary500,
+    fontFamily: 'Roboto',
+  );
+}
+
 /// MunchApp: The Root Application
 class MunchApp extends StatelessWidget {
   @override
@@ -19,6 +28,7 @@ class MunchApp extends StatelessWidget {
     return MaterialApp(
       title: 'Munch App',
       color: MunchColors.secondary500,
+      theme: _buildTheme(),
       initialRoute: '/',
       routes: {
         '/': (context) => MunchTabPage(),
@@ -27,12 +37,14 @@ class MunchApp extends StatelessWidget {
   }
 }
 
+final MunchTabState tabState = MunchTabState();
+
 class MunchTabPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _MunchTabState();
+  State<StatefulWidget> createState() => tabState;
 }
 
-class _MunchTabState extends State<MunchTabPage> {
+class MunchTabState extends State<MunchTabPage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     DiscoverPage(),
@@ -74,7 +86,7 @@ class _MunchTabState extends State<MunchTabPage> {
       child: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: onTab,
-        fixedColor: MunchColors.primary600,
+        fixedColor: MunchColors.primary500,
         items: [
           BottomNavigationBarItem(
             icon: Icon(MunchIcons.tabbar_discover),

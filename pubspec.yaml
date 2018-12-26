@@ -66,9 +66,9 @@ flutter:
   uses-material-design: true
 
   fonts:
-  - family:  MIcons
+  - family:  MunchIcons
     fonts:
-    - asset: fonts/MIcons.ttf
+    - asset: fonts/MunchIcons.ttf
 
   assets:
   - assets/img/

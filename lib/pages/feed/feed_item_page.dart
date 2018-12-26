@@ -121,7 +121,7 @@ class _FeedItemContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SeparatorWidget(),
+        const SeparatorLine(),
         Container(
           margin: const EdgeInsets.only(top: 16, left: 24, right: 24),
           child: Text(
@@ -143,7 +143,7 @@ class _FeedItemContent extends StatelessWidget {
             ]),
           ),
         ),
-        const SeparatorWidget(),
+        const SeparatorLine(),
       ],
     );
   }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/styles/colors.dart';
 
-class SeparatorWidget extends StatelessWidget {
-  const SeparatorWidget();
+class SeparatorLine extends StatelessWidget {
+  const SeparatorLine();
 
   @override
   Widget build(BuildContext context) {
