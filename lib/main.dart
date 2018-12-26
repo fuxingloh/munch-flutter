@@ -9,6 +9,7 @@ import 'package:munch_app/pages/discover/discover_page.dart';
 import 'package:munch_app/pages/feed/feed_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_page.dart';
 import 'package:munch_app/styles/icons.dart';
+import 'package:munch_app/styles/texts.dart';
 
 void main() => runApp(MunchApp());
 
@@ -18,6 +19,10 @@ ThemeData _buildTheme() {
     primaryColor: MunchColors.white,
     accentColor: MunchColors.secondary500,
     fontFamily: 'Roboto',
+
+    textTheme: TextTheme(
+      body1: MTextStyle.regular
+    )
   );
 }
 
