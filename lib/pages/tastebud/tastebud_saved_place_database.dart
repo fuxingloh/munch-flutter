@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/user_api.dart';
-import 'package:munch_app/utils/MunchDatabase.dart';
+import 'package:munch_app/utils/munch_database.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:convert';
