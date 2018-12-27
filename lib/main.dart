@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/pages/search/search_page.dart';
 
 import 'package:munch_app/styles/colors.dart';
 
-import 'package:munch_app/pages/discover/discover_page.dart';
 import 'package:munch_app/pages/feed/feed_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_page.dart';
 import 'package:munch_app/styles/icons.dart';
@@ -53,7 +53,7 @@ class MunchTabPage extends StatefulWidget {
 class MunchTabState extends State<MunchTabPage> {
   int _currentIndex = 0;
   final List<Widget> _children = [
-    DiscoverPage(),
+    SearchPage(),
     FeedPage(),
     TastebudPage(),
   ];

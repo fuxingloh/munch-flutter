@@ -13,6 +13,12 @@ class MunchLocation {
 
   Position get lastPosition => _lastPosition;
 
+  String get lastLatLng {
+    Position lastPosition = _lastPosition;
+    if (lastPosition == null) return null;
+    return "${lastPosition.latitude},${lastPosition.longitude}";
+  }
+
   Future<bool> isEnabled() async {
     PermissionStatus permission = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
@@ -97,7 +103,7 @@ class MunchLocation {
   String distanceAsDuration(String latLng, String toLatLng) {
     var split = toLatLng.split(",");
     var meter =
-        distance(latLng, double.parse(split[0]), double.parse(split[1]));
+    distance(latLng, double.parse(split[0]), double.parse(split[1]));
     int min = meter ~/ 70;
 
     if (min <= 1) {

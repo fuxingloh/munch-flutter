@@ -317,8 +317,8 @@ class SearchCard {
 
   SearchCard(Map<String, dynamic> body) {
     _body = body;
-    this.cardId = _body['cardId'];
-    this.uniqueId = _body['uniqueId'];
+    this.cardId = _body['_cardId'];
+    this.uniqueId = _body['_uniqueId'];
   }
 
   SearchCard.cardId(this.cardId, {Map<String, dynamic> body = const {}}) {

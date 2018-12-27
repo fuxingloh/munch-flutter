@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/structured_exception.dart';
+import 'package:munch_app/utils/munch_location.dart';
 
 String _url = 'https://api.munch.app/v0.17.0';
 DateFormat _format = DateFormat("yyyy-MM-dd'T'HH:MM:ss");
@@ -15,10 +16,9 @@ class MunchApi {
   Future<Map<String, String>> get _headers async {
     return Authentication.instance.getToken().then((token) {
       return {
-        // 2018-12-20T05:18:57
+        // E.g. 2018-12-20T05:18:57
         'user-local-time': _format.format(DateTime.now().toLocal()),
-        // TODO User Lat Lng
-        'user-lat-lng': null,
+        'user-lat-lng': MunchLocation.instance.lastLatLng,
         'authorization': token != null ? "Bearer $token}" : null,
       };
     });
@@ -99,8 +99,7 @@ class RestfulMeta {
   factory RestfulMeta.fromJson(Map<String, dynamic> json) {
     RestfulError error;
     if (json.containsKey('error')) {
-      dynamic error = json['error'];
-      error = RestfulError(error['type'], error['message']);
+      error = RestfulError(json['error']['type'], json['error']['message']);
     }
 
     return RestfulMeta(json['code'], error);

@@ -4,13 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/feed_api.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
-import 'package:munch_app/styles/texts.dart';
-
-import 'package:rxdart/rxdart.dart';
 
 class FeedPage extends StatefulWidget {
   FeedPage({Key key}) : super(key: key);
@@ -27,7 +22,7 @@ class _FeedState extends State<FeedPage> {
   void initState() {
     super.initState();
 
-    manager.observe().listen((items) {
+    manager.stream().listen((items) {
       setState(() {
         this.items = items;
       });
@@ -90,10 +85,11 @@ class FeedManager {
 
   StreamController<List<Object>> _controller;
 
-  Observable<List<Object>> observe() {
+  Stream<List<Object>> stream() {
     _controller = StreamController<List<Object>>();
     _controller.add(collect());
-    return new Observable<List<Object>>(_controller.stream);
+    this.append();
+    return _controller.stream;
   }
 
   void reset() {

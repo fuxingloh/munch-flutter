@@ -3,7 +3,7 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 
-class DiscoverHeaderBar extends StatelessWidget {
+class SearchHeaderBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +73,7 @@ class _SearchTextField extends StatelessWidget {
           contentPadding:
               EdgeInsets.only(left: 40, right: 24, top: 10, bottom: 10),
           border: InputBorder.none,
-          hintText: 'Search \'Chinese\'',
+          hintText: 'Search "Chinese"',
           hintStyle: _textStyle),
     );
   }
