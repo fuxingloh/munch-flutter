@@ -1,120 +1,98 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:munch_app/api/collection_api.dart';
+import 'package:munch_app/api/file_api.dart';
+import 'package:munch_app/api/munch_data.dart';
 
 part 'places_api.g.dart';
 
 @JsonSerializable()
+class PlaceData {
+  PlaceData(this.place, this.awards, this.articles, this.images);
+
+  Place place;
+
+  List<UserPlaceCollectionItem> awards;
+  List<Article> articles;
+  List<PlaceImage> images;
+
+  factory PlaceData.fromJson(Map<String, dynamic> json) =>
+      _$PlaceDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaceDataToJson(this);
+}
+
+@JsonSerializable()
 class Article {
-  Article(this.articleId);
+  Article(this.articleId, this.sort, this.domainId, this.domain, this.url,
+      this.title, this.description, this.thumbnail, this.createdMillis);
 
   String articleId;
+  String sort;
 
-  factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
+  String domainId;
+  ArticleDomain domain;
+
+  String url;
+  String title;
+  String description;
+
+  Image thumbnail;
+  int createdMillis;
+
+  factory Article.fromJson(Map<String, dynamic> json) =>
+      _$ArticleFromJson(json);
 
   Map<String, dynamic> toJson() => _$ArticleToJson(this);
 }
 
+@JsonSerializable()
+class ArticleDomain {
+  ArticleDomain(this.name, this.url);
 
-// //
-//// Created by Fuxing Loh on 25/6/18.
-//// Copyright (c) 2018 Munch Technologies. All rights reserved.
-////
-//
-//import Foundation
-//
-//import Moya
-//import RxSwift
-//
-//import Crashlytics
-//
-//enum PlaceService {
-//    case get(String)
-//    case images(String, String?)
-//    case articles(String, String?)
-//}
-//
-//extension PlaceService: TargetType {
-//    var path: String {
-//        switch self {
-//        case .get(let placeId): return "/places/\(placeId)"
-//        case .images(let placeId, _): return "/places/\(placeId)/images"
-//        case .articles(let placeId, _): return "/places/\(placeId)/articles"
-//        }
-//    }
-//    var method: Moya.Method {
-//        return .get
-//    }
-//    var task: Task {
-//        switch self {
-//        case .get:
-//            return .requestPlain
-//        case .articles(_, let sort):
-//            fallthrough
-//        case .images(_, let sort):
-//            if let sort = sort {
-//                return .requestParameters(parameters: ["next.sort": sort, "size": "20"], encoding: URLEncoding.default)
-//            }
-//            return .requestParameters(parameters: ["size": "20"], encoding: URLEncoding.default)
-//        }
-//    }
-//}
-//
-//struct PlaceData: Codable {
-//    var place: Place
-//    var awards: [UserPlaceCollection.Item]
-//    var articles: [Article]
-//    var images: [PlaceImage]
-//}
-//
-//struct Article: Codable {
-//    var articleId: String
-//    var sort: String
-//
-//    var domainId: String
-//    var domain: Domain
-//
-//    var url: String
-//    var title: String?
-//    var description: String?
-//
-//    var thumbnail: Image?
-//    var createdMillis: Int?
-//
-//    struct Domain: Codable {
-//        var name: String
-//        var url: String
-//    }
-//}
-//
-//struct PlaceImage: Codable {
-//    var imageId: String
-//    var sort: String
-//    var sizes: [Image.Size]
-//
-//    var title: String?
-//    var caption: String?
-//
-//    var article: Article?
-//    var instagram: Instagram?
-//    var createdMillis: Int?
-//
-//    struct Article: Codable {
-//        var articleId: String
-//        var url: String
-//
-//        var domainId: String
-//        var domain: Domain
-//
-//        struct Domain: Codable {
-//            var name: String
-//            var url: String
-//        }
-//    }
-//
-//    struct Instagram: Codable {
-//        var accountId: String
-//        var mediaId: String
-//
-//        var link: String?
-//        var username: String?
-//    }
-//}
+  String name;
+  String url;
+
+  factory ArticleDomain.fromJson(Map<String, dynamic> json) =>
+      _$ArticleDomainFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ArticleDomainToJson(this);
+}
+
+@JsonSerializable()
+class PlaceImage {
+  PlaceImage(this.imageId, this.sort, this.sizes, this.title, this.caption,
+      this.article, this.instagram, this.createdMillis);
+
+  String imageId;
+  String sort;
+  List<ImageSize> sizes;
+
+  String title;
+  String caption;
+
+  Article article;
+  Instagram instagram;
+  int createdMillis;
+
+  factory PlaceImage.fromJson(Map<String, dynamic> json) =>
+      _$PlaceImageFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaceImageToJson(this);
+}
+
+@JsonSerializable()
+class Instagram {
+  Instagram(this.accountId, this.mediaId, this.link, this.username);
+
+  String accountId;
+  String mediaId;
+
+  String link;
+  String username;
+
+  factory Instagram.fromJson(Map<String, dynamic> json) =>
+      _$InstagramFromJson(json);
+
+  Map<String, dynamic> toJson() => _$InstagramToJson(this);
+}
+
