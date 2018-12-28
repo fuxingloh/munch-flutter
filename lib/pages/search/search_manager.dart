@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/api/structured_exception.dart';
+import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 class SearchManager {
@@ -12,11 +15,11 @@ class SearchManager {
   final SearchQuery searchQuery;
   int _page = 0;
 
-  // TODO Shimmer cards
   List<SearchCard> _cards = [];
 
   /// Whether this card manager is currently loading more content
   bool _loading = false;
+
   bool get loading => _loading;
 
   /// Whether this card manager still contains more content to be loaded  bool more = true;
@@ -30,7 +33,11 @@ class SearchManager {
 
   Stream<List<SearchCard>> stream() {
     _controller = StreamController<List<SearchCard>>();
-    _controller.add(_cards);
+    _controller.add([
+      SearchCard.cardId("SearchCardShimmer"),
+      SearchCard.cardId("SearchCardShimmer"),
+      SearchCard.cardId("SearchCardShimmer"),
+    ]);
     return _controller.stream;
   }
 
@@ -39,15 +46,14 @@ class SearchManager {
   Future start() async {
     return MunchLocation.instance.request().timeout(Duration(seconds: 6)).then(
       (latLng) {
-        // TODO Replace Error Card
-        // Reset error cards if succeed
-        // if self.cards.get(0) is SearchStaticErrorCard {
-        // self.cards = []
-        // }
+        if (_cards.length == 1 && _cards[0]?.cardId == 'SearchCardError') {
+          _cards = [];
+        }
       },
       onError: (error) {
-        // TODO Create Error Card
-        // self.cards = [SearchStaticErrorCard.create(type: .location)]
+        debugPrint(error);
+
+        _append([SearchCardError.location()]);
       },
     ).whenComplete(() {
       return _search();
@@ -73,28 +79,15 @@ class SearchManager {
       this._more = cards.isNotEmpty;
       this._page += 1;
     }, onError: (error) {
-      print(error);
-      // if let error = res.meta.error, let type = error.type {
-      //                        if type == "UnsupportedException" {
-      //                            return [SearchStaticUnsupportedCard.card]
-      //                        } else {
-      //                            return [SearchStaticErrorCard.create(type: .message(type, error.message))]
-      //                        }
-      //                    }
-      // TODO Error handling
-      //                        if let error = error as? MoyaError {
-//                            switch error {
-//                            case let .statusCode(response):
-//                                let type = response.meta.error?.type ?? "Unknown Error"
-//                                let message = response.meta.error?.message
-//                                self.cards.append(SearchStaticErrorCard.create(type: .message(type, message)))
-//
-//                            case let .underlying(error, _):
-//                                self.cards.append(SearchStaticErrorCard.create(type: .error(error)))
-//
-//                            default: break
-//                            }
-//                        }
+      debugPrint(error);
+
+      if (error is DeprecatedException) {
+        _append([SearchCard.cardId("SearchCardUnsupported")]);
+      } else if (error is StructuredException) {
+        _append([SearchCardError.error(error)]);
+      } else {
+        _append([SearchCardError.error(error)]);
+      }
       this._more = false;
     }).whenComplete(() {
       this._loading = false;

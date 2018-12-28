@@ -80,7 +80,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
   Container _buildHeader() {
     return Container(
       margin: EdgeInsets.fromLTRB(24, 24, 24, 12),
-      padding: EdgeInsets.fromLTRB(24, 16, 24, 24),
+      padding: EdgeInsets.fromLTRB(24, 24, 24, 24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(3),
         color: MunchColors.whisper100,
@@ -93,7 +93,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
             style: MTextStyle.h2,
           ),
           Padding(
-            padding: EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 16),
             child: const Text(
               "Customise your Tastebud on Munch for a better experience.",
               style: MTextStyle.h5,

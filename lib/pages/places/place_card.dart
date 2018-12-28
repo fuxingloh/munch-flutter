@@ -144,7 +144,7 @@ class PlaceCardState extends State<PlaceCard> {
             AspectRatio(
               aspectRatio: 1 / 0.6,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(3),
+                borderRadius: BorderRadius.circular(4),
                 child: ShimmerImageWidget(
                   sizes: place.images.first?.sizes,
                   fit: BoxFit.cover,

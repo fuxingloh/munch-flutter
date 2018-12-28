@@ -46,7 +46,7 @@ class ShimmerImageWidget extends StatelessWidget {
       errorWidget: const Icon(Icons.error),
       fadeOutDuration: const Duration(milliseconds: 0),
       fadeInDuration: const Duration(milliseconds: 200),
-      placeholder: const ShimmerWidget(),
+      placeholder: const Shimmer(),
       fit: fit,
     );
   }

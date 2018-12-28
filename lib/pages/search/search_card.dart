@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/pages/search/cards/search_card_header.dart';
+import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/pages/search/cards/search_card_place.dart';
 
 export 'package:flutter/widgets.dart';
+export 'package:munch_app/api/search_api.dart';
 
 class SearchCardDelegator {
   Widget delegate(SearchCard card) {
@@ -14,8 +15,21 @@ class SearchCardDelegator {
 
       case "Place_2018-12-29":
         return SearchCardPlace(card);
-    }
 
+      case "SearchCardUnsupported":
+        return SearchCardUnsupported(card);
+
+      case "SearchCardError":
+        return SearchCardError(card);
+
+      case "SearchCardNoResult":
+      case "NoResult_2017-12-08":
+        return SearchCardNoResult(card);
+
+      case "SearchCardShimmer":
+        return SearchCardShimmer(card);
+
+    }
 
     debugPrint('Required Card ${card.cardId} Not Found.');
 
@@ -25,34 +39,30 @@ class SearchCardDelegator {
     );
   }
 
-//        register(SearchStaticTopCard.self)
-//        register(SearchStaticNoResultCard.self)
-//        register(SearchStaticLoadingCard.self)
-//        register(SearchStaticErrorCard.self)
-//        register(SearchStaticUnsupportedCard.self)
 //        register(SearchShimmerPlaceCard.self)
-//
+
 //        register(SearchNoLocationCard.self)
-//        register(SearchNoResultCard.self)
-//
+
 //        register(SearchCardCollectionHeader.self)
-//
+
 //        register(SearchCardHomeDTJE.self)
-//
+
 //        register(SearchHomeTabCard.self)
 //        register(SearchHomeNearbyCard.self)
 //        register(SearchCardHomeRecentPlace.self)
 //        register(SearchCardHomePopularPlace.self)
 //        register(SearchCardHomeAwardCollection.self)
-//
+
 //        register(SearchCardLocationBanner.self)
 //        register(SearchCardLocationArea.self)
-//
-//        register(SearchCardBetweenHeader.self)
 
 //        register(SearchAreaClusterListCard.self)
 //        register(SearchAreaClusterHeaderCard.self)
 //        register(SearchTagSuggestion.self)
+
+
+// TODO Later
+//        register(SearchCardBetweenHeader.self)
 }
 
 class SearchCardInsets extends EdgeInsets {
