@@ -278,21 +278,3 @@
 //        fatalError("init(coder:) has not been implemented")
 //    }
 //}
-//
-//class SearchStaticTopCard: SearchCardView {
-//    override func didLoad(card: SearchCard) {
-//        self.backgroundColor = .clear
-//
-//        let view = UIView()
-//        view.backgroundColor = .clear
-//        self.addSubview(view)
-//        view.snp.makeConstraints { maker in
-//            maker.height.equalTo(self.topBottom).priority(999)
-//            maker.edges.equalTo(self)
-//        }
-//    }
-//
-//    override class var cardId: String {
-//        return "static_SearchStaticTopCard"
-//    }
-//}

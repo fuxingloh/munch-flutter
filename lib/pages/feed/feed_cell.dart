@@ -39,7 +39,7 @@ class FeedImageView extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          CupertinoPageRoute(builder: (context) => FeedItemPage(item: item)),
+          MaterialPageRoute(builder: (context) => FeedItemPage(item: item)),
         );
       },
       child: AspectRatio(

@@ -3,34 +3,27 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 
-class SearchHeaderBar extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.only(),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: elevation1,
-      ),
-      child: SafeArea(
-        child: Row(
-          children: [
-            Expanded(child: _SearchTextField()),
-            _buildFilterButton(context)
-          ],
-        ),
-      ),
-    );
-  }
+class SearchHeaderBar extends PreferredSize {
 
-  Widget _buildFilterButton(BuildContext context) {
-    return IconButton(
-      padding: const EdgeInsets.only(left: 16, right: 20),
-      iconSize: 28,
-      icon: const Icon(MunchIcons.search_header_filter),
-      onPressed: () {},
-    );
-  }
+  @override
+  Widget get child => Container(
+    padding: const EdgeInsets.only(),
+    decoration: const BoxDecoration(
+      color: Colors.white,
+      boxShadow: elevation1,
+    ),
+    child: SafeArea(
+      child: Row(
+        children: [
+          Expanded(child: _SearchTextField()),
+          _SearchFilterButton()
+        ],
+      ),
+    ),
+  );
+
+  @override
+  Size get preferredSize => Size(double.infinity, 64);
 }
 
 class _SearchTextField extends StatelessWidget {
@@ -75,6 +68,18 @@ class _SearchTextField extends StatelessWidget {
           border: InputBorder.none,
           hintText: 'Search "Chinese"',
           hintStyle: _textStyle),
+    );
+  }
+}
+
+class _SearchFilterButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      padding: const EdgeInsets.only(left: 20, right: 23),
+      iconSize: 28,
+      icon: const Icon(MunchIcons.search_header_filter),
+      onPressed: () {},
     );
   }
 }

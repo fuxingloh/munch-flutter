@@ -3,6 +3,8 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ShimmerWidget extends StatelessWidget {
+  const ShimmerWidget();
+
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(

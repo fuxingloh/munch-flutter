@@ -5,19 +5,19 @@ class MTextStyle {
   static const TextStyle h1 = TextStyle(
     fontSize: 32,
     height: 1.3,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
   static const TextStyle h2 = TextStyle(
     fontSize: 24,
     height: 1.3,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
   static const TextStyle h3 = TextStyle(
     fontSize: 20,
     height: 1.3,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
   static const TextStyle h4 = TextStyle(

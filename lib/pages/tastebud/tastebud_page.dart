@@ -45,7 +45,7 @@ class _TastebudAppBar extends AppBar {
         onPressed: () {
           Navigator.push(
             context,
-            CupertinoPageRoute(builder: (c) => TastebudSettingPage()),
+            MaterialPageRoute(builder: (c) => TastebudSettingPage()),
           );
         },
         icon: const Icon(MunchIcons.navigation_setting),

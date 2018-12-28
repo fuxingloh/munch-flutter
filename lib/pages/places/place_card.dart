@@ -92,6 +92,7 @@ RichText _buildLocation(Place place) {
   }
 
   return RichText(
+    maxLines: 1,
     text: TextSpan(
       text: "${place.location.neighbourhood}",
       style: style,
@@ -167,6 +168,7 @@ class PlaceCardState extends State<PlaceCard> {
               fontWeight: FontWeight.w600,
               color: MunchColors.black75,
             ),
+            maxLines: 1,
           ),
         ),
         Container(
@@ -187,7 +189,7 @@ class PlaceCardState extends State<PlaceCard> {
     return GestureDetector(child: column, onTap: () {
       Navigator.push(
         context,
-        CupertinoPageRoute(builder: (c) => RIPPage(place: place)),
+        MaterialPageRoute(builder: (c) => RIPPage(place: place)),
       );
     });
   }

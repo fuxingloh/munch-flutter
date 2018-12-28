@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:munch_app/api/api.dart';
@@ -57,7 +58,7 @@ class Authentication {
       // If user is not logged in, preset boarding controller and try to login
       return Navigator.push(
         context,
-        CupertinoPageRoute(
+        MaterialPageRoute(
           fullscreenDialog: true,
           builder: (context) => OnBoardingPage(),
         ),

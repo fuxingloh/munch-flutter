@@ -37,10 +37,10 @@ dependencies:
 
   # Core Frameworks
   rxdart: ^0.20.0
-  sqflite: ^0.12.2+1
+  sqflite: ^0.13.0+1
 
   # Core Helpers
-  cached_network_image: ^0.6.0-alpha.2
+  cached_network_image: ^0.5.1
 
   # Widgets
   flutter_spinkit: ^3.0.0

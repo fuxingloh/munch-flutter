@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/pages/search/cards/search_card_header.dart';
@@ -8,12 +9,15 @@ export 'package:flutter/widgets.dart';
 class SearchCardDelegator {
   Widget delegate(SearchCard card) {
     switch (card.cardId) {
-      case "Place_2018-12-29":
-        return SearchCardPlace(card);
-
       case "Header_2018-11-29":
         return SearchCardHeader(card);
+
+      case "Place_2018-12-29":
+        return SearchCardPlace(card);
     }
+
+
+    debugPrint('Required Card ${card.cardId} Not Found.');
 
     return Container(
       child: Text(card.cardId),
@@ -45,28 +49,26 @@ class SearchCardDelegator {
 //        register(SearchCardLocationArea.self)
 //
 //        register(SearchCardBetweenHeader.self)
-//
-//        register(SearchHeaderCard.self)
-//        register(SearchPlaceCard.self)
-//
+
 //        register(SearchAreaClusterListCard.self)
 //        register(SearchAreaClusterHeaderCard.self)
 //        register(SearchTagSuggestion.self)
 }
 
-abstract class SearchCardWidget extends StatelessWidget {
-  static EdgeInsets edge({
+class SearchCardInsets extends EdgeInsets {
+  const SearchCardInsets.only({
     double left = 24,
     double right = 24,
     double top = 18,
     double bottom = 18,
-  }) {
-    return EdgeInsets.fromLTRB(left, top, right, bottom);
-  }
+  }) : super.fromLTRB(left, top, right, bottom);
+}
 
-  SearchCardWidget(this.card,
-      {this.margin = const EdgeInsets.fromLTRB(24, 18, 24, 18)})
-      : super(key: Key('${card.cardId}-${card.uniqueId}'));
+abstract class SearchCardWidget extends StatelessWidget {
+  SearchCardWidget(
+    this.card, {
+    this.margin = const SearchCardInsets.only(),
+  }) : super(key: Key('${card.cardId}-${card.uniqueId}'));
 
   final SearchCard card;
   final EdgeInsets margin;
@@ -80,7 +82,7 @@ abstract class SearchCardWidget extends StatelessWidget {
   }
 
   @protected
-  void onTap(BuildContext context);
+  void onTap(BuildContext context) {}
 
   @protected
   Widget buildCard(BuildContext context);

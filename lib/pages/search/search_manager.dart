@@ -17,6 +17,7 @@ class SearchManager {
 
   /// Whether this card manager is currently loading more content
   bool _loading = false;
+  bool get loading => _loading;
 
   /// Whether this card manager still contains more content to be loaded  bool more = true;
   bool _more = true;
@@ -27,13 +28,16 @@ class SearchManager {
 
   SearchManager(this.searchQuery);
 
-  /// Start the stream of cards,
-  /// The stream output the entire list.
-  Stream<List<SearchCard>> start() {
+  Stream<List<SearchCard>> stream() {
     _controller = StreamController<List<SearchCard>>();
     _controller.add(_cards);
+    return _controller.stream;
+  }
 
-    MunchLocation.instance.request().timeout(Duration(seconds: 6)).then(
+  /// Start the stream of cards,
+  /// The stream output the entire list.
+  Future start() async {
+    return MunchLocation.instance.request().timeout(Duration(seconds: 6)).then(
       (latLng) {
         // TODO Replace Error Card
         // Reset error cards if succeed
@@ -46,33 +50,29 @@ class SearchManager {
         // self.cards = [SearchStaticErrorCard.create(type: .location)]
       },
     ).whenComplete(() {
-      _search();
+      return _search();
     });
-    return _controller.stream;
   }
 
-  void append() async {
-    _search();
+  Future append() {
+    return _search();
   }
 
-  void _search() {
-    if (_loading || !_more) return;
+  Future _search() {
+    if (_loading || !_more) return Future.value();
 
     _loading = true;
-    // , body: searchQuery.toJson()
-    _api.post('/search?page=$_page', body: searchQuery.toJson()).then((res) {
-      // Parse into Cards
+    var body = searchQuery.toJson();
+    return _api.post('/search?page=$_page', body: body).then((res) {
       List<dynamic> list = res.data;
-      return list.map((data) {
-        return SearchCard(data);
-      }).toList(growable: false);
+      var cards = list.map((data) => SearchCard(data));
+      return cards.toList(growable: false);
     }).then((List<SearchCard> cards) {
       // Append parsed cards
       this._append(cards);
       this._more = cards.isNotEmpty;
       this._page += 1;
     }, onError: (error) {
-
       print(error);
       // if let error = res.meta.error, let type = error.type {
       //                        if type == "UnsupportedException" {

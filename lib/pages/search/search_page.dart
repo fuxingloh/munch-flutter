@@ -58,9 +58,9 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [SearchHeaderBar(), Expanded(child: _cardList)],
+    return Scaffold(
+      appBar: SearchHeaderBar(),
+      body: _cardList,
     );
   }
 }
