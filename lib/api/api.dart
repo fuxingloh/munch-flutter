@@ -15,12 +15,16 @@ class MunchApi {
 
   Future<Map<String, String>> get _headers async {
     return Authentication.instance.getToken().then((token) {
-      return {
+      Map<String, String> headers = {
         // E.g. 2018-12-20T05:18:57
         'user-local-time': _format.format(DateTime.now().toLocal()),
-        'user-lat-lng': MunchLocation.instance.lastLatLng,
-        'authorization': token != null ? "Bearer $token}" : null,
       };
+
+      var latLng = MunchLocation.instance.lastLatLng;
+      if (latLng != null) headers['user-lat-lng'] = latLng;
+      if (token != null) headers['authorization'] = "Bearer $token";
+
+      return headers;
     });
   }
 

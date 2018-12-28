@@ -4,8 +4,10 @@ import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
 
 class SearchPage extends StatefulWidget {
+  static SearchPageState state = SearchPageState();
+
   @override
-  State<StatefulWidget> createState() => SearchPageState();
+  State<StatefulWidget> createState() => state;
 }
 
 // TODO: Detect Background to Foreground transition, 60 min
@@ -21,8 +23,7 @@ class SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-//    push(SearchQuery.feature(SearchFeature.Home));
-    push(SearchQuery.search(null));
+    push(SearchQuery.feature(SearchFeature.Home));
   }
 
   void push(SearchQuery searchQuery) {
@@ -43,12 +44,13 @@ class SearchPageState extends State<SearchPage> {
     push(last);
   }
 
-  void pop() {
-    if (histories.length <= 1) return;
+  bool pop() {
+    if (histories.length <= 1) return false;
 
-    var searchQuery = histories.last;
-    _cardList.state.search(searchQuery);
+    histories.removeLast();
+    _cardList.state.search(histories.last);
     // TODO HeaderView rendering
+    return true;
   }
 
   void reset() {
@@ -58,9 +60,11 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(child: Scaffold(
       appBar: SearchHeaderBar(),
       body: _cardList,
-    );
+    ), onWillPop: ()  async {
+      return !pop();
+    });
   }
 }

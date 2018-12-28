@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:json_annotation/json_annotation.dart';
 import 'package:munch_app/api/munch_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'user_api.g.dart';
 
@@ -41,6 +44,15 @@ class UserSearchPreference {
       _$UserSearchPreferenceFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserSearchPreferenceToJson(this);
+
+  static Future<UserSearchPreference> get() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var string = prefs.getString("UserSearchPreference");
+    if (string == null) return null;
+
+    return UserSearchPreference.fromJson(jsonDecode(string));
+  }
 }
 
 @JsonSerializable()

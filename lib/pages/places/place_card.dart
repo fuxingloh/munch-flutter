@@ -127,6 +127,14 @@ class PlaceCard extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => PlaceCardState(place);
+
+  static double height(double width) {
+    double height = width * 0.6;
+    height += 28 + 12;
+    height += 24 + 6;
+    height += 19 + 8;
+    return height.ceilToDouble();
+  }
 }
 
 class PlaceCardState extends State<PlaceCard> {
@@ -145,7 +153,7 @@ class PlaceCardState extends State<PlaceCard> {
               aspectRatio: 1 / 0.6,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
-                child: ShimmerImageWidget(
+                child: ShimmerSizeImage(
                   sizes: place.images.first?.sizes,
                   fit: BoxFit.cover,
                 ),
@@ -158,27 +166,27 @@ class PlaceCardState extends State<PlaceCard> {
           ],
         ),
         Container(
-          margin: const EdgeInsets.only(top: 8),
+          margin: const EdgeInsets.only(top: 12),
           height: 28,
           alignment: Alignment.centerLeft,
           child: Text(
             place.name,
             style: const TextStyle(
               fontSize: 21,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w700,
               color: MunchColors.black75,
             ),
             maxLines: 1,
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 4),
+          margin: const EdgeInsets.only(top: 6),
           alignment: Alignment.centerLeft,
           height: 24,
           child: _buildTag(place),
         ),
         Container(
-          margin: const EdgeInsets.only(top: 4),
+          margin: const EdgeInsets.only(top: 8),
           alignment: Alignment.centerLeft,
           height: 19,
           child: _buildLocation(place),
@@ -186,11 +194,15 @@ class PlaceCardState extends State<PlaceCard> {
       ],
     );
 
-    return GestureDetector(child: column, onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (c) => RIPPage(place: place)),
-      );
-    });
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      child: column,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (c) => RIPPage(place: place)),
+        );
+      },
+    );
   }
 }

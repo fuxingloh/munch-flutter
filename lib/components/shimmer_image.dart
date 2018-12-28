@@ -5,49 +5,56 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:munch_app/api/file_api.dart' as file;
 
-class ShimmerImageWidget extends StatelessWidget {
+/// url to find from sizes
+String _findUrl(List<file.ImageSize> sizes, {double width, double height}) {
+  if (sizes.isEmpty) {
+    // TODO Handle empty images
+    return '';
+  }
+
+  sizes.sort((s1, s2) => s1.width.compareTo(s2.width));
+  for (var size in sizes) {
+    if (size.width >= width && size.height > height) {
+      return size.url;
+    }
+  }
+
+  return sizes.last?.url;
+}
+
+class ShimmerSizeImage extends StatelessWidget {
   /// minWidth & minHeight are in logical pixel
-  const ShimmerImageWidget({
+  const ShimmerSizeImage({
     Key key,
     this.minWidth,
     this.minHeight = 1,
     @required this.sizes,
-    this.fit,
+    this.fit = BoxFit.cover,
   }) : super(key: key);
 
   final double minWidth, minHeight;
   final List<file.ImageSize> sizes;
   final BoxFit fit;
 
-  /// url to find from sizes
-  String _findUrl(List<file.ImageSize> sizes, {double width, double height}) {
-    if (sizes.isEmpty) {
-      // TODO Handle empty images
-      return '';
-    }
-
-    sizes.sort((s1, s2) => s1.width.compareTo(s2.width));
-    for (var size in sizes) {
-      if (size.width >= width && size.height > height) {
-        return size.url;
-      }
-    }
-
-    return sizes.last?.url;
-  }
-
   @override
   Widget build(BuildContext context) {
     final width = minWidth ?? MediaQuery.of(context).size.width;
-    String url = _findUrl(sizes, width: width, height: minHeight);
-
-    return CachedNetworkImage(
-      imageUrl: url,
-      errorWidget: const Icon(Icons.error),
-      fadeOutDuration: const Duration(milliseconds: 0),
-      fadeInDuration: const Duration(milliseconds: 200),
-      placeholder: const Shimmer(),
-      fit: fit,
-    );
+    return _ShimmerImage(sizes, width: width, height: minHeight, fit: fit);
   }
+}
+
+class _ShimmerImage extends CachedNetworkImage {
+  _ShimmerImage(
+    List<file.ImageSize> sizes, {
+    @required double width,
+    @required double height,
+    BoxFit fit = BoxFit.cover,
+  }) : super(
+          imageUrl: _findUrl(sizes, width: width, height: height),
+          errorWidget: const Icon(Icons.error),
+          fadeOutDuration: const Duration(milliseconds: 0),
+          fadeInDuration: const Duration(milliseconds: 200),
+          placeholder: const Shimmer(),
+          fit: fit,
+        );
 }

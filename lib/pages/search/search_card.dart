@@ -1,6 +1,12 @@
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/pages/search/cards/collection/search_card_collection.dart';
+import 'package:munch_app/pages/search/cards/home/search_card_home_award_collection.dart';
+import 'package:munch_app/pages/search/cards/home/search_card_home_nearby.dart';
+import 'package:munch_app/pages/search/cards/home/search_card_home_popular_place.dart';
+import 'package:munch_app/pages/search/cards/home/search_card_home_recent_place.dart';
 import 'package:munch_app/pages/search/cards/search_card_header.dart';
+import 'package:munch_app/pages/search/cards/search_card_injected.dart';
 import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/pages/search/cards/search_card_place.dart';
 
@@ -29,6 +35,23 @@ class SearchCardDelegator {
       case "SearchCardShimmer":
         return SearchCardShimmer(card);
 
+      case "NoLocation_2017-10-20":
+        return SearchCardNoLocation(card);
+
+      case "CollectionHeader_2018-12-11":
+        return SearchCardCollectionHeader(card);
+
+      case "HomeNearby_2018-12-10":
+        return SearchCardHomeNearby(card);
+
+      case "HomePopularPlace_2018-12-10":
+        return SearchCardHomePopularPlace(card);
+
+      case "HomeRecentPlace_2018-12-10":
+        return SearchCardHomeRecentPlace(card);
+
+      case "HomeAwardCollection_2018-12-10":
+        return SearchCardHomeAwardCollection(card);
     }
 
     debugPrint('Required Card ${card.cardId} Not Found.');
@@ -39,30 +62,21 @@ class SearchCardDelegator {
     );
   }
 
-//        register(SearchShimmerPlaceCard.self)
-
-//        register(SearchNoLocationCard.self)
-
-//        register(SearchCardCollectionHeader.self)
-
-//        register(SearchCardHomeDTJE.self)
-
-//        register(SearchHomeTabCard.self)
-//        register(SearchHomeNearbyCard.self)
-//        register(SearchCardHomeRecentPlace.self)
-//        register(SearchCardHomePopularPlace.self)
-//        register(SearchCardHomeAwardCollection.self)
-
-//        register(SearchCardLocationBanner.self)
-//        register(SearchCardLocationArea.self)
-
+// TODO: Now
 //        register(SearchAreaClusterListCard.self)
 //        register(SearchAreaClusterHeaderCard.self)
 //        register(SearchTagSuggestion.self)
 
+// TODO Location Cards
+//        register(SearchCardLocationBanner.self)
+//        register(SearchCardLocationArea.self)
 
-// TODO Later
+
+// TODO Special Cards
+//        register(SearchHomeTabCard.self)
 //        register(SearchCardBetweenHeader.self)
+//        register(SearchCardHomeDTJE.self)
+
 }
 
 class SearchCardInsets extends EdgeInsets {

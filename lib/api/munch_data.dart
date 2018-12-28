@@ -47,6 +47,10 @@ class Place {
   factory Place.fromJson(Map<String, dynamic> json) => _$PlaceFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaceToJson(this);
+
+  static List<Place> fromJsonList(List<dynamic> list) {
+    return list.map((map) => Place.fromJson(map)).toList(growable: false);
+  }
 }
 
 enum PlaceStatusType { open, renovation, closed, moved }

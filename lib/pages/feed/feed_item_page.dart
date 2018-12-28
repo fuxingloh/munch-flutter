@@ -105,7 +105,7 @@ class _FeedItemImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AspectRatio(
         aspectRatio: item.image.aspectRatio,
-        child: ShimmerImageWidget(
+        child: ShimmerSizeImage(
           sizes: item.image.sizes,
         ));
   }

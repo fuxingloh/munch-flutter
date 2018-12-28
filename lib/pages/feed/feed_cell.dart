@@ -46,7 +46,7 @@ class FeedImageView extends StatelessWidget {
         aspectRatio: item.image.aspectRatio,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(3),
-          child: ShimmerImageWidget(
+          child: ShimmerSizeImage(
             minWidth: width,
             sizes: item.image.sizes,
           ),

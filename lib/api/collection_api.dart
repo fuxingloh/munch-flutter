@@ -39,6 +39,10 @@ class UserPlaceCollection {
       _$UserPlaceCollectionFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserPlaceCollectionToJson(this);
+
+  static List<UserPlaceCollection> fromJsonList(List<dynamic> list) {
+    return list.map((map) => UserPlaceCollection.fromJson(map)).toList(growable: false);
+  }
 }
 
 enum Access { Public, Private }

@@ -8,18 +8,18 @@ class MTextStyle {
     color: MunchColors.black75,
   );
   static const TextStyle h2 = TextStyle(
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
   static const TextStyle h3 = TextStyle(
-    fontSize: 20,
+    fontSize: 21,
     fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
   static const TextStyle h4 = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
+    fontSize: 19,
+    fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
   static const TextStyle h5 = TextStyle(
@@ -41,11 +41,13 @@ class MTextStyle {
 
   static const TextStyle large = TextStyle(
     fontSize: 19,
+    height: 1.1,
     fontWeight: FontWeight.w400,
     color: MunchColors.black,
   );
   static const TextStyle regular = TextStyle(
     fontSize: 16,
+    height: 1.1,
     fontWeight: FontWeight.w400,
     color: MunchColors.black,
   );
