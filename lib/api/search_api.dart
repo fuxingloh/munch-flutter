@@ -15,6 +15,10 @@ class FilterTag extends Tag {
       _$FilterTagFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterTagToJson(this);
+
+  static List<FilterTag> fromJsonList(List<dynamic> list) {
+    return list.map((map) => FilterTag.fromJson(map)).toList(growable: false);
+  }
 }
 
 @JsonSerializable()
