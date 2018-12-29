@@ -4,6 +4,7 @@ import 'package:munch_app/components/shimmer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 import 'package:munch_app/api/file_api.dart' as file;
+import 'package:munch_app/styles/colors.dart';
 
 /// url to find from sizes
 String _findUrl(List<file.ImageSize> sizes, {double width, double height}) {
@@ -51,7 +52,9 @@ class _ShimmerImage extends CachedNetworkImage {
     BoxFit fit = BoxFit.cover,
   }) : super(
           imageUrl: _findUrl(sizes, width: width, height: height),
-          errorWidget: const Icon(Icons.error),
+          errorWidget: const DecoratedBox(
+            decoration: BoxDecoration(color: MunchColors.whisper100),
+          ),
           fadeOutDuration: const Duration(milliseconds: 0),
           fadeInDuration: const Duration(milliseconds: 200),
           placeholder: const Shimmer(),

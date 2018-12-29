@@ -8,10 +8,12 @@ import 'package:munch_app/pages/search/cards/home/search_card_home_recent_place.
 import 'package:munch_app/pages/search/cards/home/search_card_home_tab.dart';
 import 'package:munch_app/pages/search/cards/location/search_card_location_area.dart';
 import 'package:munch_app/pages/search/cards/location/search_card_location_banner.dart';
+import 'package:munch_app/pages/search/cards/search_card_area.dart';
 import 'package:munch_app/pages/search/cards/search_card_header.dart';
 import 'package:munch_app/pages/search/cards/search_card_injected.dart';
 import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/pages/search/cards/search_card_place.dart';
+import 'package:munch_app/pages/search/cards/search_card_tag.dart';
 import 'package:munch_app/styles/texts.dart';
 
 export 'package:flutter/widgets.dart';
@@ -69,30 +71,25 @@ class SearchCardDelegator {
 
       case "LocationArea_2018-12-10":
         return SearchCardLocationArea(card);
+
+      case "AreaClusterList_2018-06-21":
+        return SearchCardAreaClusterList(card);
+
+      case "AreaClusterHeader_2018-06-21":
+        return SearchCardAreaClusterHeader(card);
+
+      case "SuggestedTag_2018-05-11":
+        return SearchCardTagSuggestion(card);
     }
-
-    debugPrint('Required Card ${card.cardId} Not Found.');
-
-    return Container(
-      child: Text(card.cardId, style: MTextStyle.h2),
-      padding: EdgeInsets.all(24),
-    );
-  }
-
-// TODO: Now
-//        register(SearchAreaClusterListCard.self)
-//        register(SearchAreaClusterHeaderCard.self)
-//        register(SearchTagSuggestion.self)
-
-// TODO Location Cards
-//        register(SearchCardLocationBanner.self)
-//        register(SearchCardLocationArea.self)
-
 
 // TODO Special Cards
 //        register(SearchCardBetweenHeader.self)
 //        register(SearchCardHomeDTJE.self)
 
+
+    debugPrint('Required Card ${card.cardId} Not Found.');
+    return Container();
+  }
 }
 
 class SearchCardInsets extends EdgeInsets {

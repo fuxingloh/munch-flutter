@@ -180,6 +180,10 @@ class Area {
   factory Area.fromJson(Map<String, dynamic> json) => _$AreaFromJson(json);
 
   Map<String, dynamic> toJson() => _$AreaToJson(this);
+
+  static List<Area> fromJsonList(List<dynamic> list) {
+    return list.map((map) => Area.fromJson(map)).toList(growable: false);
+  }
 }
 
 @JsonSerializable()

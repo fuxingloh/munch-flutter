@@ -5,6 +5,7 @@ import 'package:munch_app/pages/search/search_page.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_location.dart';
 
 class SearchCardHomeNearby extends SearchCardWidget {
   SearchCardHomeNearby(SearchCard card) : super(card);
@@ -14,8 +15,10 @@ class SearchCardHomeNearby extends SearchCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(child: Text("Discover Nearby", style: MTextStyle.h2),
-          margin: EdgeInsets.only(bottom: 18),),
+        Container(
+          child: Text("Discover Nearby", style: MTextStyle.h2),
+          margin: EdgeInsets.only(bottom: 18),
+        ),
         AspectRatio(
           aspectRatio: 1 / 0.4,
           child: Container(
@@ -25,8 +28,9 @@ class SearchCardHomeNearby extends SearchCardWidget {
               image: DecorationImage(
                 fit: BoxFit.cover,
                 colorFilter:
-                ColorFilter.mode(MunchColors.black50, BlendMode.srcOver),
-                image: AssetImage('assets/img/search_card_home_nearby_banner.jpg'),
+                    ColorFilter.mode(MunchColors.black50, BlendMode.srcOver),
+                image:
+                    AssetImage('assets/img/search_card_home_nearby_banner.jpg'),
               ),
             ),
             child: Column(
@@ -38,8 +42,13 @@ class SearchCardHomeNearby extends SearchCardWidget {
                     style: MTextStyle.h4.copyWith(color: MunchColors.white),
                   ),
                 ),
-                MunchButton.text("Discover", onPressed: () => onPressed(context),
-                  style: MunchButtonStyle.secondaryOutline,)
+                MunchButton.text(
+                  "Discover",
+                  onPressed: () => onPressed(context).catchError((error) {
+                        MunchDialog.showError(context, error);
+                      }),
+                  style: MunchButtonStyle.secondaryOutline,
+                )
               ],
             ),
           ),
@@ -48,12 +57,13 @@ class SearchCardHomeNearby extends SearchCardWidget {
     );
   }
 
-  void onPressed(BuildContext context) {
-    UserSearchPreference.get().then((pref) {
-      var query = SearchQuery.search(pref);
-      SearchPage.state.push(query);
-    }, onError: (error) {
-      MunchDialog.showError(context, error);
-    });
+  Future onPressed(BuildContext context) async {
+    var latLng = await MunchLocation.instance.request(force: true, permission: true);
+    if (latLng == null) return;
+
+    var pref = await UserSearchPreference.get();
+    var query = SearchQuery.search(pref);
+    query.filter.location.type = SearchFilterLocationType.Nearby;
+    SearchPage.state.push(query);
   }
 }
