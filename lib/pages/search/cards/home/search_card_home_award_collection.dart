@@ -76,7 +76,12 @@ class _AwardCollectionCell extends StatelessWidget {
       borderRadius: BorderRadius.circular(3),
       child: Stack(
         children: <Widget>[
-          ShimmerSizeImage(sizes: collection.image?.sizes, minWidth: width, minHeight: width),
+          Positioned.fill(
+            child: ShimmerSizeImage(
+                sizes: collection.image?.sizes,
+                minWidth: width,
+                minHeight: width),
+          ),
           Container(
             color: MunchColors.black50,
             padding: EdgeInsets.only(left: 8, right: 8),

@@ -26,8 +26,7 @@ class SearchCardHomeNearby extends SearchCardWidget {
                 fit: BoxFit.cover,
                 colorFilter:
                 ColorFilter.mode(MunchColors.black50, BlendMode.srcOver),
-                // TODO Update Image
-                image: AssetImage('assets/img/tastebud_onboarding.jpg'),
+                image: AssetImage('assets/img/search_card_home_nearby_banner.jpg'),
               ),
             ),
             child: Column(
