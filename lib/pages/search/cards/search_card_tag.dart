@@ -7,8 +7,12 @@ class SearchCardTagSuggestion extends SearchCardWidget {
 
   @override
   Widget buildCard(BuildContext context) {
-    // TODO: implement buildCard
-    return null;
+    return Column(
+      children: <Widget>[
+        Text("Can't decide?"),
+        Text(""),
+      ],
+    );
   }
 }
 
@@ -97,7 +101,9 @@ class SearchCardTagSuggestion extends SearchCardWidget {
 //        return "SuggestedTag_2018-05-11"
 //    }
 //}
-//
+
+
+
 //extension SearchTagSuggestion: UICollectionViewDataSource, UICollectionViewDelegate {
 //    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 //        return tags.count

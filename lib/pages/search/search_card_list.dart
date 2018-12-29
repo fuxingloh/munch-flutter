@@ -10,6 +10,10 @@ import 'package:munch_app/styles/colors.dart';
 class SearchCardList extends StatefulWidget {
   final SearchCardListState state = SearchCardListState();
 
+  void search(SearchQuery query) {
+    state._search(query);
+  }
+
   @override
   State<StatefulWidget> createState() => state;
 }
@@ -27,7 +31,7 @@ class SearchCardListState extends State<SearchCardList> {
     _controller.addListener(() => onScroll(_controller.position));
   }
 
-  Future search(SearchQuery query) {
+  Future _search(SearchQuery query) {
     scrollToTop();
     _manager = SearchManager(query);
     _manager.stream().listen((cards) {
@@ -59,7 +63,7 @@ class SearchCardListState extends State<SearchCardList> {
   }
 
   Future _handleRefresh() async {
-    return search(_manager.searchQuery);
+    return _search(_manager.searchQuery);
   }
 
   @override

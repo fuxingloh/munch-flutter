@@ -286,7 +286,7 @@ Map<String, dynamic> _$SearchFilterHourToJson(SearchFilterHour instance) =>
 
 const _$SearchFilterHourTypeEnumMap = <SearchFilterHourType, dynamic>{
   SearchFilterHourType.OpenNow: 'OpenNow',
-  SearchFilterHourType.OpenSay: 'OpenSay'
+  SearchFilterHourType.OpenDay: 'OpenSay'
 };
 
 SearchFilterLocation _$SearchFilterLocationFromJson(Map<String, dynamic> json) {

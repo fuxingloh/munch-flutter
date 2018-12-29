@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/pages/filter/filter_page.dart';
 import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
+import 'package:munch_app/pages/suggest/suggest_page.dart';
 
 class SearchPage extends StatefulWidget {
   static SearchPageState state = SearchPageState();
@@ -19,10 +21,27 @@ class SearchPageState extends State<SearchPage> {
 
   SearchQuery get searchQuery => histories.last;
   SearchCardList _cardList = SearchCardList();
+  SearchHeaderBar _header;
 
   @override
   void initState() {
     super.initState();
+    _header = SearchHeaderBar(
+        onBack: pop,
+        onSuggest: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (c) => SuggestPage(searchQuery: searchQuery)),
+          );
+        },
+        onFilter: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (c) => FilterPage(searchQuery: searchQuery)),
+          );
+        });
     push(SearchQuery.feature(SearchFeature.Home));
   }
 
@@ -32,8 +51,8 @@ class SearchPageState extends State<SearchPage> {
       // TODO: Recent Database
     }
 
-    _cardList.state.search(searchQuery);
-    // TODO HeaderView rendering
+    _cardList.search(searchQuery);
+    _header.searchQuery = searchQuery;
   }
 
   void edit(EditSearchQuery edit) {
@@ -48,8 +67,8 @@ class SearchPageState extends State<SearchPage> {
     if (histories.length <= 1) return false;
 
     histories.removeLast();
-    _cardList.state.search(histories.last);
-    // TODO HeaderView rendering
+    _cardList.search(histories.last);
+    _header.searchQuery = searchQuery;
     return true;
   }
 
@@ -60,11 +79,10 @@ class SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(child: Scaffold(
-      appBar: SearchHeaderBar(),
-      body: _cardList,
-    ), onWillPop: ()  async {
-      return !pop();
-    });
+    return WillPopScope(
+        child: Scaffold(appBar: _header, body: _cardList),
+        onWillPop: () async {
+          return !pop();
+        });
   }
 }

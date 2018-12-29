@@ -31,13 +31,13 @@ class MunchIcons {
   static const IconData rip_toast_cancel = const IconData(0xe808, fontFamily: _kFontFam);
   static const IconData rip_toast_check = const IconData(0xe809, fontFamily: _kFontFam);
   static const IconData rip_toast_heart = const IconData(0xe80a, fontFamily: _kFontFam);
-  static const IconData search_header_back = const IconData(0xe80b, fontFamily: _kFontFam);
-  static const IconData search_header_filter = const IconData(0xe80c, fontFamily: _kFontFam);
+  static const IconData search_header_filter = const IconData(0xe80b, fontFamily: _kFontFam);
+  static const IconData search_header_back = const IconData(0xe80c, fontFamily: _kFontFam);
   static const IconData search_header_reset = const IconData(0xe80d, fontFamily: _kFontFam);
   static const IconData search_header_search = const IconData(0xe80e, fontFamily: _kFontFam);
   static const IconData tabbar_discover = const IconData(0xe80f, fontFamily: _kFontFam);
-  static const IconData tabbar_profile = const IconData(0xe810, fontFamily: _kFontFam);
-  static const IconData tabbar_feed = const IconData(0xe811, fontFamily: _kFontFam);
+  static const IconData tabbar_feed = const IconData(0xe810, fontFamily: _kFontFam);
+  static const IconData tabbar_profile = const IconData(0xe811, fontFamily: _kFontFam);
   static const IconData tastebud_places = const IconData(0xe812, fontFamily: _kFontFam);
   static const IconData tastebud_preferences = const IconData(0xe813, fontFamily: _kFontFam);
 }

@@ -263,7 +263,7 @@ class SearchFilterHour {
   Map<String, dynamic> toJson() => _$SearchFilterHourToJson(this);
 }
 
-enum SearchFilterHourType { OpenNow, OpenSay }
+enum SearchFilterHourType { OpenNow, OpenDay }
 
 @JsonSerializable()
 class SearchFilterLocation {
