@@ -4,6 +4,7 @@ import 'package:munch_app/pages/filter/filter_page.dart';
 import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
 import 'package:munch_app/pages/suggest/suggest_page.dart';
+import 'package:munch_app/utils/recent_database.dart';
 
 class SearchPage extends StatefulWidget {
   static SearchPageState state = SearchPageState();
@@ -13,11 +14,12 @@ class SearchPage extends StatefulWidget {
 }
 
 // TODO: Detect Background to Foreground transition, 60 min
-
 typedef void EditSearchQuery(SearchQuery query);
 
 class SearchPageState extends State<SearchPage> {
   List<SearchQuery> histories = [];
+
+  RecentSearchQueryDatabase _recentSearchQueryDatabase = RecentSearchQueryDatabase();
 
   SearchQuery get searchQuery => histories.last;
   SearchCardList _cardList = SearchCardList();
@@ -48,7 +50,7 @@ class SearchPageState extends State<SearchPage> {
   void push(SearchQuery searchQuery) {
     histories.add(searchQuery);
     if (!searchQuery.isSimple) {
-      // TODO: Recent Database
+      _recentSearchQueryDatabase.put(searchQuery);
     }
 
     _cardList.search(searchQuery);
@@ -80,9 +82,10 @@ class SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: Scaffold(appBar: _header, body: _cardList),
-        onWillPop: () async {
-          return !pop();
-        });
+      child: Scaffold(appBar: _header, body: _cardList),
+      onWillPop: () async {
+        return !pop();
+      },
+    );
   }
 }

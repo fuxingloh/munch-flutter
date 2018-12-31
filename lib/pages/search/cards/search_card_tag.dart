@@ -6,9 +6,7 @@ class SearchCardTagSuggestion extends SearchCardWidget {
   SearchCardTagSuggestion(SearchCard card)
       : tags = FilterTag.fromJsonList(card['tags']),
         locationName = card['locationName'],
-        super(card,
-            margin:
-                SearchCardInsets.only(left: 0, right: 0, top: 0, bottom: 18));
+        super(card, margin: SearchCardInsets.only(left: 0, right: 0, top: 0));
 
   final List<FilterTag> tags;
   final String locationName;
@@ -63,9 +61,7 @@ class _SearchCardTagCell extends StatelessWidget {
         width: 120,
         height: 70,
         decoration: BoxDecoration(
-          color: MunchColors.white,
-          borderRadius: BorderRadius.circular(3)
-        ),
+            color: MunchColors.white, borderRadius: BorderRadius.circular(3)),
         padding: EdgeInsets.only(top: 17, bottom: 17, left: 2, right: 2),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

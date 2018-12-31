@@ -113,11 +113,14 @@ class _SearchTextFieldState extends State<_SearchTextField> {
   }
 
   void update(IconData icon, String hint) {
-    this.hintText = hint;
-    this.icon = icon;
-
     if (mounted) {
-      setState(() {});
+      setState(() {
+        this.hintText = hint;
+        this.icon = icon;
+      });
+    } else {
+      this.hintText = hint;
+      this.icon = icon;
     }
   }
 

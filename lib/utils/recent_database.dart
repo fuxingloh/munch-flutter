@@ -1,98 +1,79 @@
-// class RecentSearchQueryDatabase: RecentDataDatabase<SearchQuery> {
-//    init() {
-//        super.init(type: SearchQuery.self, name: "SearchQuery+\(SearchQuery.version)", maxSize: 10)
-//    }
-//}
-//
-//class RecentPlaceDatabase: RecentDataDatabase<Place> {
-//    init() {
-//        super.init(type: Place.self, name: "RecentPlaceDatabase", maxSize: 20)
-//    }
-//}
-//
-//class RecentData: Object {
-//    @objc dynamic var _name: String = ""
-//    @objc dynamic var _date = Date.currentMillis
-//
-//
-//    @objc dynamic var id: String = ""
-//    @objc dynamic var data: Data?
-//}
-//
-//class RecentDataDatabase<T> where T: Codable {
-//    private let type: T.Type
-//    private let name: String
-//    private let maxSize: Int
-//
-//    private let decoder = JSONDecoder()
-//    private let encoder = JSONEncoder()
-//
-//    /*
-//     * type: Type for Codable
-//     * name: name of database
-//     * maxSize: max size of number of data to store in database
-//     */
-//    init(type: T.Type, name: String, maxSize: Int) {
-//        self.type = type
-//        self.name = name
-//        self.maxSize = maxSize
-//    }
-//
-//    func add(id: String, data: T) {
-//        let encoded = try? encoder.encode(data)
-//
-//        let realm = try! Realm()
-//        if let exist = realm.objects(RecentData.self)
-//                .filter("_name == '\(name)' AND id == '\(id)'").first {
-//            try! realm.write {
-//                exist._date = Date.currentMillis
-//                exist.data = encoded
-//            }
-//        } else {
-//            try! realm.write {
-//                let recent = RecentData()
-//                recent._name = name
-//                recent.id = id
-//                recent.data = encoded
-//
-//                realm.add(recent)
-//                self.deleteLimit(realm: realm)
-//            }
-//        }
-//    }
-//
-//    func list() -> [T] {
-//        let realm = try! Realm()
-//        let dataList = realm.objects(RecentData.self)
-//                .filter("_name == '\(name)'")
-//                .sorted(byKeyPath: "_date", ascending: false)
-//
-//        var list = [T]()
-//        for recent in dataList {
-//            if let data = recent.data, let decoded = try? decoder.decode(type, from: data) {
-//                list.append(decoded)
-//            }
-//
-//            // If hit max items, auto return
-//            if (list.count >= maxSize) {
-//                return list
-//            }
-//        }
-//        return list
-//    }
-//
-//    private func deleteLimit(realm: Realm = try! Realm()) {
-//        let saved = realm.objects(RecentData.self)
-//                .filter("_name == '\(name)'")
-//                .sorted(byKeyPath: "_date", ascending: false)
-//
-//        // Delete if more then maxItems
-//        if (saved.count > maxSize) {
-//            for (index, element) in saved.enumerated() {
-//                if (index > maxSize) {
-//                    realm.delete(element)
-//                }
-//            }
-//        }
-//    }
-//}
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:munch_app/api/search_api.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
+
+class RecentSearchQueryDatabase extends RecentDatabase<SearchQuery> {
+  RecentSearchQueryDatabase()
+      : super(
+          name: "SearchQuery+${SearchQuery.version}",
+          maxSize: 10,
+          fromJson: (json) => SearchQuery.fromJson(json),
+          toJson: (SearchQuery query) => query.toJson(),
+        );
+}
+
+abstract class RecentDatabase<T> {
+  final _uuid = Uuid();
+
+  final String _name;
+  final int _maxSize;
+
+  final T Function(Map<String, dynamic> json) _fromJson;
+  final Map<String, dynamic> Function(T object) _toJson;
+
+  RecentDatabase({
+    String name,
+    int maxSize,
+    T Function(Map<String, dynamic> json) fromJson,
+    Map<String, dynamic> Function(T object) toJson,
+  })  : this._name = name,
+        this._maxSize = maxSize,
+        this._fromJson = fromJson,
+        this._toJson = toJson;
+
+  Future<File> get _file async {
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String path = appDocDir.path;
+
+    return File('$path/recent_$_name.json');
+  }
+
+  Future<List<dynamic>> get _rawList async {
+    final file = await _file;
+    String contents = await file.readAsString();
+
+    return jsonDecode(contents);
+  }
+
+  Future<List<T>> get() async {
+    List<dynamic> rawList = await _rawList;
+
+    return rawList.map((data) {
+      return _fromJson(data.data);
+    });
+  }
+
+  Future put(T object, {String id}) async {
+    List<dynamic> rawList = await _rawList;
+    rawList.add({
+      'id': id ?? _uuid.v4(),
+      'data': _toJson(object),
+      'millis': DateTime.now().millisecondsSinceEpoch
+    });
+
+    // Order by Millis for recency
+    rawList.sort((raw1, raw2) {
+      return raw1.millis > raw2.millis;
+    });
+
+    // Filter to maxSize
+    rawList = rawList.sublist(0, _maxSize);
+
+    // And persist
+    final file = await _file;
+    return file.writeAsString(jsonEncode(rawList));
+  }
+}

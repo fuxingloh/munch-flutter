@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:munch_app/api/user_api.dart';
+import 'package:munch_app/pages/filter/filter_area_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
 class SearchCardLocationBanner extends SearchCardWidget {
@@ -7,59 +9,69 @@ class SearchCardLocationBanner extends SearchCardWidget {
 
   @override
   Widget buildCard(BuildContext context) {
-    var image = Positioned.fill(
-        child: Image.asset(
+    var image = Image.asset(
       'assets/img/search_card_home_location_banner.jpg',
       fit: BoxFit.cover,
-    ));
-    return Container(
-      height: 264,
-      child: Stack(
-        children: <Widget>[
-          image,
-          Container(
-            color: MunchColors.black50,
+    );
+    var overlay = Container(
+      color: MunchColors.black50,
+      padding: EdgeInsets.all(24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            "Discover by Neighbourhood",
+            style: MTextStyle.h1.copyWith(color: MunchColors.white),
+          ),
+          Expanded(
             child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    "Discover by Neighbourhood",
-                    style: MTextStyle.h1.copyWith(color: MunchColors.white),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 8),
-                      child: Text(
-                        "Enter a location and we’ll tell you what’s delicious around.",
-                        style: MTextStyle.h5.copyWith(color: MunchColors.white),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomRight,
-                    child: MunchButton.text(
-                      "Enter Location",
-                      style: MunchButtonStyle.secondaryOutline,
-                      onPressed: () => onLocation(context),
-                    ),
-                  )
-                ],
+              padding: EdgeInsets.only(top: 8),
+              child: Text(
+                "Enter a location and we’ll tell you what’s delicious around.",
+                style: MTextStyle.h5.copyWith(color: MunchColors.white),
               ),
             ),
+          ),
+          Container(
+            alignment: Alignment.bottomRight,
+            child: MunchButton.text(
+              "Enter Location",
+              style: MunchButtonStyle.secondaryOutline,
+              onPressed: () => onLocation(context),
+            ),
           )
+        ],
+      ),
+    );
+
+    return Container(
+      constraints: BoxConstraints.loose(Size.fromHeight(264)),
+      child: Stack(
+        alignment: Alignment.topCenter,
+        overflow: Overflow.visible,
+        children: [
+          Positioned(top: -18, left: 0, right: 0, height: 264, child: image),
+          Positioned(top: -18, left: 0, right: 0, height: 264, child: overlay)
         ],
       ),
     );
   }
 
   void onLocation(BuildContext context) {
-//        let controller = FilterLocationSearchController(searchQuery: SearchQuery()) { query in
-//            if let query = query {
-//                self.controller.push(searchQuery: query)
-//            }
-//        }
-//        self.controller.present(controller, animated: true)
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FilterAreaPage(),
+      ),
+    ).then((area) async {
+      if (area == null) return;
+
+      var pref = await UserSearchPreference.get();
+      var query = SearchQuery.search(pref);
+
+      query.filter.location.type = SearchFilterLocationType.Where;
+      query.filter.location.areas = [area];
+      SearchPage.state.push(query);
+    });
   }
 }

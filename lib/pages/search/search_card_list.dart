@@ -73,7 +73,7 @@ class SearchCardListState extends State<SearchCardList> {
       backgroundColor: MunchColors.secondary500,
       onRefresh: _handleRefresh,
       child: ListView.builder(
-        padding: const EdgeInsets.only(top: 9),
+        padding: const EdgeInsets.only(top: 18),
         controller: _controller,
         itemCount: _cards.length + 1,
         itemBuilder: (context, i) {

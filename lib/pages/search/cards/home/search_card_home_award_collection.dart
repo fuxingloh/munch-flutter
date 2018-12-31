@@ -42,11 +42,11 @@ class SearchCardHomeAwardCollection extends SearchCardWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         const Padding(
-          padding: EdgeInsets.only(left: 24, right: 24),
+          padding: const EdgeInsets.only(left: 24, right: 24),
           child: Text("Award Winning Places", style: MTextStyle.h2),
         ),
         const Padding(
-          padding: EdgeInsets.only(top: 4, left: 24, right: 24),
+          padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
           child: Text(
               "If trophies were edible, you'd have em' at these joints.",
               style: MTextStyle.h6),
