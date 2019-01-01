@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
 
 class FilterPage extends StatefulWidget {
@@ -17,7 +17,9 @@ class FilterPageState extends State<FilterPage> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container();
+    return Scaffold(
+      appBar: AppBar(),
+      body: ListView(),
+    );
   }
 }

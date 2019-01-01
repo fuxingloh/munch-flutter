@@ -38,21 +38,31 @@ abstract class RecentDatabase<T> {
     Directory appDocDir = await getApplicationDocumentsDirectory();
     String path = appDocDir.path;
 
-    return File('$path/recent_$_name.json');
+    File file = File('$path/recent_$_name.json');
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+    return file;
   }
 
   Future<List<dynamic>> get _rawList async {
     final file = await _file;
     String contents = await file.readAsString();
 
-    return jsonDecode(contents);
+    try {
+      return jsonDecode(contents);
+    } catch (e) {
+      return [];
+    }
   }
 
   Future<List<T>> get() async {
-    List<dynamic> rawList = await _rawList;
-
-    return rawList.map((data) {
-      return _fromJson(data.data);
+    return _rawList.then((List<dynamic> rawList) {
+      return rawList.map((data) {
+        return _fromJson(data['data']);
+      }).toList(growable: false);
+    }, onError: (t) {
+      return List<T>();
     });
   }
 
@@ -66,14 +76,15 @@ abstract class RecentDatabase<T> {
 
     // Order by Millis for recency
     rawList.sort((raw1, raw2) {
-      return raw1.millis > raw2.millis;
+      int left = raw2['millis'];
+      return left.compareTo(raw1['millis']);
     });
 
     // Filter to maxSize
-    rawList = rawList.sublist(0, _maxSize);
+    rawList = rawList.take(_maxSize).toList(growable: false);
 
     // And persist
     final file = await _file;
-    return file.writeAsString(jsonEncode(rawList));
+    file.writeAsStringSync(jsonEncode(rawList));
   }
 }

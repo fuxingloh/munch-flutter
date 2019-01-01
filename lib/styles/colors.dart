@@ -55,7 +55,7 @@ class MunchColors {
 
   static const Color whisper050 = Color(0xFFf9f9fd);
   static const Color whisper100 = Color(0xFFF0F0F8);
-  static const Color whisper200 = Color(0xFFdfdff0);
+  static const Color whisper200 = Color(0xFFDFDFF0);
 
   static const Color open = Color(0xFF20A700);
   static const Color success = Color(0xFF20A700);

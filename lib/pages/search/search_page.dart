@@ -35,14 +35,22 @@ class SearchPageState extends State<SearchPage> {
             context,
             MaterialPageRoute(
                 builder: (c) => SuggestPage(searchQuery: searchQuery)),
-          );
+          ).then((searchQuery) {
+            if (searchQuery != null && searchQuery is SearchQuery) {
+              push(searchQuery);
+            }
+          });
         },
         onFilter: () {
           Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (c) => FilterPage(searchQuery: searchQuery)),
-          );
+          ).then((searchQuery) {
+            if (searchQuery != null && searchQuery is SearchQuery) {
+              push(searchQuery);
+            }
+          });
         });
     push(SearchQuery.feature(SearchFeature.Home));
   }

@@ -114,6 +114,7 @@ class MunchTabState extends State<MunchTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       bottomNavigationBar: _buildBottom(),
       body: Stack(
         children: List.generate(3, (index) {

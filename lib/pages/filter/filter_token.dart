@@ -23,6 +23,27 @@ abstract class FilterToken {
 
     return tokens;
   }
+
+  static String getText(List<FilterToken> tokens) {
+    String text = '';
+
+    if (tokens.length > 0) {
+      text = tokens[0].text;
+    }
+
+    if (tokens.length > 1) {
+      text += '  •  ';
+      text = tokens[1].text;
+    }
+
+    var count = tokens.length - 2;
+    if (count > 0) {
+      text += '  •  ';
+      text = "+$count";
+    }
+
+    return text;
+  }
 }
 
 class FilterTokenTag extends FilterToken {

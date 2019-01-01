@@ -10,59 +10,55 @@ class SearchHeaderBar extends PreferredSize {
     VoidCallback onBack,
     VoidCallback onSuggest,
     VoidCallback onFilter,
-  })  : _textFieldState =
-            _SearchTextFieldState(onBack: onBack, onSuggest: onSuggest),
-        _filterButton = _SearchFilterButton(onPressed: onFilter);
+  })  : _fieldState =
+            _SearchQueryBarState(onBack: onBack, onSuggest: onSuggest),
+        _actionButton = SearchActionButton(onPressed: onFilter);
 
-  final _SearchTextFieldState _textFieldState;
-  final _SearchFilterButton _filterButton;
+  final _SearchQueryBarState _fieldState;
+  final SearchActionButton _actionButton;
 
   set searchQuery(SearchQuery searchQuery) {
-    _textFieldState.searchQuery = searchQuery;
+    _fieldState.searchQuery = searchQuery;
   }
 
   @override
-  Widget get child => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: elevation1,
+  Widget get child {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: elevation1,
+      ),
+      child: SafeArea(
+        child: Row(
+          children: [
+            Expanded(child: _SearchQueryBar(state: _fieldState)),
+            _actionButton,
+          ],
         ),
-        child: SafeArea(
-          child: Row(
-            children: [
-              Expanded(child: _SearchTextField(state: _textFieldState)),
-              _filterButton,
-            ],
-          ),
-        ),
-      );
+      ),
+    );
+  }
 
   @override
   Size get preferredSize => Size(double.infinity, 64);
 }
 
-class _SearchTextField extends StatefulWidget {
-  final _SearchTextFieldState state;
+class _SearchQueryBar extends StatefulWidget {
+  final _SearchQueryBarState state;
 
-  const _SearchTextField({Key key, this.state}) : super(key: key);
+  const _SearchQueryBar({Key key, this.state}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => state;
 }
 
-class _SearchTextFieldState extends State<_SearchTextField> {
-  static const TextStyle _textStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w600,
-    color: MunchColors.black75,
-  );
-
-  _SearchTextFieldState({this.onBack, this.onSuggest});
+class _SearchQueryBarState extends State<_SearchQueryBar> {
+  _SearchQueryBarState({this.onBack, this.onSuggest});
 
   final VoidCallback onBack;
   final VoidCallback onSuggest;
 
-  String hintText = 'Search "Chinese"';
+  String hint = 'Search "Chinese"';
   IconData icon = MunchIcons.search_header_search;
 
   set searchQuery(SearchQuery searchQuery) {
@@ -85,41 +81,21 @@ class _SearchTextFieldState extends State<_SearchTextField> {
         break;
 
       case SearchFeature.Search:
-        update(MunchIcons.search_header_back,
-            getText(FilterToken.getTokens(searchQuery)));
+        var tokens = FilterToken.getTokens(searchQuery);
+        String text = FilterToken.getText(tokens);
+        update(MunchIcons.search_header_back, text);
         break;
     }
-  }
-
-  String getText(List<FilterToken> tokens) {
-    String text = '';
-
-    if (tokens.length > 0) {
-      text = tokens[0].text;
-    }
-
-    if (tokens.length > 1) {
-      text += '  •  ';
-      text = tokens[1].text;
-    }
-
-    var count = tokens.length - 2;
-    if (count > 0) {
-      text += '  •  ';
-      text = "+$count";
-    }
-
-    return text;
   }
 
   void update(IconData icon, String hint) {
     if (mounted) {
       setState(() {
-        this.hintText = hint;
+        this.hint = hint;
         this.icon = icon;
       });
     } else {
-      this.hintText = hint;
+      this.hint = hint;
       this.icon = icon;
     }
   }
@@ -127,53 +103,98 @@ class _SearchTextFieldState extends State<_SearchTextField> {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      Container(
-        margin: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
-        decoration: const BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          color: MunchColors.whisper100,
+      GestureDetector(
+        onTap: onSuggest,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          margin: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
+          child: IgnorePointer(child: SearchTextField(icon: icon, hint: hint)),
         ),
-        child: Center(child: _buildTextField()),
       ),
       Container(
-        margin: const EdgeInsets.only(top: 8, bottom: 8),
-        child: IconButton(
-          splashColor: Colors.white,
-          padding: const EdgeInsets.only(left: 38, right: 16),
-          iconSize: 20,
-          icon: Icon(icon),
-          onPressed: onBack,
-        ),
+        width: 56,
+        child: GestureDetector(onTap: onBack),
       )
     ]);
   }
+}
 
-  TextField _buildTextField() {
-    return TextField(
-      onTap: onSuggest,
-      decoration: InputDecoration(
-        fillColor: Colors.white,
-        contentPadding:
-            const EdgeInsets.only(left: 42, right: 24, top: 10, bottom: 10),
-        border: InputBorder.none,
-        hintText: hintText,
-        hintStyle: _textStyle,
-      ),
+class SearchTextField extends StatelessWidget {
+  static const TextStyle _style = TextStyle(
+    fontSize: 18,
+    fontWeight: FontWeight.w500,
+    color: MunchColors.black75,
+  );
+
+  SearchTextField({
+    Key key,
+    this.icon = MunchIcons.search_header_search,
+    this.hint = 'Search "Chinese"',
+    this.autofocus = false,
+    this.onChanged,
+    this.controller
+  }) : super(key: key);
+
+  final IconData icon;
+  final String hint;
+  final bool autofocus;
+  final ValueChanged<String> onChanged;
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: MunchColors.whisper100,
+          ),
+          child: TextField(
+            controller: controller,
+            autocorrect: false,
+            textCapitalization: TextCapitalization.none,
+            autofocus: autofocus,
+            onChanged: onChanged,
+            cursorColor: MunchColors.secondary500,
+            maxLines: 1,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: const EdgeInsets.only(
+                  left: 42, right: 18, top: 10, bottom: 10),
+              hintText: hint,
+              hintStyle: _style,
+            ),
+            style: _style,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(left: 14),
+          alignment: Alignment.centerLeft,
+          child: Icon(icon, size: 20),
+        )
+      ],
     );
   }
 }
 
-class _SearchFilterButton extends StatelessWidget {
-  const _SearchFilterButton({Key key, this.onPressed}) : super(key: key);
+class SearchActionButton extends StatelessWidget {
+  const SearchActionButton({
+    Key key,
+    this.onPressed,
+    this.iconData = MunchIcons.search_header_filter,
+  }) : super(key: key);
 
   final VoidCallback onPressed;
+  final IconData iconData;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       padding: const EdgeInsets.only(left: 20, right: 23),
       iconSize: 28,
-      icon: const Icon(MunchIcons.search_header_filter),
+      icon: Icon(iconData),
       onPressed: onPressed,
     );
   }
