@@ -5,8 +5,8 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 
-class SearchHeaderBar extends PreferredSize {
-  SearchHeaderBar({
+class SearchAppBar extends PreferredSize {
+  SearchAppBar({
     VoidCallback onBack,
     VoidCallback onSuggest,
     VoidCallback onFilter,
@@ -22,7 +22,7 @@ class SearchHeaderBar extends PreferredSize {
   }
 
   @override
-  Widget get child {
+  Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
@@ -126,14 +126,14 @@ class SearchTextField extends StatelessWidget {
     color: MunchColors.black75,
   );
 
-  SearchTextField({
-    Key key,
-    this.icon = MunchIcons.search_header_search,
-    this.hint = 'Search "Chinese"',
-    this.autofocus = false,
-    this.onChanged,
-    this.controller
-  }) : super(key: key);
+  SearchTextField(
+      {Key key,
+      this.icon = MunchIcons.search_header_search,
+      this.hint = 'Search "Chinese"',
+      this.autofocus = false,
+      this.onChanged,
+      this.controller})
+      : super(key: key);
 
   final IconData icon;
   final String hint;
@@ -194,7 +194,7 @@ class SearchActionButton extends StatelessWidget {
     return IconButton(
       padding: const EdgeInsets.only(left: 18, right: 23),
       iconSize: 28,
-      icon: Icon(iconData),
+      icon: Icon(iconData, color: MunchColors.black),
       onPressed: onPressed,
     );
   }

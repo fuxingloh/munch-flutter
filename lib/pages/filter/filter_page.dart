@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/pages/filter/filter_bottom.dart';
 import 'package:munch_app/pages/filter/filter_cell_hour.dart';
 import 'package:munch_app/pages/filter/filter_cell_location.dart';
 import 'package:munch_app/pages/filter/filter_cell_price.dart';
 import 'package:munch_app/pages/filter/filter_cell_tag.dart';
+import 'package:munch_app/pages/filter/filter_header.dart';
 import 'package:munch_app/pages/filter/filter_manager.dart';
 import 'package:munch_app/styles/colors.dart';
+
+import 'dart:convert';
 
 class FilterPage extends StatefulWidget {
   const FilterPage({Key key, this.searchQuery}) : super(key: key);
@@ -14,13 +18,17 @@ class FilterPage extends StatefulWidget {
   final SearchQuery searchQuery;
 
   @override
-  State<StatefulWidget> createState() => FilterPageState(searchQuery);
+  State<StatefulWidget> createState() {
+    var json = jsonDecode(jsonEncode(searchQuery));
+    return FilterPageState(SearchQuery.fromJson(json));
+  }
 }
 
 class FilterPageState extends State<FilterPage> {
-  FilterPageState(this.searchQuery);
+  FilterPageState(SearchQuery searchQuery) {
+    _manager = FilterManager(searchQuery);
+  }
 
-  final SearchQuery searchQuery;
   List<FilterItem> _items = [];
 
   FilterManager _manager;
@@ -29,7 +37,6 @@ class FilterPageState extends State<FilterPage> {
   void initState() {
     super.initState();
 
-    _manager = FilterManager(searchQuery);
     _manager.stream().listen((items) {
       setState(() {
         this._items = items;
@@ -46,6 +53,10 @@ class FilterPageState extends State<FilterPage> {
     super.dispose();
   }
 
+  void _onApply() {
+    Navigator.of(context).pop(_manager.searchQuery);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
@@ -60,15 +71,20 @@ class FilterPageState extends State<FilterPage> {
     }
 
     children.add(Expanded(
-        child: ListView.builder(
-      padding: EdgeInsets.only(top: 12, bottom: 12),
-      itemBuilder: _itemBuilder,
-      itemCount: _items.length,
-    )));
+      child: ListView.builder(
+        padding: EdgeInsets.only(top: 12, bottom: 12),
+        itemBuilder: _itemBuilder,
+        itemCount: _items.length,
+      ),
+    ));
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: FilterAppBar(_manager),
       body: Column(children: children),
+      bottomNavigationBar: FilterBottomView(
+        onPressed: _onApply,
+        count: _manager.result?.count,
+      ),
     );
   }
 
@@ -84,7 +100,7 @@ class FilterPageState extends State<FilterPage> {
     } else if (item is FilterItemTagHeader) {
       return FilterCellTagHeader(item);
     } else if (item is FilterItemTag) {
-      return FilterCellTag(item);
+      return FilterCellTag(item: item, manager: _manager);
     } else if (item is FilterItemTagMore) {
       return FilterCellTagMore(item);
     }

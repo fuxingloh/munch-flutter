@@ -53,8 +53,8 @@ class MunchButtonStyle {
   static const MunchButtonStyle primary = MunchButtonStyle(
     textColor: MunchColors.white,
     background: MunchColors.primary500,
-    borderColor: MunchColors.clear,
-    borderWidth: 0,
+    borderColor: MunchColors.primary500,
+    borderWidth: 1,
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
@@ -63,8 +63,8 @@ class MunchButtonStyle {
   static const MunchButtonStyle primarySmall = MunchButtonStyle(
     textColor: MunchColors.white,
     background: MunchColors.primary500,
-    borderColor: MunchColors.clear,
-    borderWidth: 0,
+    borderColor: MunchColors.primary500,
+    borderWidth: 1,
     height: _smallHeight,
     padding: _smallPadding,
     textStyle: _smallTextStyle,
@@ -83,8 +83,8 @@ class MunchButtonStyle {
   static const MunchButtonStyle secondary = MunchButtonStyle(
     textColor: MunchColors.white,
     background: MunchColors.secondary500,
-    borderColor: MunchColors.clear,
-    borderWidth: 0,
+    borderColor: MunchColors.secondary500,
+    borderWidth: 1,
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
@@ -93,8 +93,8 @@ class MunchButtonStyle {
   static const MunchButtonStyle secondarySmall = MunchButtonStyle(
     textColor: MunchColors.white,
     background: MunchColors.secondary500,
-    borderColor: MunchColors.clear,
-    borderWidth: 0,
+    borderColor: MunchColors.secondary500,
+    borderWidth: 1,
     height: _smallHeight,
     padding: _smallPadding,
     textStyle: _smallTextStyle,

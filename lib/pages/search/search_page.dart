@@ -23,12 +23,12 @@ class SearchPageState extends State<SearchPage> {
 
   SearchQuery get searchQuery => histories.last;
   SearchCardList _cardList = SearchCardList();
-  SearchHeaderBar _header;
+  SearchAppBar _header;
 
   @override
   void initState() {
     super.initState();
-    _header = SearchHeaderBar(
+    _header = SearchAppBar(
         onBack: pop,
         onSuggest: () {
           Navigator.push(

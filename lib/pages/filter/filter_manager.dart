@@ -45,6 +45,10 @@ class FilterManager {
 
   bool get loading => _loading;
 
+  SearchQuery get searchQuery => _searchQuery;
+
+  FilterResult get result => _result;
+
   StreamController<List<FilterItem>> _controller;
 
   FilterManager(this._searchQuery) {
@@ -119,12 +123,12 @@ class FilterManager {
   Future reset() async {
     var preference = await UserSearchPreference.get();
     this._searchQuery = SearchQuery.search(preference);
-    dispose();
+    dispatch();
   }
 
   void selectSearchQuery(SearchQuery searchQuery) {
     this._searchQuery = searchQuery;
-    dispose();
+    dispatch();
   }
 
   void selectTag(Tag tag) {
@@ -191,7 +195,7 @@ class FilterManager {
     } else if (count <= 10) {
       return "$prefix $count $postfix";
     } else {
-      int rounded = ((count / 10) * 10).round();
+      int rounded = ((count / 10).floor() * 10);
       return "$prefix $rounded+ $postfix";
     }
   }

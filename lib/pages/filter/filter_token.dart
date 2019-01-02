@@ -44,6 +44,25 @@ abstract class FilterToken {
 
     return text;
   }
+
+  static List<String> getTextPart(List<FilterToken> tokens) {
+    List<String> parts = [];
+
+    if (tokens.length > 0) {
+      parts.add(tokens[0].text);
+    }
+
+    if (tokens.length > 1) {
+      parts.add(tokens[1].text);
+    }
+
+    var count = tokens.length - 2;
+    if (count > 0) {
+      parts.add("+$count");
+    }
+
+    return parts;
+  }
 }
 
 class FilterTokenTag extends FilterToken {
