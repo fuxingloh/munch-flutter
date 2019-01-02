@@ -192,7 +192,7 @@ class SearchActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      padding: const EdgeInsets.only(left: 20, right: 23),
+      padding: const EdgeInsets.only(left: 18, right: 23),
       iconSize: 28,
       icon: Icon(iconData),
       onPressed: onPressed,

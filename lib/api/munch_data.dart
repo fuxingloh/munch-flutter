@@ -344,6 +344,7 @@ class HourGrouped {
       case HourDay.sat:
         return "SAT";
       case HourDay.sun:
+      default:
         return "SUN";
     }
   }

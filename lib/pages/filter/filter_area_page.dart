@@ -54,8 +54,12 @@ class FilterAreaPageState extends State<FilterAreaPage> {
     List<Widget> children = [];
 
     if (loading) {
-      children.add(const LinearProgressIndicator(
-          backgroundColor: MunchColors.secondary100));
+      children.add(const SizedBox(
+        height: 3,
+        child: LinearProgressIndicator(
+          backgroundColor: MunchColors.secondary100,
+        ),
+      ));
     }
 
     children.add(Expanded(
@@ -73,7 +77,8 @@ class FilterAreaPageState extends State<FilterAreaPage> {
           _filtered = _FilterAreaAlpha.search(_areas, text);
         });
       },
-      style: TextStyle(fontSize: 19, color: Colors.black, fontWeight: FontWeight.w600),
+      style: TextStyle(
+          fontSize: 19, color: Colors.black, fontWeight: FontWeight.w600),
     );
 
     return Scaffold(

@@ -41,13 +41,19 @@ class SuggestPageState extends State<SuggestPage> {
   }
 
   @override
+  void dispose() {
+    suggestManager.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> children = [];
 
     if (items.isEmpty) {
-      children.add(Container(
+      children.add(const SizedBox(
         height: 3,
-        child: const LinearProgressIndicator(
+        child: LinearProgressIndicator(
           backgroundColor: MunchColors.secondary100,
         ),
       ));
