@@ -28,18 +28,18 @@ abstract class FilterToken {
     String text = '';
 
     if (tokens.length > 0) {
-      text = tokens[0].text;
+      text += tokens[0].text;
     }
 
     if (tokens.length > 1) {
       text += '  •  ';
-      text = tokens[1].text;
+      text += tokens[1].text;
     }
 
     var count = tokens.length - 2;
     if (count > 0) {
       text += '  •  ';
-      text = "+$count";
+      text += "+$count";
     }
 
     return text;
@@ -81,9 +81,9 @@ class FilterTokenPrice extends FilterToken {
 
   @override
   String get text {
-    var min = price.min.toStringAsFixed(2);
-    var max = price.max.toStringAsFixed(2);
-    return "$min - $max";
+    var min = price.min.round();
+    var max = price.max.round();
+    return "\$$min - \$$max";
   }
 }
 

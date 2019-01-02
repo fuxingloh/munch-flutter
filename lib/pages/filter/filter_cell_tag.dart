@@ -46,6 +46,7 @@ class FilterCellTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: () => manager.selectTag(tag),
         child: Padding(
           padding:
@@ -62,7 +63,8 @@ class FilterCellTag extends StatelessWidget {
 
   Row _right() {
     bool selected = manager.isSelectedTag(tag);
-    String count = FilterManager.countTitle(count: tag.count, prefix: "", postfix: "");
+    String count =
+        FilterManager.countTitle(count: tag.count, prefix: "", postfix: "");
 
     return Row(
       children: <Widget>[

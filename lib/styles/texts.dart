@@ -8,7 +8,7 @@ class MTextStyle {
     color: MunchColors.black75,
   );
   static const TextStyle h2 = TextStyle(
-    fontSize: 26,
+    fontSize: 24,
     fontWeight: FontWeight.w700,
     color: MunchColors.black75,
   );
@@ -23,7 +23,7 @@ class MTextStyle {
     color: MunchColors.black75,
   );
   static const TextStyle h5 = TextStyle(
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );
@@ -46,7 +46,7 @@ class MTextStyle {
     color: MunchColors.black,
   );
   static const TextStyle regular = TextStyle(
-    fontSize: 16,
+    fontSize: 17,
     height: 1.1,
     fontWeight: FontWeight.w400,
     color: MunchColors.black,

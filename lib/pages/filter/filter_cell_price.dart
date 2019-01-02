@@ -1,129 +1,216 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/pages/filter/filter_manager.dart';
+import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:flutter_range_slider/flutter_range_slider.dart';
 
 class FilterCellPrice extends StatelessWidget {
-  const FilterCellPrice(this.item);
+  const FilterCellPrice({this.item, this.manager});
 
   final FilterItemPrice item;
+  final FilterManager manager;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 10),
-      child: Text("Price", style: MTextStyle.h2),
+    String selectedName = manager.searchQuery.filter?.price?.name;
+    double min = manager.result?.priceGraph?.min;
+    double max = manager.result?.priceGraph?.max;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 16),
+          child: Text("Price", style: MTextStyle.h2),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 15, right: 15, bottom: 8),
+          child: Row(
+            children: ["\$", "\$\$", "\$\$\$"].map((name) {
+              return _FilterPriceButton(
+                  selected: name == selectedName,
+                  text: name,
+                  onPressed: () => onPressedButton(name));
+            }).toList(growable: false),
+          ),
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 8),
+          child: Text("Price Per Person", style: MTextStyle.h5),
+        ),
+        Padding(
+          padding:
+          const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("\$$min", style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text("\$$max", style: const TextStyle(fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 6, bottom: 16),
+          child: _FilterPriceSlider(
+            price: manager.searchQuery?.filter?.price,
+            priceGraph: manager.result?.priceGraph,
+            onChangeEnd: (min, max) {
+              var price = SearchFilterPrice(null, min, max);
+              manager.selectPrice(price);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  void onPressedButton(String name) {
+    var ranges = manager.result?.priceGraph?.ranges;
+    if (ranges == null || ranges[name] == null) return;
+
+    var range = ranges[name];
+    var price = SearchFilterPrice(name, range.min, range.max);
+    if (manager.isSelectedPrice(price)) {
+      manager.selectPrice(null);
+    } else {
+      manager.selectPrice(price);
+    }
+  }
+}
+
+class _FilterPriceButton extends StatelessWidget {
+  const _FilterPriceButton({Key key, this.selected, this.onPressed, this.text})
+      : super(key: key);
+
+  final String text;
+  final bool selected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    var gesture = GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        height: 32,
+        margin: EdgeInsets.only(left: 9, right: 9),
+        decoration: BoxDecoration(
+          color: selected ? MunchColors.primary500 : MunchColors.peach100,
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              color: selected ? MunchColors.white : MunchColors.black75,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    return Expanded(child: gesture);
+  }
+}
+
+class _FilterPriceSlider extends StatelessWidget {
+  final FilterPriceGraph priceGraph;
+  final SearchFilterPrice price;
+  final RangeSliderCallback onChangeEnd;
+
+  const _FilterPriceSlider({
+    Key key,
+    this.priceGraph,
+    this.onChangeEnd,
+    this.price,
+  }) : super(key: key);
+
+  int get _divisions {
+    var diff = (priceGraph?.max ?? 200) - (priceGraph?.min ?? 0) ;
+    return (diff / 5).floor();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var min = price?.min ?? 0;
+    var max = price?.max ?? priceGraph?.max ?? 200;
+
+    var gMin = priceGraph?.min ?? 0;
+    var gMax = priceGraph?.max ?? 200;
+
+    var slider = RangeSlider(
+      valueIndicatorMaxDecimals: 1,
+      divisions: _divisions,
+      showValueIndicator: true,
+      lowerValue: min,
+      upperValue: max,
+      min: gMin < min ? gMin : min,
+      max: gMax < max ? max : gMax,
+      onChangeEnd: onChangeEnd,
+      onChanged: (min, max) {
+      },
+      onChangeStart: (min, max) {
+      },
+    );
+
+    return SliderTheme(
+      child: slider,
+      data: SliderTheme.of(context).copyWith(
+        activeTrackColor: MunchColors.primary300,
+        inactiveTrackColor: MunchColors.black15,
+        thumbColor: MunchColors.primary700,
+        valueIndicatorColor: MunchColors.black75,
+        thumbShape: _ThumbShape(),
+        showValueIndicator: ShowValueIndicator.always,
+      ),
     );
   }
 }
 
-// class FilterItemCellPrice: UITableViewCell, RangeSeekSliderDelegate {
-//    private let label = UILabel(style: .h2).with(text: "Price")
-//    private let subLabel = UILabel(style: .h5).with(text: "Price Per Person")
-//    private let buttons = PriceButtonGroup()
-//    private let slider = PriceRangeSlider()
-//
-//    private let manager: FilterManager
-//
-//    init(manager: FilterManager) {
-//        self.manager = manager
-//        super.init(style: .default, reuseIdentifier: nil)
-//        self.selectionStyle = .none
-//
-//        self.addSubview(label)
-//        self.addSubview(subLabel)
-//        self.addSubview(buttons)
-//        self.addSubview(slider)
-//        self.addTargets()
-//
-//        label.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(self).inset(16)
-//        }
-//
-//        buttons.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(label.snp.bottom).inset(-16)
-//        }
-//
-//        subLabel.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(buttons.snp.bottom).inset(-24)
-//        }
-//
-//        slider.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(16)
-//            maker.top.equalTo(subLabel.snp.bottom).inset(-16)
-//            maker.bottom.equalTo(self).inset(8)
-//        }
-//    }
-//
-//    func reloadData() {
-//        self.buttons.reloadData(searchQuery: manager.searchQuery)
-//        guard let graph = manager.result?.priceGraph else {
-//            return
-//        }
-//
-//        let price = manager.searchQuery.filter.price
-//
-//        slider.minValue = CGFloat(graph.min)
-//        slider.maxValue = CGFloat(graph.max)
-//
-//        if let min = price?.min {
-//            slider.selectedMinValue = CGFloat(min < graph.min ? graph.min : min)
-//        } else {
-//            slider.selectedMinValue = CGFloat(graph.min)
-//        }
-//
-//        if let max = price?.max {
-//            slider.selectedMaxValue = CGFloat(graph.max < max ? graph.max : max)
-//        } else {
-//            slider.selectedMaxValue = CGFloat(graph.max)
-//        }
-//
-//        slider.setNeedsLayout()
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
-//
-//extension FilterItemCellPrice {
-//    func addTargets() {
-//        self.slider.delegate = self
-//        for button in buttons.buttons {
-//            button.addTarget(self, action: #selector(onPriceButton(for:)), for: .touchUpInside)
-//        }
-//    }
-//
-//    @objc fileprivate func onPriceButton(for button: UIButton) {
-//        guard let ranges = manager.result?.priceGraph?.ranges,
-//              let name = button.title(for: .normal),
-//              let range = ranges[name] else {
-//            return
-//        }
-//
-//        let price = SearchQuery.Filter.Price(name: name, min: range.min, max: range.max)
-//        if manager.isSelected(price: price) {
-//            manager.select(price: nil)
-//        } else {
-//            manager.select(price: price)
-//        }
-//    }
-//
-//    func didEndTouches(in slider: RangeSeekSlider) {
-//        let min = Double(slider.selectedMinValue)
-//        let max = Double(slider.selectedMaxValue)
-//        let price = SearchQuery.Filter.Price(name: nil, min: min, max: max)
-//
-//        self.manager.select(price: price)
-//    }
-//
-//    func didStartTouches(in slider: RangeSeekSlider) {
-//        slider.enableStep = true
-//    }
-//}
-//
+class _ThumbShape extends RoundSliderThumbShape {
+
+  static const double _thumbRadius = 8.0;
+  static const double _disabledThumbRadius = 6.0;
+
+  @override
+  Size getPreferredSize(bool isEnabled, bool isDiscrete) {
+    return Size.fromRadius(isEnabled ? _thumbRadius : _disabledThumbRadius);
+  }
+
+  @override
+  void paint(
+      PaintingContext context,
+      Offset thumbCenter, {
+        Animation<double> activationAnimation,
+        Animation<double> enableAnimation,
+        bool isDiscrete,
+        TextPainter labelPainter,
+        RenderBox parentBox,
+        SliderThemeData sliderTheme,
+        TextDirection textDirection,
+        double value,
+      }) {
+    final Canvas canvas = context.canvas;
+    final Tween<double> radiusTween = Tween<double>(
+      begin: _disabledThumbRadius,
+      end: _thumbRadius,
+    );
+    final ColorTween colorTween = ColorTween(
+      begin: sliderTheme.disabledThumbColor,
+      end: sliderTheme.thumbColor,
+    );
+    canvas.drawCircle(
+      thumbCenter,
+      radiusTween.evaluate(enableAnimation),
+      Paint()..color = colorTween.evaluate(enableAnimation),
+    );
+  }
+}
+
 //fileprivate class PriceRangeSlider: RangeSeekSlider {
 //    override func setupStyle() {
 //        colorBetweenHandles = .primary300
@@ -144,96 +231,5 @@ class FilterCellPrice extends StatelessWidget {
 //
 //        enableStep = false
 //        step = 5.0
-//    }
-//}
-//
-//fileprivate class PriceButtonGroup: UIButton {
-//    fileprivate let first = PriceButton(label: "$")
-//    fileprivate let second = PriceButton(label: "$$")
-//    fileprivate let third = PriceButton(label: "$$$")
-//
-//    fileprivate var buttons: [PriceButton] {
-//        return [first, second, third]
-//    }
-//
-//    required init() {
-//        super.init(frame: .zero)
-//        self.addSubview(first)
-//        self.addSubview(second)
-//        self.addSubview(third)
-//
-//        for button in buttons {
-//            button.snp.makeConstraints { maker in
-//                maker.height.equalTo(32)
-//                maker.top.bottom.equalTo(self)
-//
-//                if button != first {
-//                    maker.width.equalTo(first.snp.width)
-//                }
-//                if button != second {
-//                    maker.width.equalTo(second.snp.width)
-//                }
-//                if button != third {
-//                    maker.width.equalTo(third.snp.width)
-//                }
-//            }
-//        }
-//
-//        first.snp.makeConstraints { maker in
-//            maker.left.equalTo(self)
-//            maker.right.equalTo(second.snp.left).inset(-18)
-//        }
-//
-//        second.snp.makeConstraints { maker in
-//            maker.left.equalTo(first.snp.right).inset(-18)
-//            maker.right.equalTo(third.snp.left).inset(-18)
-//        }
-//
-//        third.snp.makeConstraints { maker in
-//            maker.left.equalTo(second.snp.right).inset(-18)
-//            maker.right.equalTo(self)
-//        }
-//    }
-//
-//    func reloadData(searchQuery: SearchQuery) {
-//        let selected = searchQuery.filter.price?.name
-//        for button in buttons {
-//            button.isSelected = button.title(for: .normal) == selected
-//        }
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//}
-//
-//fileprivate class PriceButton: UIButton {
-//    override var isSelected: Bool {
-//        didSet {
-//            if isSelected {
-//                setTitleColor(.white, for: .normal)
-//                backgroundColor = .primary500
-//            } else {
-//                setTitleColor(.ba85, for: .normal)
-//                backgroundColor = .peach100
-//            }
-//        }
-//    }
-//
-//    required init(label: String) {
-//        super.init(frame: .zero)
-//        titleLabel?.font = UIFont.systemFont(ofSize: 15.0, weight: .semibold)
-//        setTitle(label, for: .normal)
-//
-//        self.isSelected = false
-//    }
-//
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        self.layer.cornerRadius = 3.0
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
 //    }
 //}

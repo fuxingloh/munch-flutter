@@ -121,7 +121,7 @@ class MunchButton extends StatelessWidget {
           key: key,
           onPressed: onPressed,
           style: style,
-          child: Text(text, style: style.textStyle),
+          child: Text(text, style: style.textStyle.copyWith(color: style.textColor)),
         );
 
   MunchButton({

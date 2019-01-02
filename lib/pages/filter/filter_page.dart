@@ -72,7 +72,7 @@ class FilterPageState extends State<FilterPage> {
 
     children.add(Expanded(
       child: ListView.builder(
-        padding: EdgeInsets.only(top: 12, bottom: 12),
+        padding: EdgeInsets.only(top: 12, bottom: 24),
         itemBuilder: _itemBuilder,
         itemCount: _items.length,
       ),
@@ -92,9 +92,9 @@ class FilterPageState extends State<FilterPage> {
     FilterItem item = _items[i];
 
     if (item is FilterItemLocation) {
-      return FilterCellLocation(item);
+      return FilterCellLocation(item: item, manager: _manager);
     } else if (item is FilterItemPrice) {
-      return FilterCellPrice(item);
+      return FilterCellPrice(item: item, manager: _manager);
     } else if (item is FilterItemTiming) {
       return FilterCellHour(item: item, manager: _manager);
     } else if (item is FilterItemTagHeader) {
