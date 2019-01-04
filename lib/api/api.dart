@@ -79,6 +79,9 @@ class RestfulResponse {
   dynamic operator [](String key) => _body[key];
 
   RestfulResponse._(http.Response response) {
+    // TODO Remove once fixed.
+    response.headers['content-type'] = 'application/json; charset=utf-8';
+
     if (response.body != null) {
       _body = json.decode(response.body);
       _meta = RestfulMeta.fromJson(_body['meta']);

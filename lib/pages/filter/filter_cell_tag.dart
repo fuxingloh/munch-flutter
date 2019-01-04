@@ -54,7 +54,7 @@ class FilterCellTag extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(tag.name, style: MTextStyle.large),
+              Text(tag.name, style: MTextStyle.regular),
               _right()
             ],
           ),
@@ -70,7 +70,7 @@ class FilterCellTag extends StatelessWidget {
       children: <Widget>[
         Text(
           count,
-          style: MTextStyle.large.copyWith(
+          style: MTextStyle.regular.copyWith(
             fontWeight: FontWeight.w500,
             color: MunchColors.black75,
           ),
@@ -109,7 +109,7 @@ class FilterCellTagMore extends StatelessWidget {
       padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
       child: Text(
         "${item.count} hidden with 0 results",
-        style: MTextStyle.large.copyWith(color: MunchColors.secondary500),
+        style: MTextStyle.regular.copyWith(color: MunchColors.secondary500),
       ),
     );
   }

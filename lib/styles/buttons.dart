@@ -28,7 +28,7 @@ class MunchButtonStyle {
   static const double _smallHeight = 36.0;
   static const double _smallPadding = 18.0;
   static const TextStyle _smallTextStyle =
-      TextStyle(fontSize: 15, fontWeight: FontWeight.w500);
+      TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
 
   static const MunchButtonStyle border = MunchButtonStyle(
     textColor: MunchColors.black75,

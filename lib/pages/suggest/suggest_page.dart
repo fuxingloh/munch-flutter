@@ -178,7 +178,7 @@ class _SuggestQueryCell extends StatelessWidget {
             Icon(item.iconData),
             Padding(
               padding: const EdgeInsets.only(left: 24),
-              child: Text(text, style: MTextStyle.large.copyWith(fontSize: 18)),
+              child: Text(text, style: MTextStyle.regular),
             )
           ],
         ),
@@ -211,7 +211,7 @@ class _SuggestPlaceCell extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 24),
               child: Text(item.place.name,
-                  style: MTextStyle.large.copyWith(fontSize: 18)),
+                  style: MTextStyle.regular),
             )
           ],
         ),
@@ -297,8 +297,8 @@ class _SuggestTextCell extends StatelessWidget {
             const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Text(
           "Did you mean ${item.text}",
-          style: MTextStyle.large
-              .copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+          style: MTextStyle.regular
+              .copyWith(fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -312,8 +312,8 @@ class _SuggestNoResultCell extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
       child: Text(
         "No Results",
-        style: MTextStyle.large
-            .copyWith(fontSize: 18, fontWeight: FontWeight.w600),
+        style: MTextStyle.regular
+            .copyWith(fontWeight: FontWeight.w600),
       ),
     );
   }

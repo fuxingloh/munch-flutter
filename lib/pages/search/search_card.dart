@@ -14,7 +14,6 @@ import 'package:munch_app/pages/search/cards/search_card_injected.dart';
 import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/pages/search/cards/search_card_place.dart';
 import 'package:munch_app/pages/search/cards/search_card_tag.dart';
-import 'package:munch_app/styles/texts.dart';
 
 export 'package:flutter/widgets.dart';
 export 'package:munch_app/pages/search/search_page.dart';

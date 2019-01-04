@@ -110,7 +110,7 @@ class _FilterAreaCell extends StatelessWidget {
         margin: EdgeInsets.only(top: 16, bottom: 16),
         child: Text(
           area.name,
-          style: MTextStyle.large,
+          style: MTextStyle.regular,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
