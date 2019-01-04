@@ -3,6 +3,7 @@ import 'package:munch_app/api/places_api.dart';
 import 'package:munch_app/pages/places/cards/rip_card_article.dart';
 
 import 'package:munch_app/pages/places/cards/rip_card_banner.dart';
+import 'package:munch_app/pages/places/cards/rip_card_loading.dart';
 import 'package:munch_app/pages/places/cards/rip_card_location.dart';
 import 'package:munch_app/pages/places/cards/rip_card_name_tag.dart';
 
@@ -14,48 +15,36 @@ export 'package:munch_app/styles/colors.dart';
 class RIPCardDelegator {
   static List<RIPCardWidget> delegate(PlaceData data) {
     if (data == null) {
-      // [RIPLoadingImageCard.self, RIPLoadingNameCard.self]
-      return [];
+      return const [RIPCardLoadingBanner(), RIPCardLoadingName()];
     }
 
     List<RIPCardWidget> widgets = [];
     widgets.add(RIPCardBanner(data));
 
     if (RIPCardClosed.isAvailable(data)) widgets.add(RIPCardClosed(data));
+//        appendTo(type: RIPCardPreference.self)
     widgets.add(RIPCardNameTag(data));
+
     widgets.add(RIPCardLocation(data));
+//        appendTo(type: RIPSuggestEditCard.self)
 
     if (RIPCardArticle.isAvailable(data)) widgets.add(RIPCardArticle(data));
+//        appendTo(type: RIPGalleryHeaderCard.self)
     return widgets;
   }
 
-//        collectionView.register(type: RIPLoadingImageCard.self)
-//        collectionView.register(type: RIPLoadingNameCard.self)
-//        collectionView.register(type: RIPLoadingGalleryCard.self)
+//        appendTo(type: RIPHourCard.self)
+//        appendTo(type: RIPPriceCard.self)
+//        appendTo(type: RIPPhoneCard.self)
+//        appendTo(type: RIPWebsiteCard.self)
+//        appendTo(type: RIPAboutFirstDividerCard.self)
 //
-//        collectionView.register(type: RIPImageBannerCard.self)
-//        collectionView.register(type: RIPNameTagCard.self)
-//        collectionView.register(type: RIPCardPreference.self)
-//        collectionView.register(type: RIPCardClosed.self)
-//
-//        collectionView.register(type: RIPHourCard.self)
-//        collectionView.register(type: RIPPriceCard.self)
-//        collectionView.register(type: RIPPhoneCard.self)
-//        collectionView.register(type: RIPMenuWebsiteCard.self)
-//        collectionView.register(type: RIPAboutFirstDividerCard.self)
-//
-//        collectionView.register(type: RIPDescriptionCard.self)
-//        collectionView.register(type: RIPAwardCard.self)
-//        collectionView.register(type: RIPWebsiteCard.self)
-//        collectionView.register(type: RIPAboutSecondDividerCard.self)
-//
-//        collectionView.register(type: RIPLocationCard.self)
-//        collectionView.register(type: RIPSuggestEditCard.self)
-//
-//        collectionView.register(type: RIPArticleCard.self)
-//
-//        collectionView.register(type: RIPGalleryHeaderCard.self)
-//        collectionView.register(type: RIPGalleryImageCard.self)
+//        appendTo(type: RIPDescriptionCard.self)
+//        appendTo(type: RIPAwardCard.self)
+//        appendTo(type: RIPMenuWebsiteCard.self)
+//        appendTo(type: RIPAboutSecondDividerCard.self)
+
+
 }
 
 class RIPCardInsets extends EdgeInsets {
@@ -68,7 +57,7 @@ class RIPCardInsets extends EdgeInsets {
 }
 
 abstract class RIPCardWidget extends StatelessWidget {
-  RIPCardWidget(
+  const RIPCardWidget(
     this.data, {
     this.margin = const RIPCardInsets.only(),
   });
