@@ -66,7 +66,7 @@ class _FeedState extends State<FeedPage> {
         },
         mainAxisSpacing: 16.0,
         crossAxisSpacing: 16.0,
-        padding: EdgeInsets.all(24),
+        padding: const EdgeInsets.all(24),
       ),
     );
   }

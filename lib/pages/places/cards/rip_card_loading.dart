@@ -4,7 +4,8 @@ import 'package:munch_app/pages/places/cards/rip_card.dart';
 
 class RIPCardLoadingBanner extends RIPCardWidget {
   const RIPCardLoadingBanner()
-      : super(null, margin: const RIPCardInsets.only(left: 0, right: 0, top: 0));
+      : super(null,
+            margin: const RIPCardInsets.only(left: 0, right: 0, top: 0));
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
@@ -29,15 +30,21 @@ class RIPCardLoadingName extends RIPCardWidget {
 }
 
 class RIPCardLoadingGallery extends RIPCardWidget {
-  const RIPCardLoadingGallery() : super(null);
+  const RIPCardLoadingGallery({this.loading = false}) : super(null);
+
+  final bool loading;
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    return Center(
-      child: SpinKitThreeBounce(
-        color: MunchColors.secondary500,
-        size: 24.0,
-      ),
-    );
+    if (loading) {
+      return Center(
+        child: SpinKitThreeBounce(
+          color: MunchColors.secondary500,
+          size: 24.0,
+        ),
+      );
+    } else {
+      return SizedBox(height: 24);
+    }
   }
 }

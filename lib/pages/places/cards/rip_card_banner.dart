@@ -35,6 +35,8 @@ class RIPCardBanner extends RIPCardWidget {
   }
 }
 
+// TODO Scroll TO
+
 // private let moreButton: UIButton = {
 //        let button = UIButton()
 //        button.backgroundColor = .white

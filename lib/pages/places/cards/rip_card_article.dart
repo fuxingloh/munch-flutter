@@ -15,17 +15,21 @@ class RIPCardArticle extends RIPCardWidget {
     final width = MediaQuery.of(context).size.width - 48 - 36;
 
     var listView = Container(
-      height: 333,
+      height: 348,
       margin: EdgeInsets.only(top: 24, bottom: 24),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.only(left: 24, right: 24),
         itemBuilder: (context, i) {
-          return Container(
+          return SizedBox(
             width: width,
-            child: GestureDetector(
-              onTap: () => _onArticle(articles[i]),
-              child: _RIPArticleCell(article: articles[i]),
+            child: Column(
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => _onArticle(articles[i]),
+                  child: _RIPArticleCell(article: articles[i]),
+                )
+              ],
             ),
           );
         },
@@ -42,10 +46,6 @@ class RIPCardArticle extends RIPCardWidget {
           child: Text("${data.place.name} Articles", style: MTextStyle.h2),
         ),
         listView,
-        const Padding(
-          padding: EdgeInsets.only(top: 24),
-          child: SeparatorLine(),
-        )
       ],
     );
   }
@@ -75,7 +75,7 @@ class _RIPArticleCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(3)),
         border: Border.all(color: MunchColors.black15, width: 1),

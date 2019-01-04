@@ -74,7 +74,7 @@ class RestfulResponse {
 
   dynamic get data => _body['data'];
 
-  dynamic get next => _body['next'];
+  dynamic get next => _body['next'] ?? {};
 
   dynamic operator [](String key) => _body[key];
 

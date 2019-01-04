@@ -23,7 +23,7 @@ class RIPCardNameTag extends RIPCardWidget {
   RIPCardNameTag(PlaceData data)
       : super(
           data,
-          margin: RIPCardInsets.only(left: 0, right: 0),
+          margin: const RIPCardInsets.only(left: 0, right: 0),
         );
 
   @override

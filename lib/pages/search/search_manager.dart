@@ -41,6 +41,10 @@ class SearchManager {
     return _controller.stream;
   }
 
+  void dispose() {
+    _controller.close();
+  }
+
   /// Start the stream of cards,
   /// The stream output the entire list.
   Future start() async {
