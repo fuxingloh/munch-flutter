@@ -20,8 +20,6 @@ class RIPHeader extends StatefulWidget {
 }
 
 class RIPHeaderState extends State<RIPHeader> {
-  PersistentBottomSheetController _controller;
-
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
@@ -58,7 +56,7 @@ class RIPHeaderState extends State<RIPHeader> {
   }
 
   void onMore(BuildContext context) {
-    _controller = showBottomSheet(
+    showModalBottomSheet(
       context: context,
       builder: (context) {
         return MunchBottomSheet(
@@ -85,13 +83,13 @@ class RIPHeaderState extends State<RIPHeader> {
   }
 
   void onCancel() {
-    _controller.close();
+    Navigator.of(context).pop();
   }
 
   void onShare() {
     String placeId = widget.placeData?.place?.placeId ?? '';
     Share.share("https://www.munch.app/places/$placeId");
-    _controller.close();
+    Navigator.of(context).pop();
   }
 
   void onSuggestEdit() {
@@ -99,7 +97,7 @@ class RIPHeaderState extends State<RIPHeader> {
       if (state == AuthenticationState.loggedIn) {
         setState(() {
           // TODO
-          _controller.close();
+          Navigator.of(context).pop();
         });
       }
     }).catchError((error) {

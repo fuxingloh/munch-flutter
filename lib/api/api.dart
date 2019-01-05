@@ -5,7 +5,7 @@ import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/structured_exception.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
-String _url = 'https://api.munch.app/v0.17.0';
+String _url = 'https://api.munch.app/v0.18.0';
 DateFormat _format = DateFormat("yyyy-MM-dd'T'HH:MM:ss");
 
 class MunchApi {
@@ -79,9 +79,6 @@ class RestfulResponse {
   dynamic operator [](String key) => _body[key];
 
   RestfulResponse._(http.Response response) {
-    // TODO Remove once fixed.
-    response.headers['content-type'] = 'application/json; charset=utf-8';
-
     if (response.body != null) {
       _body = json.decode(response.body);
       _meta = RestfulMeta.fromJson(_body['meta']);

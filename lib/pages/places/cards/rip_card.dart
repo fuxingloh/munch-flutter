@@ -1,11 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/places_api.dart';
+import 'package:munch_app/pages/places/cards/rip_card_about.dart';
 import 'package:munch_app/pages/places/cards/rip_card_article.dart';
+import 'package:munch_app/pages/places/cards/rip_card_award.dart';
 
 import 'package:munch_app/pages/places/cards/rip_card_banner.dart';
 import 'package:munch_app/pages/places/cards/rip_card_gallery.dart';
+import 'package:munch_app/pages/places/cards/rip_card_hour.dart';
 import 'package:munch_app/pages/places/cards/rip_card_loading.dart';
 import 'package:munch_app/pages/places/cards/rip_card_location.dart';
+import 'package:munch_app/pages/places/cards/rip_card_menu.dart';
 import 'package:munch_app/pages/places/cards/rip_card_name_tag.dart';
 
 export 'package:flutter/widgets.dart';
@@ -26,16 +30,18 @@ class RIPCardDelegator {
 //        appendTo(type: RIPCardPreference.self)
     widgets.add(RIPCardNameTag(data));
 
-//        appendTo(type: RIPHourCard.self)
-//        appendTo(type: RIPPriceCard.self)
-//        appendTo(type: RIPPhoneCard.self)
-//        appendTo(type: RIPWebsiteCard.self)
-//        appendTo(type: RIPAboutFirstDividerCard.self)
-//
-//        appendTo(type: RIPDescriptionCard.self)
-//        appendTo(type: RIPAwardCard.self)
-//        appendTo(type: RIPMenuWebsiteCard.self)
-//        appendTo(type: RIPAboutSecondDividerCard.self)
+
+    if (RIPCardHour.isAvailable(data)) widgets.add(RIPCardHour(data));
+    if (RIPCardPrice.isAvailable(data)) widgets.add(RIPCardPrice(data));
+    if (RIPCardPhone.isAvailable(data)) widgets.add(RIPCardPhone(data));
+    if (RIPCardWebsite.isAvailable(data)) widgets.add(RIPCardWebsite(data));
+    if (RIPCardAboutDivider1.isAvailable(data)) widgets.add(RIPCardAboutDivider1(data));
+
+    if (RIPCardDescription.isAvailable(data)) widgets.add(RIPCardDescription(data));
+    if (RIPCardAward.isAvailable(data)) widgets.add(RIPCardAward(data));
+    if (RIPCardMenuWebsite.isAvailable(data)) widgets.add(RIPCardMenuWebsite(data));
+    if (RIPCardAboutDivider2.isAvailable(data)) widgets.add(RIPCardAboutDivider2(data));
+
 
     widgets.add(RIPCardLocation(data));
 //        appendTo(type: RIPSuggestEditCard.self)
@@ -68,13 +74,13 @@ abstract class RIPCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onTap(context),
+      onTap: () => onTap(context, data),
       child: Container(margin: margin, child: buildCard(context, data)),
     );
   }
 
   @protected
-  void onTap(BuildContext context) {}
+  void onTap(BuildContext context, PlaceData data) {}
 
   @protected
   Widget buildCard(BuildContext context, PlaceData data);

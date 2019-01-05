@@ -2,7 +2,6 @@ import 'package:intl/intl.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/styles/buttons.dart';
-import 'package:munch_app/styles/separators.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RIPCardArticle extends RIPCardWidget {

@@ -21,8 +21,8 @@ class MunchButtonStyle {
   });
 
   static const TextStyle _textStyle =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
-  static const double _height = 40.0;
+      TextStyle(fontSize: 18, fontWeight: FontWeight.w700);
+  static const double _height = 44.0;
   static const double _padding = 24.0;
 
   static const double _smallHeight = 36.0;
@@ -101,9 +101,9 @@ class MunchButtonStyle {
   );
 
   static const MunchButtonStyle secondaryOutline = MunchButtonStyle(
-    textColor: MunchColors.secondary500,
+    textColor: MunchColors.secondary700,
     background: MunchColors.white,
-    borderColor: MunchColors.secondary500,
+    borderColor: MunchColors.secondary700,
     borderWidth: 1,
     height: _height,
     padding: _padding,

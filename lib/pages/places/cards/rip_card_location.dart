@@ -27,7 +27,7 @@ class RIPCardLocation extends RIPCardWidget {
   }
 
   @override
-  void onTap(BuildContext context) {
+  void onTap(BuildContext context, PlaceData data) {
 //        let mapController = RIPMapController(controller: controller)
 //        self.controller.navigationController?.pushViewController(mapController, animated: true)
   }
