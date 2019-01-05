@@ -32,7 +32,7 @@ class RIPPageState extends State<RIPPage> {
   @override
   void initState() {
     super.initState();
-//        Crashlytics.sharedInstance().setObjectValue(placeId, forKey: "RIPController.placeId")
+//  Crashlytics.sharedInstance().setObjectValue(placeId, forKey: "RIPController.placeId")
     MunchApi.instance
         .get('/places/${widget.place.placeId}')
         .then((res) => PlaceData.fromJson(res.data))
@@ -66,7 +66,7 @@ class RIPPageState extends State<RIPPage> {
     Authentication.instance.isAuthenticated().then((auth) {
       if (!auth) return;
       MunchApi.instance
-          .put('/users/recent/places${placeData.place.placeId}')
+          .put('/users/recent/places/${placeData.place.placeId}')
           .catchError(
         (error) {
           MunchDialog.showError(context, error);
@@ -97,39 +97,39 @@ class RIPPageState extends State<RIPPage> {
     }
   }
 
-  int get _count {
-    if (placeData == null) return widgets.length;
-    if (images.isEmpty) return widgets.length;
-    return widgets.length + images.length + 1;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final count = _count;
+    List<Widget> slivers = [];
 
-    var gridView = StaggeredGridView.countBuilder(
-      controller: _controller,
-      itemCount: count,
-      padding: const EdgeInsets.only(left: 24, right: 24),
-      crossAxisCount: 2,
-      mainAxisSpacing: 16,
-      crossAxisSpacing: 16,
-      itemBuilder: (context, i) {
-        if (widgets.length > i) return widgets[i];
-        if (count - 1 == i)
-          return RIPCardLoadingGallery(loading: _imageLoader.more);
-        return RIPGalleryImage(image: images[i - widgets.length]);
-      },
-      staggeredTileBuilder: (i) {
-        if (widgets.length > i) return StaggeredTile.fit(2);
-        if (count - 1 == i) return StaggeredTile.fit(2);
-        return StaggeredTile.fit(1);
-      },
-    );
+    widgets.forEach((widget) {
+      slivers.add(SliverToBoxAdapter(child: widget));
+    });
+
+    // If Images is loaded
+    if (_imageLoader != null) {
+      slivers.add(SliverPadding(
+        padding: const EdgeInsets.only(top: 12, left: 24, right: 24),
+        sliver: SliverStaggeredGrid.countBuilder(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          staggeredTileBuilder: (i) => StaggeredTile.fit(1),
+          itemBuilder: (context, i) => RIPGalleryImage(image: images[i]),
+          itemCount: images.length,
+        ),
+      ));
+
+      slivers.add(SliverToBoxAdapter(
+        child: RIPCardLoadingGallery(loading: _imageLoader?.more ?? false),
+      ));
+    }
 
     return Scaffold(
       body: Stack(children: [
-        gridView,
+        CustomScrollView(
+          controller: _controller,
+          slivers: slivers,
+        ),
         RIPHeader(placeData: placeData, clear: _clear),
       ]),
       bottomNavigationBar: RIPFooter(),

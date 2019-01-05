@@ -75,7 +75,7 @@ class _RIPArticleCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
+    return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(3)),
         border: Border.all(color: MunchColors.black15, width: 1),
