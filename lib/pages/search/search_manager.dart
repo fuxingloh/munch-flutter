@@ -55,8 +55,6 @@ class SearchManager {
         }
       },
       onError: (error) {
-        debugPrint(error);
-
         _append([SearchCardError.location()]);
       },
     ).whenComplete(() {

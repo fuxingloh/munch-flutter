@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/places_api.dart';
 import 'package:munch_app/components/bottom_sheet.dart';
-import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';
 import 'package:share/share.dart';
+import 'package:munch_app/pages/places/cards/rip_card_suggest.dart' as SuggestCard;
 
 class RIPHeader extends StatefulWidget {
   RIPHeader({this.clear, this.placeData, this.color = MunchColors.white});
@@ -94,19 +93,6 @@ class RIPHeaderState extends State<RIPHeader> {
   }
 
   void onSuggestEdit() {
-    Authentication.instance.requireAuthentication(context).then((state) {
-      if (state == AuthenticationState.loggedIn) {
-        setState(() {
-          // TODO
-          Navigator.of(context).pop();
-        });
-      }
-    }).catchError((error) {
-      return showDialog(
-        context: context,
-        builder: (context) => MunchDialog.error(context,
-            title: 'Authentication Error', content: error),
-      );
-    });
+    SuggestCard.onSuggestEdit(context, widget.placeData.place);
   }
 }

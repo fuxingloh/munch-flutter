@@ -11,6 +11,7 @@ import 'package:munch_app/pages/places/cards/rip_card_loading.dart';
 import 'package:munch_app/pages/places/cards/rip_card_location.dart';
 import 'package:munch_app/pages/places/cards/rip_card_menu.dart';
 import 'package:munch_app/pages/places/cards/rip_card_name_tag.dart';
+import 'package:munch_app/pages/places/cards/rip_card_suggest.dart';
 
 export 'package:flutter/widgets.dart';
 export 'package:munch_app/api/places_api.dart';
@@ -42,9 +43,8 @@ class RIPCardDelegator {
     if (RIPCardMenuWebsite.isAvailable(data)) widgets.add(RIPCardMenuWebsite(data));
     if (RIPCardAboutDivider2.isAvailable(data)) widgets.add(RIPCardAboutDivider2(data));
 
-
     widgets.add(RIPCardLocation(data));
-//        appendTo(type: RIPSuggestEditCard.self)
+    widgets.add(RIPCardSuggestEdit(data));
 
     if (RIPCardArticle.isAvailable(data)) widgets.add(RIPCardArticle(data));
     if (RIPCardGalleryHeader.isAvailable(data))
