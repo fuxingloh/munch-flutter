@@ -74,6 +74,7 @@ abstract class RIPCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => onTap(context, data),
       child: Container(margin: margin, child: buildCard(context, data)),
     );

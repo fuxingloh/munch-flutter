@@ -1,5 +1,10 @@
+import 'package:flutter/material.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
+import 'package:munch_app/pages/places/rip_map_page.dart';
+import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/separators.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:munch_app/utils/munch_location.dart';
 
 class RIPCardLocation extends RIPCardWidget {
   RIPCardLocation(PlaceData data)
@@ -18,152 +23,120 @@ class RIPCardLocation extends RIPCardWidget {
           padding: EdgeInsets.only(left: 24, right: 24, top: 16),
           child: Text(data.place.location.address, style: MTextStyle.regular),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 24),
-          child: SeparatorLine(),
-        )
+        Padding(
+          padding: EdgeInsets.only(left: 24, right: 24, top: 2),
+          child: _line2(),
+        ),
+        Container(
+          margin: const EdgeInsets.all(24),
+          height: 200,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: IgnorePointer(child: _RIPCardMap(placeData: data)),
+          ),
+        ),
+        const SeparatorLine()
       ],
+    );
+  }
+
+  Widget _line2() {
+    List<TextSpan> children = [];
+
+    String latLng = data.place.location.latLng;
+
+    var distance = MunchLocation.instance.distanceAsMetric(latLng);
+    if (distance != null) {
+      children.add(TextSpan(text: '$distance'));
+    }
+
+    var landmarks = data.place.location.landmarks;
+    if (landmarks != null && landmarks.isNotEmpty) {
+      var landmark = landmarks[0];
+      var min = MunchLocation.instance
+          .distanceAsDuration(latLng, landmark.location.latLng);
+      children.add(TextSpan(text: ' • $min from '));
+      children.add(TextSpan(
+          text: landmark.name, style: TextStyle(fontWeight: FontWeight.w700)));
+    }
+
+    return RichText(
+      maxLines: 1,
+      text: TextSpan(
+        style: MTextStyle.regular,
+        children: children,
+      ),
     );
   }
 
   @override
   void onTap(BuildContext context, PlaceData data) {
-//        let mapController = RIPMapController(controller: controller)
-//        self.controller.navigationController?.pushViewController(mapController, animated: true)
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => RIPMapPage(placeData: data),
+      ),
+    );
   }
 }
 
-// class RIPLocationCard: RIPCard {
-//    static let height: CGFloat = 200
-//
-//    private let mapView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.clipsToBounds = true
-//        imageView.layer.cornerRadius = 4
-//        return imageView
-//    }()
-//    private let pinImageView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(named: "RIP-Card-PlacePin")
-//        return imageView
-//    }()
-//
+class _RIPCardMap extends StatefulWidget {
+  const _RIPCardMap({Key key, this.placeData}) : super(key: key);
 
-//        addressLabel.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(label.snp.bottom).inset(-12)
-//            maker.height.equalTo(AddressLabel.height(location: data.place.location)).priority(.high)
-//        }
-//
-//        mapView.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.height.equalTo(RIPLocationCard.height).priority(999)
-//            maker.top.equalTo(addressLabel.snp.bottom).inset(-24)
-//        }
-//
-//        pinImageView.snp.makeConstraints { maker in
-//            maker.center.equalTo(mapView)
-//        }
-//
-//        separatorLine.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self)
-//
-//            maker.top.equalTo(mapView.snp.bottom).inset(-24)
-//            maker.bottom.equalTo(self).inset(12)
-//        }
-//    }
-//
-//    override func willDisplay(data: PlaceData!) {
-//        self.addressLabel.location = data.place.location
-//
-//        if let latLng = data.place.location.latLng, let coordinate = CLLocation(latLng: latLng)?.coordinate {
-//            var region = MKCoordinateRegion()
-//            region.center.latitude = coordinate.latitude
-//            region.center.longitude = coordinate.longitude
-//            region.span.latitudeDelta = 0.004
-//            region.span.longitudeDelta = 0.004
-//
-//            let options = MKMapSnapshotOptions()
-//            options.showsPointsOfInterest = false
-//            options.region = region
-//            options.size = CGSize(width: UIScreen.main.bounds.width, height: RIPLocationCard.height)
-//
-//            MKMapSnapshotter(options: options).start { snapshot, error in
-//                self.mapView.image = snapshot?.image
-//            }
-//        }
-//    }
+  final PlaceData placeData;
 
-//class AddressLabel: SRCopyableView {
-//    private let lineOneLabel = UILabel(style: .regular)
-//            .with(numberOfLines: 2)
-//    private let lineTwoLabel = UILabel(style: .regular)
-//            .with(numberOfLines: 1)
-//
-//    override init(frame: CGRect = .zero) {
-//        super.init(frame: frame)
-//        self.addSubview(lineOneLabel)
-//        self.addSubview(lineTwoLabel)
-//
-//        lineOneLabel.snp.makeConstraints { make in
-//            make.top.left.right.equalTo(self)
-//        }
-//
-//        lineTwoLabel.snp.makeConstraints { make in
-//            make.top.equalTo(lineOneLabel.snp.bottom).priority(999)
-//            make.bottom.left.right.equalTo(self)
-//        }
-//    }
-//
-//    override var copyableText: String? {
-//        return self.lineOneLabel.text
-//    }
-//
-//    var location: Location? {
-//        didSet {
-//            lineOneLabel.text = location?.address
-//            lineTwoLabel.attributedText = get(lineTwo: location)
-//        }
-//    }
-//
-//    private func get(lineTwo location: Location?) -> NSAttributedString? {
-//        guard let latLng = location?.latLng, MunchLocation.isEnabled else {
-//            return nil
-//        }
-//
-//        let attributedText = NSMutableAttributedString()
-//
-//        if let distance = MunchLocation.distance(asMetric: latLng) {
-//            // Lat Lng might not be given yet
-//            attributedText.append(NSAttributedString(string: distance))
-//        }
-//
-//        if let landmarks = location?.landmarks {
-//            for landmark in landmarks {
-//                if let min = MunchLocation.distance(asDuration: landmark.location.latLng, toLatLng: latLng) {
-//                    attributedText.append(NSAttributedString(string: " • \(min) from "))
-//                    attributedText.append(NSAttributedString(string: landmark.name,
-//                            attributes: [.font: UIFont.systemFont(ofSize: 16, weight: .semibold)]
-//                    ))
-//                    break
-//                }
-//            }
-//        }
-//
-//        return attributedText
-//    }
+  @override
+  State<StatefulWidget> createState() => _RIPCardMapState();
 
-//    class func height(location: Location) -> CGFloat {
-//        var count = 0
-//
-//        if let latLng = MunchLocation.lastLatLng {
-//            count += 1
-//        }
-//
-//        if let address = location.address {
-//            let width = UIScreen.main.bounds.width - 48
-//            let lines = UILabel.countLines(font: FontStyle.regular.font, text: address, width: width)
-//            count += lines <= 2 ? lines : 2
-//        }
-//        return CGFloat(count) * 20
-//    }
+  LatLng get latLng {
+    var location = placeData.place.location;
+    var split = location.latLng.split(",");
+    return LatLng(double.parse(split[0]), double.parse(split[1]));
+  }
+}
+
+class _RIPCardMapState extends State<_RIPCardMap> {
+  GoogleMapController mapController;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+          onMapCreated: _onMapCreated,
+          options: GoogleMapOptions(
+            scrollGesturesEnabled: false,
+            rotateGesturesEnabled: false,
+            compassEnabled: false,
+            myLocationEnabled: false,
+            tiltGesturesEnabled: false,
+            zoomGesturesEnabled: false,
+          ),
+        ),
+        Center(
+          child: DecoratedBox(
+            decoration: const BoxDecoration(
+              color: MunchColors.white,
+              borderRadius: BorderRadius.all(Radius.circular(22)),
+            ),
+            child: Icon(MunchIcons.map_place,
+                color: MunchColors.primary500, size: 44),
+          ),
+        )
+      ],
+    );
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+      mapController.moveCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: widget.latLng,
+          zoom: 16.0,
+        ),
+      ));
+    });
+  }
+}

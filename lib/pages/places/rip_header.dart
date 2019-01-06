@@ -10,8 +10,9 @@ import 'package:munch_app/styles/texts.dart';
 import 'package:share/share.dart';
 
 class RIPHeader extends StatefulWidget {
-  RIPHeader({this.clear, this.placeData});
+  RIPHeader({this.clear, this.placeData, this.color = MunchColors.white});
 
+  final Color color;
   final bool clear;
   final PlaceData placeData;
 
@@ -27,12 +28,12 @@ class RIPHeaderState extends State<RIPHeader> {
         widget.placeData?.place?.name ?? "",
         textAlign: TextAlign.center,
         style: MTextStyle.navHeader.copyWith(
-            color: widget.clear ? MunchColors.white : MunchColors.black),
+            color: widget.clear ? widget.color : MunchColors.black),
       ),
       backgroundColor: MunchColors.clear,
       elevation: 0,
       iconTheme: IconThemeData(
-          color: widget.clear ? MunchColors.white : MunchColors.black),
+          color: widget.clear ? widget.color : MunchColors.black),
       actions: <Widget>[
         IconButton(
           icon: Icon(MunchIcons.navigation_more),

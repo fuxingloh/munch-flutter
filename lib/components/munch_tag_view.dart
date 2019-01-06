@@ -37,16 +37,16 @@ class MunchTagData {
 class MunchTagStyle {
   const MunchTagStyle({
     this.textStyle = const TextStyle(
-      fontSize: 13,
+      fontSize: 15,
       fontWeight: FontWeight.w600,
       color: MunchColors.black85,
       height: 1,
     ),
     this.padding = const EdgeInsets.only(
-      top: 4.5,
-      bottom: 4.5,
-      left: 8,
-      right: 8,
+      top: 5,
+      bottom: 5,
+      left: 9,
+      right: 9,
     ),
     this.backgroundColor = MunchColors.whisper100,
   });

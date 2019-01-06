@@ -6,12 +6,13 @@ import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/rip_page.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/icons.dart';
+import 'package:munch_app/utils/munch_location.dart';
 
 MunchTagView _buildTag(Place place) {
   const MunchTagStyle priceTagStyle = MunchTagStyle(
     backgroundColor: MunchColors.peach100,
     textStyle: TextStyle(
-      fontSize: 13,
+      fontSize: 15,
       fontWeight: FontWeight.w700,
       color: MunchColors.black85,
     ),
@@ -38,8 +39,8 @@ MunchTagView _buildTag(Place place) {
 
 RichText _buildLocation(Place place) {
   const style = const TextStyle(
-    fontSize: 13,
-    fontWeight: FontWeight.w500,
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
     color: MunchColors.black75,
   );
 
@@ -70,21 +71,28 @@ RichText _buildLocation(Place place) {
 
   List<TextSpan> children = [];
 
+  var distance = MunchLocation.instance.distanceAsMetric(place.location.latLng);
+  if (distance != null) {
+    children.add(TextSpan(text: '$distance - '));
+  }
+
+  children.add(TextSpan(text: place.location.neighbourhood));
+
   switch (HourGrouped(hours: place.hours).isOpen()) {
     case HourOpen.open:
-      children = [period, open];
+      children.addAll([period, open]);
       break;
 
     case HourOpen.opening:
-      children = [period, opening];
+      children.addAll([period, opening]);
       break;
 
     case HourOpen.closed:
-      children = [period, closed];
+      children.addAll([period, closed]);
       break;
 
     case HourOpen.closing:
-      children = [period, closing];
+      children.addAll([period, closing]);
       break;
 
     default:
@@ -94,7 +102,6 @@ RichText _buildLocation(Place place) {
   return RichText(
     maxLines: 1,
     text: TextSpan(
-      text: "${place.location.neighbourhood}",
       style: style,
       children: children,
     ),
@@ -131,7 +138,7 @@ class PlaceCard extends StatefulWidget {
   static double height(double width) {
     double height = width * 0.6;
     height += 28 + 12;
-    height += 24 + 6;
+    height += 27 + 6;
     height += 19 + 8;
     return height.ceilToDouble();
   }
@@ -182,7 +189,7 @@ class PlaceCardState extends State<PlaceCard> {
         Container(
           margin: const EdgeInsets.only(top: 6),
           alignment: Alignment.centerLeft,
-          height: 24,
+          height: 27,
           child: _buildTag(place),
         ),
         Container(

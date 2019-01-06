@@ -19,6 +19,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="munch_app"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+                   android:value="AIzaSyBsMSKx0T2RvQrw4FSMOlLGGmHSeHbh9I0"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
