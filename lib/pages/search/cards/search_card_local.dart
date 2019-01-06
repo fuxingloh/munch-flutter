@@ -73,20 +73,22 @@ class SearchCardError extends SearchCardWidget {
 
   @override
   Widget buildCard(BuildContext context) {
-    List<Widget> children = [];
-
-    children.add(Text(_title ?? "Error"));
+    List<Widget> children = [Text(_title ?? "Error", style: MTextStyle.h2)];
 
     if (_message != null) {
-      children.add(Container(
-        margin: EdgeInsets.only(top: 16),
+      children.add(Padding(
+        padding: EdgeInsets.only(top: 16),
         child: Text(_message),
       ));
     }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: children,
+    return Container(
+      padding: const SearchCardInsets.only(),
+      color: MunchColors.peach100,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
     );
   }
 

@@ -6,7 +6,6 @@ import 'package:munch_app/styles/icons.dart';
 class RIPFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       height: 56,
       decoration:

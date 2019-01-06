@@ -42,6 +42,44 @@ class MunchDialog extends Dialog {
     }
   }
 
+  static void showConfirm(
+    BuildContext context, {
+    String title,
+    String content,
+    String confirm = "Confirm",
+    String cancel = "Cancel",
+    @required VoidCallback onPressed,
+  }) {
+    showDialog(
+      context: context,
+      builder: (c) => MunchDialog.confirm(
+            context,
+            title: title,
+            content: content,
+            confirm: confirm,
+            cancel: cancel,
+            onPressed: onPressed,
+          ),
+    );
+  }
+
+  static void showOkay(
+    BuildContext context, {
+    String title,
+    String content,
+    String okay = "Okay",
+  }) {
+    showDialog(
+      context: context,
+      builder: (c) => MunchDialog.okay(
+            context,
+            title: title,
+            content: content,
+            okay: okay,
+          ),
+    );
+  }
+
   MunchDialog.error(
     BuildContext context, {
     String title = "Error",
@@ -89,7 +127,10 @@ class MunchDialog extends Dialog {
           actions: [
             MunchButton.text(
               confirm,
-              onPressed: onPressed,
+              onPressed: () {
+                Navigator.of(context).pop();
+                onPressed();
+              },
               style: MunchButtonStyle.secondary,
             ),
             MunchButton.text(
@@ -130,7 +171,7 @@ class _MunchDialogChild extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
           child: DefaultTextStyle(
-            style: Theme.of(context).textTheme.subhead,
+            style: Theme.of(context).textTheme.body1,
             child: content,
           ),
         ),

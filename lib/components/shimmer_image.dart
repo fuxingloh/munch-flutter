@@ -9,11 +9,7 @@ import 'package:munch_app/styles/colors.dart';
 /// url to find from sizes
 String _findUrl(List<file.ImageSize> sizes, {double width, double height}) {
   if (sizes == null) return '';
-
-  if (sizes.isEmpty) {
-    // TODO Handle empty images
-    return '';
-  }
+  if (sizes.isEmpty) return '';
 
   sizes.sort((s1, s2) => s1.width.compareTo(s2.width));
   for (var size in sizes) {

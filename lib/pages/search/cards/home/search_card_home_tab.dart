@@ -73,7 +73,6 @@ class SearchCardHomeTab extends SearchCardWidget {
       )
     ];
 
-    // TODO Check
     children.add(GestureDetector(
       onTap: () {
 //        Authentication.requireAuthentication(controller: self.controller) { state in

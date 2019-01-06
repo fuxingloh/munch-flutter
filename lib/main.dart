@@ -19,11 +19,9 @@ ThemeData _buildTheme() {
     primaryColor: MunchColors.white,
     accentColor: MunchColors.secondary500,
     fontFamily: 'Roboto',
-
     textTheme: TextTheme(
-      body1: MTextStyle.regular
-          .copyWith(height: 1, color: Colors.black)
-    )
+      body1: MTextStyle.regular.copyWith(height: 1, color: Colors.black),
+    ),
   );
 }
 

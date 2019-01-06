@@ -22,9 +22,6 @@ class RIPMapPage extends StatefulWidget {
   }
 }
 
-// TODO Request Bearing
-// TODO My Pin
-
 class RIPMapPageState extends State<RIPMapPage> {
   GoogleMapController mapController;
 

@@ -149,7 +149,7 @@ class RIPCardWebsite extends RIPCardWidget {
 
   @override
   void onTap(BuildContext context, PlaceData data) {
-    MunchDialog.confirm(context, onPressed: () async {
+    MunchDialog.showConfirm(context, onPressed: () async {
       String url = data.place.website;
       if (await canLaunch(url)) {
         await launch(url);

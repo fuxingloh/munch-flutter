@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/pages/search/cards/collection/search_card_collection.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_award_collection.dart';
+import 'package:munch_app/pages/search/cards/home/search_card_home_dtje.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_nearby.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_popular_place.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_recent_place.dart';
@@ -59,6 +60,9 @@ class SearchCardDelegator {
       case "HomePopularPlace_2018-12-10":
         return SearchCardHomePopularPlace(card);
 
+      case "HomeDTJE_2018-12-17":
+        return SearchCardHomeDTJE(card);
+
       case "HomeRecentPlace_2018-12-10":
         return SearchCardHomeRecentPlace(card);
 
@@ -79,12 +83,9 @@ class SearchCardDelegator {
 
       case "SuggestedTag_2018-05-11":
         return SearchCardTagSuggestion(card);
-    }
 
-// TODO Special Cards
 //        register(SearchCardBetweenHeader.self)
-//        register(SearchCardHomeDTJE.self)
-
+    }
 
     debugPrint('Required Card ${card.cardId} Not Found.');
     return Container();

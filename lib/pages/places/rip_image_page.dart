@@ -160,7 +160,7 @@ class _RIPImageContent extends StatelessWidget {
     }
 
     if (image.article != null) {
-      MunchDialog.confirm(
+      MunchDialog.showConfirm(
         context,
         content: 'Open Article?',
         cancel: 'Cancel',
@@ -170,7 +170,7 @@ class _RIPImageContent extends StatelessWidget {
         },
       );
     } else if (image.instagram != null) {
-      MunchDialog.confirm(
+      MunchDialog.showConfirm(
         context,
         content: 'Open Instagram?',
         cancel: 'Cancel',

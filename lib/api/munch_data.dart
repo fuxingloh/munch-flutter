@@ -130,7 +130,6 @@ class Landmark {
 }
 
 enum AreaType {
-  // TODO Test what happened with one removed
   City,
   Superset,
   Region,
