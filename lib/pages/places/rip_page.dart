@@ -10,6 +10,7 @@ import 'package:munch_app/pages/places/cards/rip_card_loading.dart';
 import 'package:munch_app/pages/places/rip_footer.dart';
 import 'package:munch_app/pages/places/rip_header.dart';
 import 'package:munch_app/pages/places/rip_image_loader.dart';
+import 'package:munch_app/pages/places/rip_image_page.dart';
 
 class RIPPage extends StatefulWidget {
   const RIPPage({Key key, this.place}) : super(key: key);
@@ -114,7 +115,8 @@ class RIPPageState extends State<RIPPage> {
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           staggeredTileBuilder: (i) => StaggeredTile.fit(1),
-          itemBuilder: (context, i) => RIPGalleryImage(image: images[i]),
+          itemBuilder: (context, i) =>
+              RIPGalleryImage(image: images[i], onPressed: () => onImage(i)),
           itemCount: images.length,
         ),
       ));
@@ -133,6 +135,20 @@ class RIPPageState extends State<RIPPage> {
         RIPHeader(placeData: placeData, clear: _clear),
       ]),
       bottomNavigationBar: RIPFooter(),
+    );
+  }
+
+  void onImage(int i) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => RIPImagePage(
+              index: i,
+              imageLoader: _imageLoader,
+              place: placeData.place,
+            ),
+      ),
     );
   }
 }

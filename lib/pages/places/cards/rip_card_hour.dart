@@ -11,7 +11,7 @@ class RIPCardHour extends RIPCardWidget {
     List<Widget> children = [];
 
     HourGrouped grouped = HourGrouped(hours: data.place.hours);
-    const base = TextStyle(fontWeight: FontWeight.w600, fontSize: 20);
+    const base = TextStyle(fontWeight: FontWeight.w600, fontSize: 19);
 
     switch (grouped.isOpen()) {
       case HourOpen.open:

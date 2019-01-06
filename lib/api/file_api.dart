@@ -2,6 +2,12 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'file_api.g.dart';
 
+ImageSize maxSize(List<ImageSize> sizes) {
+  return sizes.reduce((a, b) {
+    return a.width.compareTo(b.width) >= 0 ? a : b;
+  });
+}
+
 @JsonSerializable()
 class Image {
   Image(this.imageId, this.sizes);
@@ -36,7 +42,9 @@ class ImageSize {
   int height;
 
   @JsonKey(ignore: true)
-  double get heightMultiplier => height.toDouble() / width.toDouble();
+  double get aspectRatio {
+    return width.toDouble() / height.toDouble();
+  }
 
   factory ImageSize.fromJson(Map<String, dynamic> json) => _$ImageSizeFromJson(json);
 

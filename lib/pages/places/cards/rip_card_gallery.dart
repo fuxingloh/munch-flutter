@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
@@ -31,8 +32,9 @@ class RIPCardGalleryHeader extends RIPCardWidget {
 
 class RIPGalleryImage extends StatelessWidget {
   final PlaceImage image;
+  final VoidCallback onPressed;
 
-  const RIPGalleryImage({Key key, this.image}) : super(key: key);
+  const RIPGalleryImage({Key key, this.image, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +45,7 @@ class RIPGalleryImage extends StatelessWidget {
     });
 
     return GestureDetector(
-      onTap: () {
-        // TODO RIP Image Page
-      },
+      onTap: onPressed,
       child: AspectRatio(
         aspectRatio: max.width.toDouble() / max.height.toDouble(),
         child: ClipRRect(

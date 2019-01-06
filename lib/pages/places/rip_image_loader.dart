@@ -12,6 +12,7 @@ class RIPImageLoader {
   String _next;
 
   bool get more => _next != null;
+  List<PlaceImage> get images => _images;
 
 
   StreamController<List<PlaceImage>> _controller;
@@ -29,14 +30,14 @@ class RIPImageLoader {
     _controller.close();
   }
 
-  void append() {
-    if (_images.length > 500) return;
-    if (_next == null) return;
+  Future append() {
+    if (_images.length > 500) return Future.value();
+    if (_next == null) return Future.value();
 
-    if (_loading) return;
+    if (_loading) return Future.value();
     _loading = true;
 
-    MunchApi.instance.get('/places/$_placeId/images?size=20&next.sort=$_next')
+    return MunchApi.instance.get('/places/$_placeId/images?size=20&next.sort=$_next')
         .then((res) {
       List<dynamic> list = res.data;
       List<PlaceImage> images = list.map((data) => PlaceImage.fromJson(data))
