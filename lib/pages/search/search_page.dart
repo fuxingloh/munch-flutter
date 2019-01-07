@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/pages/filter/filter_page.dart';
 import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
@@ -19,7 +20,8 @@ typedef void EditSearchQuery(SearchQuery query);
 class SearchPageState extends State<SearchPage> {
   List<SearchQuery> histories = [];
 
-  RecentSearchQueryDatabase _recentSearchQueryDatabase = RecentSearchQueryDatabase();
+  RecentSearchQueryDatabase _recentSearchQueryDatabase =
+      RecentSearchQueryDatabase();
 
   SearchQuery get searchQuery => histories.last;
   SearchCardList _cardList = SearchCardList();
@@ -45,14 +47,19 @@ class SearchPageState extends State<SearchPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (c) => FilterPage(searchQuery: searchQuery)),
+              fullscreenDialog: true,
+              builder: (c) => FilterPage(searchQuery: searchQuery),
+            ),
           ).then((searchQuery) {
             if (searchQuery != null && searchQuery is SearchQuery) {
               push(searchQuery);
             }
           });
         });
-    push(SearchQuery.feature(SearchFeature.Home));
+
+    UserSearchPreference.get().whenComplete(() {
+      push(SearchQuery.feature(SearchFeature.Home));
+    });
   }
 
   void push(SearchQuery searchQuery) {

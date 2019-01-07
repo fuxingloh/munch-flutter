@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/pages/tastebud/tastebud_places_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_preferences_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_setting_page.dart';
@@ -30,10 +29,7 @@ class _TastebudAppBar extends AppBar {
   static TabBar _buildTabBar(BuildContext context) {
     return TabBar(
       tabs: [
-        const Tab(
-            icon: Icon(
-          MunchIcons.tastebud_places,
-        )),
+        const Tab(icon: Icon(MunchIcons.tastebud_places)),
         const Tab(icon: Icon(MunchIcons.tastebud_preferences)),
       ],
     );
@@ -60,5 +56,6 @@ class _TastebudAppBar extends AppBar {
           ),
           bottom: _buildTabBar(context),
           actions: _buildActions(context),
+          elevation: 2,
         );
 }

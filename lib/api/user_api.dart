@@ -35,6 +35,9 @@ class UserSetting {
 
 @JsonSerializable()
 class UserSearchPreference {
+  @JsonKey(ignore: true)
+  static UserSearchPreference instance;
+
   UserSearchPreference(this.requirements, this.updatedMillis);
 
   List<Tag> requirements;
@@ -51,14 +54,24 @@ class UserSearchPreference {
     var string = prefs.getString("UserSearchPreference");
     if (string == null) return null;
 
-    return UserSearchPreference.fromJson(jsonDecode(string));
+    var preference = UserSearchPreference.fromJson(jsonDecode(string));
+    instance = preference;
+    return preference;
+  }
+
+  static Future put(UserSearchPreference preference) async {
+    instance = preference;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var body = preference.toJson();
+    prefs.setString("UserSearchPreference", jsonEncode(body));
   }
 }
 
 @JsonSerializable()
 class UserSavedPlace {
-  UserSavedPlace(this.userId, this.placeId, this.name, this.createdMillis,
-      this.place);
+  UserSavedPlace(
+      this.userId, this.placeId, this.name, this.createdMillis, this.place);
 
   String userId;
   String placeId;
@@ -75,5 +88,6 @@ class UserSavedPlace {
 
 final List<Tag> possibleTagRequirements = [
   Tag("abb22d3d-7d23-4677-b4ef-a3e09f2f9ada", "Halal", TagType.Requirement),
-  Tag("fdf77b3b-8f90-419f-b711-dd25f97046fe", "Vegetarian Options", TagType.Requirement),
+  Tag("fdf77b3b-8f90-419f-b711-dd25f97046fe", "Vegetarian Options",
+      TagType.Requirement),
 ];

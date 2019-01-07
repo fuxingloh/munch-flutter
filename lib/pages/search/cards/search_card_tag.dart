@@ -55,8 +55,7 @@ class _SearchCardTagCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onPressed()
-          .catchError((error) => MunchDialog.showError(context, error)),
+      onTap: () => onPressed(),
       child: Container(
         width: 120,
         height: 70,
@@ -88,9 +87,8 @@ class _SearchCardTagCell extends StatelessWidget {
     );
   }
 
-  Future onPressed() async {
-    var pref = await UserSearchPreference.get();
-    var query = SearchQuery.search(pref);
+  void onPressed() {
+    var query = SearchQuery.search();
     query.filter.tags.add(tag);
     SearchPage.state.push(query);
   }

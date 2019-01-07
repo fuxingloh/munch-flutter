@@ -73,8 +73,8 @@ class TastebudPlaceState extends State<TastebudPlacePage> {
 
   Container _buildHeader() {
     return Container(
-      margin: EdgeInsets.fromLTRB(24, 24, 24, 8),
-      child: const Text("Your Places", style: MTextStyle.h2),
+      margin: EdgeInsets.fromLTRB(24, 32, 24, 8),
+      child: const Text("Saved Places", style: MTextStyle.h2),
     );
   }
 

@@ -61,8 +61,7 @@ class SearchCardHomeNearby extends SearchCardWidget {
     var latLng = await MunchLocation.instance.request(force: true, permission: true);
     if (latLng == null) return;
 
-    var pref = await UserSearchPreference.get();
-    var query = SearchQuery.search(pref);
+    var query = SearchQuery.search();
     query.filter.location.type = SearchFilterLocationType.Nearby;
     SearchPage.state.push(query);
   }

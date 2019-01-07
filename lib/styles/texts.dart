@@ -29,7 +29,7 @@ class MTextStyle {
   );
   static const TextStyle h6 = TextStyle(
     fontSize: 17,
-    fontWeight: FontWeight.w700,
+    fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );
 

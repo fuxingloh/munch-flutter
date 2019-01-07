@@ -63,12 +63,10 @@ class SearchCardLocationBanner extends SearchCardWidget {
       MaterialPageRoute(
         builder: (context) => FilterAreaPage(),
       ),
-    ).then((area) async {
+    ).then((area) {
       if (area == null) return;
 
-      var pref = await UserSearchPreference.get();
-      var query = SearchQuery.search(pref);
-
+      var query = SearchQuery.search();
       query.filter.location.type = SearchFilterLocationType.Where;
       query.filter.location.areas = [area];
       SearchPage.state.push(query);

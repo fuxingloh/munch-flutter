@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/munch_tag_view.dart';
 import 'package:munch_app/components/shimmer_image.dart';
@@ -151,6 +152,9 @@ class PlaceCardState extends State<PlaceCard> {
 
   @override
   Widget build(BuildContext context) {
+    List<ImageSize> sizes =
+        place.images.isNotEmpty ? place.images.first.sizes : [];
+
     Column column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -160,10 +164,7 @@ class PlaceCardState extends State<PlaceCard> {
               aspectRatio: 1 / 0.6,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(4),
-                child: ShimmerSizeImage(
-                  sizes: place.images.first?.sizes,
-                  fit: BoxFit.cover,
-                ),
+                child: ShimmerSizeImage(sizes: sizes, fit: BoxFit.cover),
               ),
             ),
             Container(

@@ -37,13 +37,9 @@ class SearchCardLocationArea extends SearchCardWidget {
   }
 
   void onPressed(BuildContext context) {
-    UserSearchPreference.get().then((pref) {
-      var query = SearchQuery.search(pref);
-      query.filter.location.type = SearchFilterLocationType.Where;
-      query.filter.location.areas = [_area];
-      SearchPage.state.push(query);
-    }, onError: (error) {
-      MunchDialog.showError(context, error);
-    });
+    var query = SearchQuery.search();
+    query.filter.location.type = SearchFilterLocationType.Where;
+    query.filter.location.areas = [_area];
+    SearchPage.state.push(query);
   }
 }

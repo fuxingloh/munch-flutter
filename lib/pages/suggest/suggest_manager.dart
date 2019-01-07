@@ -85,13 +85,11 @@ class SuggestManager {
   Future<List<SuggestItem>> get history async {
     List<SuggestItem> list = [];
 
-    var preference = await UserSearchPreference.get();
-
-    var nearby = SearchQuery.search(preference);
+    var nearby = SearchQuery.search();
     nearby.filter.location.type = SearchFilterLocationType.Nearby;
     list.add(SuggestItemQuery(MunchIcons.suggest_nearby, nearby));
 
-    var anywhere = SearchQuery.search(preference);
+    var anywhere = SearchQuery.search();
     anywhere.filter.location.type = SearchFilterLocationType.Anywhere;
     list.add(SuggestItemQuery(MunchIcons.suggest_anywhere, anywhere));
 

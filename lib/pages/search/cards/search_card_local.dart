@@ -83,8 +83,11 @@ class SearchCardError extends SearchCardWidget {
     }
 
     return Container(
-      padding: const SearchCardInsets.only(),
-      color: MunchColors.peach100,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: MunchColors.peach100,
+        borderRadius: BorderRadius.circular(4)
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,

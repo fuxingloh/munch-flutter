@@ -8,8 +8,8 @@ import 'package:munch_app/styles/colors.dart';
 
 /// url to find from sizes
 String _findUrl(List<file.ImageSize> sizes, {double width, double height}) {
-  if (sizes == null) return '';
-  if (sizes.isEmpty) return '';
+  if (sizes == null) return null;
+  if (sizes.isEmpty) return null;
 
   sizes.sort((s1, s2) => s1.width.compareTo(s2.width));
   for (var size in sizes) {
@@ -38,18 +38,20 @@ class ShimmerSizeImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = minWidth ?? MediaQuery.of(context).size.width;
-    return _ShimmerImage(sizes, width: width, height: minHeight, fit: fit);
+    var url = _findUrl(sizes, width: width, height: minHeight);
+    if (url == null) return Container(color: MunchColors.whisper100);
+    return _ShimmerImage(url, width: width, height: minHeight, fit: fit);
   }
 }
 
 class _ShimmerImage extends CachedNetworkImage {
   _ShimmerImage(
-    List<file.ImageSize> sizes, {
+    String imageUrl, {
     @required double width,
     @required double height,
     BoxFit fit = BoxFit.cover,
   }) : super(
-          imageUrl: _findUrl(sizes, width: width, height: height),
+          imageUrl: imageUrl,
           errorWidget: const DecoratedBox(
             decoration: BoxDecoration(color: MunchColors.whisper100),
           ),

@@ -147,13 +147,13 @@ class SearchQuery {
 
   SearchQuery.collection(SearchCollection collection)
       : this(SearchFeature.Collection, collection,
-            SearchFilter.preference(null), SearchSort(null));
+            SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
 
   SearchQuery.feature(SearchFeature feature)
-      : this(feature, null, SearchFilter.preference(null), SearchSort(null));
+      : this(feature, null, SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
 
-  SearchQuery.search(UserSearchPreference preference)
-      : this(SearchFeature.Search, null, SearchFilter.preference(preference),
+  SearchQuery.search()
+      : this(SearchFeature.Search, null, SearchFilter.preference(UserSearchPreference.instance),
             SearchSort(null));
 
   bool get isSimple {

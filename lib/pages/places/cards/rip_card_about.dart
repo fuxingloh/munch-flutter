@@ -13,7 +13,7 @@ class RIPCardAboutDivider1 extends RIPCardWidget {
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    return SeparatorLine();
+    return const SeparatorLine();
   }
 
   static bool isAvailable(PlaceData data) {
@@ -30,13 +30,13 @@ class RIPCardAboutDivider2 extends RIPCardWidget {
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    return SeparatorLine();
+    return const SeparatorLine();
   }
 
   static bool isAvailable(PlaceData data) {
     return RIPCardDescription.isAvailable(data) ||
         RIPCardAward.isAvailable(data) ||
-        RIPCardWebsite.isAvailable(data);
+        RIPCardMenuWebsite.isAvailable(data);
   }
 }
 

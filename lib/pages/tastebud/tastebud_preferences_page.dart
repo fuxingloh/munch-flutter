@@ -12,9 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class TastebudPreferencePage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return TastebudPreferenceState();
-  }
+  State<StatefulWidget> createState() => TastebudPreferenceState();
 }
 
 class TastebudPreferenceState extends State<TastebudPreferencePage> {
@@ -22,22 +20,20 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
   MunchApi _api = MunchApi.instance;
 
   void onChange(Tag tag, bool value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    var string = prefs.getString("UserSearchPreference");
-    var searchPreference = UserSearchPreference.fromJson(jsonDecode(string));
+    var searchPreference = await UserSearchPreference.get();
 
     searchPreference.requirements.removeWhere((t) => t.tagId == tag.tagId);
     if (value) {
       searchPreference.requirements.add(tag);
     }
 
-    var body = searchPreference.toJson();
-    prefs.setString("UserSearchPreference", jsonEncode(body));
+    UserSearchPreference.put(searchPreference);
 
-    _api.put('/users/search/preference', body: body).catchError((error) {
-      MunchDialog.showError(context, error);
-    });
+    _api.put('/users/search/preference', body: searchPreference).catchError(
+      (error) {
+        MunchDialog.showError(context, error);
+      },
+    );
 
     setState(() {
       _searchPreference = searchPreference;
@@ -96,7 +92,7 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
             padding: EdgeInsets.only(top: 16),
             child: const Text(
               "Customise your Tastebud on Munch for a better experience.",
-              style: MTextStyle.h5,
+              style: MTextStyle.regular,
             ),
           )
         ],
@@ -110,18 +106,54 @@ class TastebudPreferenceState extends State<TastebudPreferencePage> {
     bool checked =
         _searchPreference.requirements.any((t) => t.tagId == tag.tagId);
 
+    return SearchPreferenceTag(
+      checked: checked,
+      name: tag.name,
+      onPressed: () => onChange(tag, !checked),
+    );
+  }
+}
+
+class SearchPreferenceTag extends StatelessWidget {
+  final String name;
+  final bool checked;
+
+  final VoidCallback onPressed;
+
+  const SearchPreferenceTag({Key key, this.name, this.checked, this.onPressed})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => onChange(tag, !checked),
+        behavior: HitTestBehavior.opaque,
+        onTap: onPressed,
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 24, right: 24, top: 10, bottom: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[Text(name, style: MTextStyle.regular), _right()],
+          ),
+        ));
+  }
+
+  Container _right() {
+    return Container(
+      margin: EdgeInsets.only(left: 16),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        shape: BoxShape.rectangle,
+        color: checked ? MunchColors.primary500 : MunchColors.clear,
+        border: Border.all(
+            color: checked ? MunchColors.primary500 : MunchColors.black75,
+            width: 2),
+      ),
       child: Container(
-        padding: EdgeInsets.fromLTRB(24, 0, 24, 0),
-        color: MunchColors.clear,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(tag.name, style: MTextStyle.h4.copyWith(height: 1)),
-            Checkbox(value: checked, onChanged: (v) => onChange(tag, v))
-          ],
-        ),
+        width: 20,
+        height: 20,
+        child:
+            checked ? Icon(Icons.check, size: 20.0, color: Colors.white) : null,
       ),
     );
   }

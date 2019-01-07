@@ -121,8 +121,7 @@ class FilterManager {
   }
 
   Future reset() async {
-    var preference = await UserSearchPreference.get();
-    this._searchQuery = SearchQuery.search(preference);
+    this._searchQuery = SearchQuery.search();
     dispatch();
   }
 

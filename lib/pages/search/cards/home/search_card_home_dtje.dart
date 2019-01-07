@@ -67,13 +67,14 @@ class _SearchCardChildState extends State<_SearchCardChild> {
         ],
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 24),
+        padding: const EdgeInsets.only(top: 24, bottom: 0),
         child: SearchDTJEList(card: widget.card),
       ),
     ];
 
     if (!subscribed) {
       children.add(Container(
+        padding: const EdgeInsets.only(top: 12, bottom: 0),
         alignment: Alignment.centerRight,
         child: DTJESubscribeButton(),
       ));
@@ -262,8 +263,11 @@ class DTJESubscribeButton extends StatefulWidget {
 
   static Future<bool> isSubscribed() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.get('Notification.DTJE.Lunch') != null ||
-        prefs.get('Notification.DTJE.Dinner') != null;
+    var l = prefs.get('Notification.DTJE.Lunch');
+    var d = prefs.get('Notification.DTJE.Dinner');
+    if (l != null && l is bool && l) return true;
+    if (d != null && d is bool && d) return true;
+    return false;
   }
 }
 

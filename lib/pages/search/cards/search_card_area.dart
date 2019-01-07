@@ -87,17 +87,14 @@ class _SearchCardAreaCell extends StatelessWidget {
       height: 110,
       width: 120,
       child: GestureDetector(
-        onTap: () => onPressed(context).catchError((error) {
-              MunchDialog.showError(context, error);
-            }),
+        onTap: () => onPressed(context),
         child: container,
       ),
     );
   }
 
-  Future onPressed(BuildContext context) async {
-    var pref = await UserSearchPreference.get();
-    var query = SearchQuery.search(pref);
+  void onPressed(BuildContext context) {
+    var query = SearchQuery.search();
     query.filter.location.type = SearchFilterLocationType.Where;
     query.filter.location.areas = [area];
     SearchPage.state.push(query);
