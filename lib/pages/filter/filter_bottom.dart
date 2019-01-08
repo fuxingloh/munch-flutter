@@ -56,7 +56,7 @@ class _FilterBottomChild extends StatelessWidget {
       borderWidth: 1,
       height: 48,
       padding: 18,
-      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+      textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
     );
   }
 

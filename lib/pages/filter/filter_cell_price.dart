@@ -104,7 +104,7 @@ class _FilterPriceButton extends StatelessWidget {
           child: Text(
             text,
             style: TextStyle(
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               fontSize: 16,
               color: selected ? MunchColors.white : MunchColors.black75,
             ),

@@ -62,13 +62,14 @@ class _SearchCardAreaCell extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(2), topRight: Radius.circular(2)),
               child: ShimmerSizeImage(sizes: sizes),
             ),
           ),
           Container(
             height: 40,
-            padding: EdgeInsets.all(6),
+            padding: EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
             child: Text(
               area.name,
               maxLines: 2,

@@ -29,18 +29,22 @@ class SearchCardTagSuggestion extends SearchCardWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(left: 24, right: 24, top: 18),
+            margin: const EdgeInsets.only(left: 24, right: 24, top: 18),
             child: Text("Can't decide?",
                 style: MTextStyle.h2.copyWith(color: MunchColors.white)),
           ),
           Container(
-            margin: EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
+            margin:
+                const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 24),
             child: Text(
                 "Here are some suggestions of what’s good ${locationName != null ? 'in $locationName' : 'nearby'}.",
-                style: MTextStyle.h5.copyWith(color: MunchColors.white)),
+                style: MTextStyle.h6.copyWith(color: MunchColors.white)),
           ),
           Container(
-              margin: EdgeInsets.only(bottom: 24), height: 70, child: listView),
+            margin: const EdgeInsets.only(bottom: 24),
+            height: 70,
+            child: listView,
+          ),
         ],
       ),
     );

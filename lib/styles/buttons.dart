@@ -21,14 +21,14 @@ class MunchButtonStyle {
   });
 
   static const TextStyle _textStyle =
-      TextStyle(fontSize: 17, fontWeight: FontWeight.w700);
+      TextStyle(fontSize: 17, fontWeight: FontWeight.w600);
   static const double _height = 40.0;
   static const double _padding = 24.0;
 
   static const double _smallHeight = 36.0;
   static const double _smallPadding = 18.0;
   static const TextStyle _smallTextStyle =
-      TextStyle(fontSize: 15, fontWeight: FontWeight.w700);
+      TextStyle(fontSize: 15, fontWeight: FontWeight.w600);
 
   static const MunchButtonStyle border = MunchButtonStyle(
     textColor: MunchColors.black75,

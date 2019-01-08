@@ -57,7 +57,7 @@ class RIPCardLocation extends RIPCardWidget {
           .distanceAsDuration(latLng, landmark.location.latLng);
       children.add(TextSpan(text: ' • $min from '));
       children.add(TextSpan(
-          text: landmark.name, style: TextStyle(fontWeight: FontWeight.w700)));
+          text: landmark.name, style: TextStyle(fontWeight: FontWeight.w600)));
     }
 
     return RichText(

@@ -155,7 +155,7 @@ class DTJEItem extends StatelessWidget {
           Container(
             width: 24,
             margin: const EdgeInsets.only(right: 8),
-            child: Text(number, style: TextStyle(fontWeight: FontWeight.w700)),
+            child: Text(number, style: TextStyle(fontWeight: FontWeight.w600)),
           ),
           label != null ? Text(label) : Container(),
         ],

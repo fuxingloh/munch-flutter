@@ -137,7 +137,7 @@ class _FilterLocationButton extends StatelessWidget {
           Text(
             text,
             style: TextStyle(
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               fontSize: 15,
               color: selected ? MunchColors.white : MunchColors.black75,
             ),
