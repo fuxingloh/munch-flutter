@@ -7,12 +7,15 @@ class RIPCardMenuWebsite extends RIPCardWidget {
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    return MunchButton.text("Website Menu", onPressed: () async {
-      String url = data.place.menu.url;
-      if (await canLaunch(url)) {
-        await launch(url);
-      }
-    });
+    return Container(
+      alignment: Alignment.centerLeft,
+      child: MunchButton.text("Website Menu", onPressed: () async {
+        String url = data.place.menu.url;
+        if (await canLaunch(url)) {
+          await launch(url);
+        }
+      }, style: MunchButtonStyle.border),
+    );
   }
 
   static bool isAvailable(PlaceData data) {

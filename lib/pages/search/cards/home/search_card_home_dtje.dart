@@ -130,7 +130,10 @@ class SearchDTJEList extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: children,
         ),
-        text != null ? Center(child: Text(text)) : Container()
+        Padding(
+          padding: const EdgeInsets.all(24),
+          child: text != null ? Center(child: Text(text)) : Container(),
+        ),
       ],
     );
   }

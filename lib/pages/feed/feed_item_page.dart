@@ -74,8 +74,8 @@ class FeedItemPageState extends State<FeedItemPage> {
           color: clear ? MunchColors.white : MunchColors.black
         ),
       ),
-      backgroundColor: MunchColors.clear,
-      elevation: 0,
+      backgroundColor: clear ? MunchColors.clear : MunchColors.white,
+      elevation: clear ? 0 : 2,
       iconTheme: IconThemeData(color: clear ? MunchColors.white : MunchColors.black),
     );
 
@@ -132,9 +132,9 @@ class _FeedItemContent extends StatelessWidget {
         ),
         Container(
           margin:
-              const EdgeInsets.only(top: 8, bottom: 24, left: 24, right: 24),
+              const EdgeInsets.only(top: 16, bottom: 24, left: 24, right: 24),
           child: RichText(
-            text: TextSpan(text: "by ", style: MTextStyle.h4, children: [
+            text: TextSpan(text: "by ", style: MTextStyle.h5, children: [
               TextSpan(
                 text: item.instagram.username,
                 style: TextStyle(color: MunchColors.secondary700),

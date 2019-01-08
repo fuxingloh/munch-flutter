@@ -16,10 +16,9 @@ class FeedHeaderView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text("Feed", style: MTextStyle.h1),
-        Container(
-          margin: EdgeInsets.only(top: 0, bottom: 8),
-          child: const Text("Never eat ‘Anything’ ever again.",
-              style: MTextStyle.regular),
+        const Padding(
+          padding: EdgeInsets.only(top: 8, bottom: 8),
+          child: Text("Never eat ‘Anything’ ever again."),
         ),
       ],
     );

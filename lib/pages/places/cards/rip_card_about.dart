@@ -169,18 +169,22 @@ class RIPLabelValue extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-            color: MunchColors.secondary700,
-          ),
-        ),
+        Text(label,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w700,
+              color: MunchColors.secondary700,
+            ),
+            maxLines: 1),
         Flexible(
           child: Padding(
             padding: const EdgeInsets.only(left: 16),
-            child: Text(text, style: MTextStyle.regular),
+            child: Text(
+              text,
+              style: MTextStyle.regular,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
       ],

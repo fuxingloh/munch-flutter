@@ -38,7 +38,11 @@ class ShimmerSizeImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = minWidth ?? MediaQuery.of(context).size.width;
-    var url = _findUrl(sizes, width: width, height: minHeight);
+
+    final pixelWidth = width * MediaQuery.of(context).devicePixelRatio;
+    final pixelHeight = minHeight * MediaQuery.of(context).devicePixelRatio;
+
+    var url = _findUrl(sizes, width: pixelWidth, height: pixelHeight);
     if (url == null) return Container(color: MunchColors.whisper100);
     return _ShimmerImage(url, width: width, height: minHeight, fit: fit);
   }

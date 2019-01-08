@@ -40,7 +40,7 @@ class SearchAppBar extends PreferredSize {
   }
 
   @override
-  Size get preferredSize => Size(double.infinity, 64);
+  Size get preferredSize => Size(double.infinity, 60);
 }
 
 class _SearchQueryBar extends StatefulWidget {
@@ -121,7 +121,7 @@ class _SearchQueryBarState extends State<_SearchQueryBar> {
 
 class SearchTextField extends StatelessWidget {
   static const TextStyle _style = TextStyle(
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: FontWeight.w500,
     color: MunchColors.black75,
   );
@@ -162,7 +162,7 @@ class SearchTextField extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(
-                  left: 42, right: 18, top: 10, bottom: 10),
+                  left: 42, right: 18, top: 8, bottom: 8),
               hintText: hint,
               hintStyle: _style,
             ),
@@ -193,7 +193,7 @@ class SearchActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       padding: const EdgeInsets.only(left: 18, right: 23),
-      iconSize: 28,
+      iconSize: 24,
       icon: Icon(iconData, color: MunchColors.black),
       onPressed: onPressed,
     );

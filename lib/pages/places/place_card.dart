@@ -13,7 +13,7 @@ MunchTagView _buildTag(Place place) {
   const MunchTagStyle priceTagStyle = MunchTagStyle(
     backgroundColor: MunchColors.peach100,
     textStyle: TextStyle(
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: FontWeight.w700,
       color: MunchColors.black85,
     ),
@@ -40,7 +40,7 @@ MunchTagView _buildTag(Place place) {
 
 RichText _buildLocation(Place place) {
   const style = const TextStyle(
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: FontWeight.w400,
     color: MunchColors.black75,
   );
@@ -110,17 +110,20 @@ RichText _buildLocation(Place place) {
 }
 
 class PlaceHeartButton extends StatelessWidget {
-  const PlaceHeartButton({Key key, @required this.placeId, this.onPressed})
+  const PlaceHeartButton({Key key, @required this.onPressed})
       : super(key: key);
 
-  final String placeId;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return const IconButton(
-      onPressed: null,
-      icon: Icon(MunchIcons.rip_heart, color: MunchColors.white),
+    if (onPressed == null) {
+      return Container();
+    }
+
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(MunchIcons.rip_heart_filled, color: MunchColors.white),
       iconSize: 24,
       color: MunchColors.white,
       padding: EdgeInsets.all(8),
@@ -129,12 +132,13 @@ class PlaceHeartButton extends StatelessWidget {
 }
 
 class PlaceCard extends StatefulWidget {
-  const PlaceCard({Key key, @required this.place}) : super(key: key);
+  const PlaceCard({Key key, @required this.place, this.onHeart}) : super(key: key);
 
   final Place place;
+  final VoidCallback onHeart;
 
   @override
-  State<StatefulWidget> createState() => PlaceCardState(place);
+  State<StatefulWidget> createState() => PlaceCardState();
 
   static double height(double width) {
     double height = width * 0.6;
@@ -146,9 +150,16 @@ class PlaceCard extends StatefulWidget {
 }
 
 class PlaceCardState extends State<PlaceCard> {
-  PlaceCardState(this.place);
+  Place get place {
+    return widget.place;
+  }
 
-  final Place place;
+  void onPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (c) => RIPPage(place: place)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +180,7 @@ class PlaceCardState extends State<PlaceCard> {
             ),
             Container(
               alignment: Alignment.topRight,
-              child: PlaceHeartButton(placeId: place.placeId),
+              child: PlaceHeartButton(onPressed: widget.onHeart),
             )
           ],
         ),
@@ -181,7 +192,7 @@ class PlaceCardState extends State<PlaceCard> {
             place.name,
             style: const TextStyle(
               fontSize: 21,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w600,
               color: MunchColors.black75,
             ),
             maxLines: 1,
@@ -205,12 +216,7 @@ class PlaceCardState extends State<PlaceCard> {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       child: column,
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (c) => RIPPage(place: place)),
-        );
-      },
+      onTap: onPressed,
     );
   }
 }

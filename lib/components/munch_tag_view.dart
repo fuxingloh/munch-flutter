@@ -9,7 +9,7 @@ class MunchTagView extends StatelessWidget {
     this.spacing = 8,
   }) : super(key: key);
 
-  final List<MunchTagData> tags;
+  final Iterable<MunchTagData> tags;
   final int count;
   final double spacing;
 
@@ -37,7 +37,7 @@ class MunchTagData {
 class MunchTagStyle {
   const MunchTagStyle({
     this.textStyle = const TextStyle(
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: FontWeight.w600,
       color: MunchColors.black85,
       height: 1,

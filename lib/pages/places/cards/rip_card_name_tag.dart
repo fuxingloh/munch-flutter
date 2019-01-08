@@ -82,7 +82,7 @@ class RIPCardNameTag extends RIPCardWidget {
       tags.add(MunchTagData("Restaurant", style: style));
     }
 
-    return MunchTagView(tags: tags, spacing: 12);
+    return MunchTagView(tags: tags.take(8), spacing: 12);
   }
 
 // override func didLoad(data: PlaceData!) {
