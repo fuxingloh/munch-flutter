@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
-import 'package:munch_app/styles/separators.dart';
 
 class RIPCardGalleryHeader extends RIPCardWidget {
   RIPCardGalleryHeader(PlaceData data)
@@ -13,10 +12,6 @@ class RIPCardGalleryHeader extends RIPCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(bottom: 24),
-          child: SeparatorLine(),
-        ),
         Padding(
           padding: const EdgeInsets.only(left: 24, right: 24),
           child: Text('${data.place.name} Images', style: MTextStyle.h2),

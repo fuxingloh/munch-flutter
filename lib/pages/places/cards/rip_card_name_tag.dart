@@ -62,9 +62,9 @@ class RIPCardNameTag extends RIPCardWidget {
 
   MunchTagView buildTags(PlaceData data) {
     const MunchTagStyle style = MunchTagStyle(
-      padding: EdgeInsets.only(top: 6, bottom: 6, left: 12, right: 12),
+      padding: EdgeInsets.only(top: 5, bottom: 5, left: 8, right: 8),
       textStyle: TextStyle(
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.w600,
         color: MunchColors.black75,
       ),

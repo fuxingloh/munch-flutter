@@ -121,7 +121,7 @@ class _SearchQueryBarState extends State<_SearchQueryBar> {
 
 class SearchTextField extends StatelessWidget {
   static const TextStyle _style = TextStyle(
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: FontWeight.w500,
     color: MunchColors.black75,
   );

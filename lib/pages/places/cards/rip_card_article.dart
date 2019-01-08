@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/styles/buttons.dart';
+import 'package:munch_app/styles/separators.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RIPCardArticle extends RIPCardWidget {
@@ -14,7 +15,7 @@ class RIPCardArticle extends RIPCardWidget {
     final width = MediaQuery.of(context).size.width - 48 - 36;
 
     var listView = Container(
-      height: 348,
+      height: 320,
       margin: EdgeInsets.only(top: 24, bottom: 24),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
@@ -45,6 +46,10 @@ class RIPCardArticle extends RIPCardWidget {
           child: Text("${data.place.name} Articles", style: MTextStyle.h2),
         ),
         listView,
+        const Padding(
+          padding: EdgeInsets.only(top: 12),
+          child: SeparatorLine(),
+        ),
       ],
     );
   }
