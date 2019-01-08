@@ -41,7 +41,10 @@ class Authentication {
   }
 
   Future<String> getToken() {
-    return _auth.currentUser().then((user) => user.getIdToken(refresh: false));
+    return _auth.currentUser().then((user) {
+      if (user == null) return null;
+      return user.getIdToken(refresh: false);
+    });
   }
 
   Future<bool> isAuthenticated() async {

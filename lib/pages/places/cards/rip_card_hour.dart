@@ -44,17 +44,19 @@ class RIPCardHour extends RIPCardWidget {
 
     children.add(Padding(
       padding: const EdgeInsets.only(top: 2),
-      child: Text(grouped.todayTime),
+      child: Text(grouped.todayTime, maxLines: 1, overflow: TextOverflow.ellipsis,),
     ));
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: children,
+          ),
         ),
-        Icon(MunchIcons.rip_expand),
+        const Icon(MunchIcons.rip_expand),
       ],
     );
   }

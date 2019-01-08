@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/api/user_api.dart';
+import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/filter/filter_page.dart';
 import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
@@ -17,7 +18,7 @@ class SearchPage extends StatefulWidget {
 // TODO: Detect Background to Foreground transition, 60 min
 typedef void EditSearchQuery(SearchQuery query);
 
-class SearchPageState extends State<SearchPage> {
+class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
   List<SearchQuery> histories = [];
 
   RecentSearchQueryDatabase _recentSearchQueryDatabase =
@@ -30,6 +31,8 @@ class SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
     _header = SearchAppBar(
         onBack: pop,
         onSuggest: () {
@@ -60,6 +63,23 @@ class SearchPageState extends State<SearchPage> {
     UserSearchPreference.get().whenComplete(() {
       push(SearchQuery.feature(SearchFeature.Home));
     });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      if (DateTime.now().millisecondsSinceEpoch -
+              pausedDateTime.millisecondsSinceEpoch >
+          1000 * 60 * 60) {
+        this.reset();
+      }
+    }
   }
 
   void push(SearchQuery searchQuery) {

@@ -71,7 +71,7 @@ class _OnBoardingInfo extends StatelessWidget {
                           margin: const EdgeInsets.only(top: 24, bottom: 12),
                           child: Text(
                             "Whether you're looking for the perfect date spot or the hottest bar in town - Munch helps you answer the question:",
-                            style: MTextStyle.h4.copyWith(
+                            style: MTextStyle.regular.copyWith(
                               height: 1,
                               color: MunchColors.white,
                             ),
@@ -80,9 +80,9 @@ class _OnBoardingInfo extends StatelessWidget {
                         ),
                         Text(
                           "'What do you want to eat?'",
-                          style: MTextStyle.h4.copyWith(
-                            height: 1,
+                          style: MTextStyle.regular.copyWith(
                             color: MunchColors.white,
+                            fontWeight: FontWeight.w600
                           ),
                           textAlign: TextAlign.center,
                         )
@@ -161,9 +161,9 @@ class _OnBoardingBottom extends StatelessWidget {
           ),
         ),
         Container(
-          child: Text(
+          child: const Text(
             "By signing up, you agree to Munch's terms of use and privacy policy.",
-            style: MTextStyle.subtext.copyWith(height: 1.3),
+            style: MTextStyle.subtext,
             textAlign: TextAlign.center,
           ),
           margin:
