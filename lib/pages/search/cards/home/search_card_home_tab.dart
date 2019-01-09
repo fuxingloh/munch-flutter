@@ -82,15 +82,15 @@ class SearchCardHomeTab extends SearchCardWidget {
 //            self.controller.reset()
 //        }
       },
-      child: Padding(
-        padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
+      child: const Padding(
+        padding: EdgeInsets.only(top: 4, left: 24, right: 24),
         child: Text("(Not Samantha? Create an account here.)",
             style: MTextStyle.h6),
       ),
     ));
 
     children.add(Container(
-      margin: EdgeInsets.only(top: 16, left: 16, right: 16),
+      margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
       child: Row(
 //      crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[

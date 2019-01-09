@@ -1,7 +1,7 @@
 name: munch_app
 description: Munch Mobile App
 
-version: 0.18.0+7
+version: 0.18.0+8
 
 environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
@@ -26,6 +26,7 @@ dependencies:
   # Firebase & Authentication
   google_sign_in: ^3.2.4
   firebase_auth: ^0.6.6
+  firebase_analytics: ^1.1.0
   flutter_facebook_login: ^1.1.1
 
   # Core Frameworks
@@ -51,7 +52,6 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-# The following section is specific to Flutter.
 flutter:
   uses-material-design: true
 

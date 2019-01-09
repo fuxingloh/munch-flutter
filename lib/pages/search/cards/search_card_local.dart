@@ -4,6 +4,7 @@ import 'package:munch_app/components/shimmer.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SearchCardShimmer extends SearchCardWidget {
   SearchCardShimmer(SearchCard card) : super(card);
@@ -85,9 +86,7 @@ class SearchCardError extends SearchCardWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: MunchColors.peach100,
-        borderRadius: BorderRadius.circular(4)
-      ),
+          color: MunchColors.peach100, borderRadius: BorderRadius.circular(4)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
@@ -138,9 +137,9 @@ class SearchCardUnsupported extends SearchCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Welcome back to Munch!", style: MTextStyle.h2),
+        const Text("Welcome back to Munch!", style: MTextStyle.h2),
         Container(
-          margin: EdgeInsets.only(top: 16, bottom: 24),
+          margin: const EdgeInsets.only(top: 16, bottom: 24),
           child: Text(
               "While you were away, we have been working very hard to add more sugar and spice to the app to enhance your food discovery journey! Update Munch now to discover what's delicious!",
               style: MTextStyle.regular),
@@ -153,7 +152,11 @@ class SearchCardUnsupported extends SearchCardWidget {
     );
   }
 
-  void onPressed() {
-    // TODO Open Google Play Store
+  void onPressed() async {
+    String url =
+        'https://play.google.com/store/apps/details?id=app.munch.munchapp';
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
   }
 }

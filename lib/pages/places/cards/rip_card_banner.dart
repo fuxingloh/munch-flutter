@@ -23,7 +23,7 @@ class RIPCardBanner extends RIPCardWidget {
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    final height = (MediaQuery.of(context).size.height) * 0.33;
+    final height = (MediaQuery.of(context).size.height) * 0.38;
 
     return Container(
       height: height,

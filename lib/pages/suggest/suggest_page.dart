@@ -231,12 +231,12 @@ class _SuggestAssumptionCell extends StatelessWidget {
       onTap: () =>
           Navigator.of(context).pop(item.assumptionQueryResult.searchQuery),
       behavior: HitTestBehavior.opaque,
-      child: Container(
+      child: Padding(
         padding:
             const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Row(
           children: [
-            Icon(MunchIcons.suggest_pointer),
+            const Icon(MunchIcons.suggest_pointer),
             Padding(
               padding: const EdgeInsets.only(left: 24),
               child: _buildTag(item.assumptionQueryResult.tokens),
@@ -250,18 +250,18 @@ class _SuggestAssumptionCell extends StatelessWidget {
   MunchTagView _buildTag(List<AssumptionToken> tokens) {
     const MunchTagStyle textStyle = MunchTagStyle(
       backgroundColor: MunchColors.clear,
-      padding: EdgeInsets.only(top: 4.5, bottom: 4.5),
+      padding: EdgeInsets.only(top: 5, bottom: 5),
       textStyle: TextStyle(
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
         color: MunchColors.black85,
       ),
     );
     const MunchTagStyle tagStyle = MunchTagStyle(
-      padding: EdgeInsets.only(top: 4.5, bottom: 4.5, left: 12, right: 12),
+      padding: EdgeInsets.only(top: 5, bottom: 5, left: 12, right: 12),
       textStyle: TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.w600,
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
         color: MunchColors.black85,
       ),
     );

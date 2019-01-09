@@ -57,10 +57,6 @@ class SearchCardListState extends State<SearchCardList> {
     }
   }
 
-  void scrollTo(String uniqueId) {
-    // TODO
-  }
-
   void onScroll(ScrollPosition position) {
     if (position.pixels > position.maxScrollExtent - 100) {
       _manager.append().then((_) {

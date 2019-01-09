@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/icons.dart';
@@ -300,19 +301,16 @@ class DTJESubscribeButtonState extends State<DTJESubscribeButton> {
   }
 
   void onPressed() async {
-    // TODO Firebase Tracking
-
     if (subscribed) {
       MunchDialog.showConfirm(context,
           content: "Unsubscribe from 'don't think, just eat'?", onPressed: () {
+        firebaseAnalytics.logEvent(name: "dtje_unsubscribe");
         DTJESubscribeButton.unsubscribe(DTJENotification.Lunch);
         DTJESubscribeButton.unsubscribe(DTJENotification.Dinner);
         setState(() => subscribed = false);
       });
     } else {
-      MunchDialog.showProgress(context);
-
-      return;
+      firebaseAnalytics.logEvent(name: "dtje_subscribe");
       DTJESubscribeButton.subscribe(DTJENotification.Lunch);
       DTJESubscribeButton.subscribe(DTJENotification.Dinner);
       setState(() => subscribed = true);

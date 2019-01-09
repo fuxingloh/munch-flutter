@@ -1,16 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
+
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/components/dialog.dart';
-import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_page.dart';
-
-import 'package:munch_app/styles/colors.dart';
-
 import 'package:munch_app/pages/feed/feed_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_page.dart';
-import 'package:munch_app/styles/icons.dart';
-import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/styles/munch.dart';
 
 void main() => runApp(MunchApp());
 
@@ -24,6 +22,8 @@ final ThemeData theme = ThemeData(
   ),
 );
 
+final FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics();
+
 class MunchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,9 @@ class MunchApp extends StatelessWidget {
       routes: {
         '/': (c) => MunchTabPage(),
       },
+      navigatorObservers: [
+        FirebaseAnalyticsObserver(analytics: firebaseAnalytics),
+      ],
     );
   }
 }
@@ -55,7 +58,6 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
     FeedPage(),
     TastebudPage(),
   ];
-
 
   @override
   void initState() {
@@ -105,7 +107,6 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
       }
       return;
     }
-
 
     if (index == _children.length - 1) {
       Authentication.instance.requireAuthentication(context).then((state) {

@@ -15,7 +15,6 @@ class SearchPage extends StatefulWidget {
   State<StatefulWidget> createState() => state;
 }
 
-// TODO: Detect Background to Foreground transition, 60 min
 typedef void EditSearchQuery(SearchQuery query);
 
 class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {

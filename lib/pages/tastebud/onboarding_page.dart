@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/main.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';
@@ -101,8 +102,9 @@ class _OnBoardingInfo extends StatelessWidget {
 class _OnBoardingBottom extends StatelessWidget {
   void onLoggedIn(BuildContext context, String token) {
     MunchDialog.showProgress(context);
-
     Authentication.instance.loginFacebook(token).then((state) {
+      firebaseAnalytics.logSignUp(signUpMethod: 'facebook');
+
       Navigator.of(context).pop();
       Navigator.of(context).pop(AuthenticationState.loggedIn);
       return state;

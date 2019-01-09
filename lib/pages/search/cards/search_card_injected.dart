@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/pages/search/search_page.dart';
 import 'package:munch_app/styles/buttons.dart';
@@ -31,7 +32,7 @@ class SearchCardNoLocation extends SearchCardWidget {
   }
 
   void onPressed(BuildContext context) {
-    // Analytics.logEvent("enable_location", parameters: [:])
+    firebaseAnalytics.logEvent(name: 'enable_location');
     MunchLocation.instance.request(force: true, permission: true).then((_) {
       Scaffold.of(context).showSnackBar(
         SnackBar(
