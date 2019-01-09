@@ -81,9 +81,8 @@ class _OnBoardingInfo extends StatelessWidget {
                         Text(
                           "'What do you want to eat?'",
                           style: MTextStyle.regular.copyWith(
-                            color: MunchColors.white,
-                            fontWeight: FontWeight.w600
-                          ),
+                              color: MunchColors.white,
+                              fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -100,26 +99,31 @@ class _OnBoardingInfo extends StatelessWidget {
 }
 
 class _OnBoardingBottom extends StatelessWidget {
+  void onLoggedIn(BuildContext context, String token) {
+    MunchDialog.showProgress(context);
+
+    Authentication.instance.loginFacebook(token).then((state) {
+      Navigator.of(context).pop();
+      Navigator.of(context).pop(AuthenticationState.loggedIn);
+      return state;
+    }).catchError((error) {
+      Navigator.of(context).pop();
+      MunchDialog.showError(context, error);
+    });
+  }
+
   void onLogin(BuildContext context) {
-    FacebookLogin()
-        .logInWithReadPermissions(['email', 'public_profile']).then((result) {
+    const permission = ['email', 'public_profile'];
+    FacebookLogin().logInWithReadPermissions(permission).then((result) {
       switch (result.status) {
         case FacebookLoginStatus.loggedIn:
-          return Authentication.instance
-              .loginFacebook(result.accessToken.token)
-              .then((state) {
-            Navigator.of(context).pop(AuthenticationState.loggedIn);
-            return state;
-          }).catchError((error) {
-            MunchDialog.showError(context, error);
-          });
+          onLoggedIn(context, result.accessToken.token);
+          break;
 
         case FacebookLoginStatus.error:
-          return showDialog(
-            context: context,
-            builder: (context) => MunchDialog.error(context,
-                title: 'Authentication Error', content: result.errorMessage),
-          );
+          MunchDialog.showError(context, result.errorMessage,
+              type: 'Authentication Error');
+          break;
 
         case FacebookLoginStatus.cancelledByUser:
           return Future.value(AuthenticationState.cancel);

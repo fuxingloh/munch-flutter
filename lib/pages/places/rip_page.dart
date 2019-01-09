@@ -134,7 +134,7 @@ class RIPPageState extends State<RIPPage> {
         ),
         RIPHeader(placeData: placeData, clear: _clear),
       ]),
-      bottomNavigationBar: RIPFooter(),
+      bottomNavigationBar: RIPFooter(placeData: placeData),
     );
   }
 

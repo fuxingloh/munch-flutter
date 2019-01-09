@@ -23,15 +23,28 @@ PlaceData _$PlaceDataFromJson(Map<String, dynamic> json) {
       (json['images'] as List)
           ?.map((e) =>
               e == null ? null : PlaceImage.fromJson(e as Map<String, dynamic>))
-          ?.toList());
+          ?.toList(),
+      json['user'] == null
+          ? null
+          : PlaceDataUser.fromJson(json['user'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$PlaceDataToJson(PlaceData instance) => <String, dynamic>{
       'place': instance.place,
       'awards': instance.awards,
       'articles': instance.articles,
-      'images': instance.images
+      'images': instance.images,
+      'user': instance.user
     };
+
+PlaceDataUser _$PlaceDataUserFromJson(Map<String, dynamic> json) {
+  return PlaceDataUser(json['savedPlace'] == null
+      ? null
+      : UserSavedPlace.fromJson(json['savedPlace'] as Map<String, dynamic>));
+}
+
+Map<String, dynamic> _$PlaceDataUserToJson(PlaceDataUser instance) =>
+    <String, dynamic>{'savedPlace': instance.savedPlace};
 
 Article _$ArticleFromJson(Map<String, dynamic> json) {
   return Article(

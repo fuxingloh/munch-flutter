@@ -7,6 +7,7 @@ import 'package:munch_app/api/feed_api.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
+import 'package:munch_app/styles/colors.dart';
 
 class FeedPage extends StatefulWidget {
   FeedPage({Key key}) : super(key: key);
@@ -45,47 +46,56 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       if (DateTime.now().millisecondsSinceEpoch -
-          pausedDateTime.millisecondsSinceEpoch >
+              pausedDateTime.millisecondsSinceEpoch >
           1000 * 60 * 60) {
         manager.reset();
       }
     }
   }
 
+  Future _onRefresh() {
+    return manager.reset();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: StaggeredGridView.countBuilder(
-        crossAxisCount: 2,
-        itemCount: this.items.length,
-        itemBuilder: (BuildContext context, int index) {
-          Object item = this.items[index];
-          switch (item) {
-            case FeedStaticCell.header:
-              return FeedHeaderView();
+      child: RefreshIndicator(
+        color: MunchColors.secondary500,
+        backgroundColor: MunchColors.white,
+        onRefresh: _onRefresh,
+        child: StaggeredGridView.countBuilder(
+          crossAxisCount: 2,
+          itemCount: this.items.length,
+          itemBuilder: (BuildContext context, int index) {
+            Object item = this.items[index];
+            switch (item) {
+              case FeedStaticCell.header:
+                return FeedHeaderView();
 
-            case FeedStaticCell.loading:
-              manager.append();
-              return FeedLoadingView();
+              case FeedStaticCell.loading:
+                manager.append();
+                return FeedLoadingView();
 
-            default:
-              return FeedImageView(item: item);
-          }
-        },
-        staggeredTileBuilder: (int index) {
-          Object item = this.items[index];
-          switch (item) {
-            case FeedStaticCell.header:
-            case FeedStaticCell.loading:
-              return StaggeredTile.fit(2);
+              default:
+                return FeedImageView(item: item);
+            }
+          },
+          staggeredTileBuilder: (int index) {
+            Object item = this.items[index];
+            switch (item) {
+              case FeedStaticCell.header:
+              case FeedStaticCell.loading:
+                return StaggeredTile.fit(2);
 
-            default:
-              return StaggeredTile.fit(1);
-          }
-        },
-        mainAxisSpacing: 16.0,
-        crossAxisSpacing: 16.0,
-        padding: const EdgeInsets.all(24),
+              default:
+                return StaggeredTile.fit(1);
+            }
+          },
+          mainAxisSpacing: 16.0,
+          crossAxisSpacing: 16.0,
+          padding: const EdgeInsets.all(24),
+        ),
       ),
     );
   }
@@ -111,21 +121,22 @@ class FeedManager {
     return _controller.stream;
   }
 
-  void reset() {
+  Future reset() {
     _items.clear();
     _from = 0;
     _loading = false;
-    append();
+    _controller.add(collect());
+    return append();
   }
 
-  void append() {
-    if (_from == null) return;
-    if (_from > 500) return;
-    if (_loading) return;
+  Future append() {
+    if (_from == null) return Future.value();
+    if (_from > 500) return Future.value();
+    if (_loading) return Future.value();
 
     _loading = true;
 
-    _api
+    return _api
         .get("/feed/images?country=sgp&latLng=1.3521,103.8198&next.from=$_from")
         .then((res) {
       this._loading = false;

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/components/dialog.dart';
@@ -81,7 +82,15 @@ class TastebudPlaceState extends State<TastebudPlacePage> {
   Container _buildPlace(Place place) {
     return Container(
       margin: EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 16),
-      child: PlaceCard(place: place),
+      child: PlaceCard(place: place, onHeart: () {
+        PlaceSavedDatabase.instance.delete(place.placeId).then((_) {
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('Deleted "${place.name}" from your places.')),
+          );
+        }).catchError((error) {
+          MunchDialog.showError(context, error);
+        });
+      }),
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/feed_api.dart';
+import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/places/place_card.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/styles/colors.dart';
@@ -7,6 +8,7 @@ import 'package:munch_app/styles/separators.dart';
 import 'package:munch_app/styles/texts.dart';
 
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 DateFormat _format = DateFormat("MMM dd, yyyy");
 
@@ -42,12 +44,34 @@ class FeedItemPageState extends State<FeedItemPage> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           _FeedItemImage(item: item),
-          _FeedItemContent(item: item),
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: onPressed,
+            child: _FeedItemContent(item: item),
+          ),
           _FeedItemPlace(item: item),
         ],
       ),
     );
     super.initState();
+  }
+
+  void onPressed() {
+    void _launch(String url) async {
+      if (await canLaunch(url)) {
+        await launch(url);
+      }
+    }
+
+    MunchDialog.showConfirm(
+      context,
+      title: 'Open Instagram?',
+      cancel: 'Cancel',
+      confirm: 'Open',
+      onPressed: () {
+        _launch(item.instagram?.link);
+      },
+    );
   }
 
   _scrollListener() {
@@ -70,13 +94,13 @@ class FeedItemPageState extends State<FeedItemPage> {
       title: Text(
         item.places.first?.name,
         textAlign: TextAlign.center,
-        style: MTextStyle.navHeader.copyWith(
-          color: clear ? MunchColors.white : MunchColors.black
-        ),
+        style: MTextStyle.navHeader
+            .copyWith(color: clear ? MunchColors.white : MunchColors.black),
       ),
       backgroundColor: clear ? MunchColors.clear : MunchColors.white,
       elevation: clear ? 0 : 2,
-      iconTheme: IconThemeData(color: clear ? MunchColors.white : MunchColors.black),
+      iconTheme:
+          IconThemeData(color: clear ? MunchColors.white : MunchColors.black),
     );
 
     return Stack(

@@ -2,23 +2,37 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:munch_app/api/collection_api.dart';
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/api/munch_data.dart';
+import 'package:munch_app/api/user_api.dart';
 
 part 'places_api.g.dart';
 
 @JsonSerializable()
 class PlaceData {
-  PlaceData(this.place, this.awards, this.articles, this.images);
+  PlaceData(this.place, this.awards, this.articles, this.images, this.user);
 
   Place place;
 
   List<UserPlaceCollectionItem> awards;
   List<Article> articles;
   List<PlaceImage> images;
+  PlaceDataUser user;
 
   factory PlaceData.fromJson(Map<String, dynamic> json) =>
       _$PlaceDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaceDataToJson(this);
+}
+
+@JsonSerializable()
+class PlaceDataUser {
+  PlaceDataUser(this.savedPlace);
+
+  UserSavedPlace savedPlace;
+
+  factory PlaceDataUser.fromJson(Map<String, dynamic> json) =>
+      _$PlaceDataUserFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PlaceDataUserToJson(this);
 }
 
 @JsonSerializable()

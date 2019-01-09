@@ -90,13 +90,13 @@ class PlaceSavedDatabase {
   }
 
   Future put(String placeId) {
-    return _api.put('/users/recent/places/$placeId').then((res) {
+    return _api.put('/users/saved/places/$placeId').then((res) {
       return reset();
     });
   }
 
   Future delete(String placeId) {
-    return _api.delete('/users/recent/places/$placeId').then((res) {
+    return _api.delete('/users/saved/places/$placeId').then((res) {
       return reset();
     });
   }

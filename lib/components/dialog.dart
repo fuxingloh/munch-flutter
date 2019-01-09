@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/structured_exception.dart';
 import 'package:munch_app/styles/buttons.dart';
+import 'package:munch_app/styles/colors.dart';
+import 'package:munch_app/styles/texts.dart';
 
 class MunchDialog extends Dialog {
   MunchDialog({
@@ -27,12 +29,13 @@ class MunchDialog extends Dialog {
           ),
         );
 
-  static void showError(BuildContext context, Object exception) {
+  static void showError(BuildContext context, Object exception,
+      {String type = 'Error'}) {
     if (exception is StructuredException) {
       showDialog(
         context: context,
         builder: (c) => MunchDialog.error(c,
-            title: exception.type ?? "Error", content: exception.message),
+            title: exception.type ?? type, content: exception.message),
       );
     } else {
       showDialog(
@@ -78,6 +81,30 @@ class MunchDialog extends Dialog {
             okay: okay,
           ),
     );
+  }
+
+  static void showProgress(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return Center(
+            child: Container(
+              padding: const EdgeInsets.all(32),
+              decoration: BoxDecoration(
+                color: MunchColors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: SizedBox(
+                height: 48,
+                width: 48,
+                child: const CircularProgressIndicator(
+                  backgroundColor: MunchColors.secondary500,
+                ),
+              ),
+            ),
+          );
+        });
   }
 
   MunchDialog.error(
@@ -158,9 +185,9 @@ class _MunchDialogChild extends StatelessWidget {
     if (title != null) {
       children.add(Padding(
         padding:
-            EdgeInsets.fromLTRB(24.0, 24.0, 24.0, content == null ? 20.0 : 0.0),
+            EdgeInsets.fromLTRB(24.0, 24.0, 24.0, content == null ? 24.0 : 0.0),
         child: DefaultTextStyle(
-          style: Theme.of(context).textTheme.title,
+          style: MTextStyle.h3,
           child: Semantics(child: title, namesRoute: true),
         ),
       ));
@@ -169,9 +196,9 @@ class _MunchDialogChild extends StatelessWidget {
     if (content != null) {
       children.add(Flexible(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+          padding: const EdgeInsets.all(24),
           child: DefaultTextStyle(
-            style: Theme.of(context).textTheme.body1,
+            style: MTextStyle.regular,
             child: content,
           ),
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_page.dart';
 
 import 'package:munch_app/styles/colors.dart';
@@ -98,6 +99,14 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
   }
 
   void onTab(int index) {
+    if (_currentIndex == index) {
+      if (index == 0) {
+        SearchPage.state.scrollToTop();
+      }
+      return;
+    }
+
+
     if (index == _children.length - 1) {
       Authentication.instance.requireAuthentication(context).then((state) {
         if (state == AuthenticationState.loggedIn) {

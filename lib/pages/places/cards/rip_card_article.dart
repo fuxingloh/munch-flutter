@@ -136,10 +136,12 @@ class _RIPArticleCell extends StatelessWidget {
                     ],
                   ),
                 ),
-                MunchButton.text(
-                  "Read More",
-                  onPressed: () {},
-                  style: MunchButtonStyle.borderSmall,
+                IgnorePointer(
+                  child: MunchButton.text(
+                    "Read More",
+                    onPressed: () {},
+                    style: MunchButtonStyle.borderSmall,
+                  ),
                 )
               ],
             ),

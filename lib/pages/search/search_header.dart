@@ -162,7 +162,7 @@ class SearchTextField extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: const EdgeInsets.only(
-                  left: 42, right: 18, top: 8, bottom: 8),
+                  left: 40, right: 16, top: 8, bottom: 8),
               hintText: hint,
               hintStyle: _style,
             ),
@@ -170,9 +170,9 @@ class SearchTextField extends StatelessWidget {
           ),
         ),
         Container(
-          margin: const EdgeInsets.only(left: 14),
+          margin: const EdgeInsets.only(left: 12),
           alignment: Alignment.centerLeft,
-          child: Icon(icon, size: 20),
+          child: Icon(icon, size: 18),
         )
       ],
     );

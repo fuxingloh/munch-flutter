@@ -310,6 +310,9 @@ class DTJESubscribeButtonState extends State<DTJESubscribeButton> {
         setState(() => subscribed = false);
       });
     } else {
+      MunchDialog.showProgress(context);
+
+      return;
       DTJESubscribeButton.subscribe(DTJENotification.Lunch);
       DTJESubscribeButton.subscribe(DTJENotification.Dinner);
       setState(() => subscribed = true);

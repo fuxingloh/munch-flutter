@@ -76,8 +76,8 @@ class SearchCardListState extends State<SearchCardList> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      color: MunchColors.white,
-      backgroundColor: MunchColors.secondary500,
+      color: MunchColors.secondary500,
+      backgroundColor: MunchColors.white,
       onRefresh: _handleRefresh,
       child: ListView.builder(
         padding: const EdgeInsets.only(top: 18),
