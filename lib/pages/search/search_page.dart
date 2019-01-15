@@ -113,8 +113,9 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     push(SearchQuery.feature(SearchFeature.Home));
   }
 
-  void scrollToTop() {
-    _cardList.state.scrollToTop();
+  /// whether it is already on top
+  bool scrollToTop() {
+    return _cardList.state.scrollToTop();
   }
 
   @override

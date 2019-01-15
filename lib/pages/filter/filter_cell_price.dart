@@ -14,7 +14,11 @@ class FilterCellPrice extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String selectedName = manager.searchQuery.filter?.price?.name;
-    double min = manager.result?.priceGraph?.min;
+
+    final count = manager.result?.count ?? 0;
+    if (count <= 0) return Container();
+
+      double min = manager.result?.priceGraph?.min;
     double max = manager.result?.priceGraph?.max;
 
     return Column(

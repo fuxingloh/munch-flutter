@@ -128,6 +128,13 @@ class SearchCardAreaClusterHeader extends SearchCardWidget {
       );
     }
 
+    if (area.description != null) {
+      children.add(Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Text(area.description, maxLines: 4),
+      ));
+    }
+
     children.add(Padding(
       padding: const EdgeInsets.only(top: 16),
       child: Row(
@@ -138,13 +145,6 @@ class SearchCardAreaClusterHeader extends SearchCardWidget {
         ],
       ),
     ));
-
-    if (area.description != null) {
-      children.add(Padding(
-        padding: const EdgeInsets.only(top: 12),
-        child: Text(area.description, maxLines: 4),
-      ));
-    }
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,

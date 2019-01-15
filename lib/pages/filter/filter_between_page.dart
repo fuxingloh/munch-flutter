@@ -196,6 +196,11 @@ class _FilterBetweenBottom extends StatelessWidget {
 
     if (points.isNotEmpty) {
       children.add(_FilterBetweenRow(points: points, onRemove: onRemove));
+    } else {
+      children.add(Container(
+        height: 48,
+        child: Center(child: Text("Require 2 Locations")),
+      ));
     }
 
     children.add(Padding(
@@ -243,9 +248,10 @@ class _FilterBetweenRow extends StatelessWidget {
           return GestureDetector(
             onTap: () => onRemove(i),
             child: Container(
-              decoration: BoxDecoration(
-                  color: MunchColors.whisper100,
-                  borderRadius: BorderRadius.circular(3)),
+              decoration: const BoxDecoration(
+                color: MunchColors.whisper100,
+                borderRadius: BorderRadius.all(Radius.circular(3)),
+              ),
               padding: EdgeInsets.only(left: 10, right: 10),
               child: Center(child: Text('${i + 1}. ${points[i].name}')),
             ),

@@ -31,8 +31,6 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
       });
     }, onError: (e, s) {
       MunchDialog.showError(context, e);
-    }, onDone: () {
-      print("Completed");
     });
   }
 

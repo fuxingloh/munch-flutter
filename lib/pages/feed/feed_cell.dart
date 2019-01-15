@@ -35,12 +35,7 @@ class FeedImageView extends StatelessWidget {
     final width = (MediaQuery.of(context).size.width - 24 - 24 - 16) / 2;
 
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => FeedItemPage(item: item)),
-        );
-      },
+      onTap: () => onItem(context),
       child: AspectRatio(
         aspectRatio: item.image.aspectRatio,
         child: ClipRRect(
@@ -51,6 +46,13 @@ class FeedImageView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void onItem(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FeedItemPage(item: item)),
     );
   }
 }

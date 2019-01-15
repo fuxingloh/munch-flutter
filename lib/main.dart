@@ -103,7 +103,10 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
   void onTab(int index) {
     if (_currentIndex == index) {
       if (index == 0) {
-        SearchPage.state.scrollToTop();
+        bool top = SearchPage.state.scrollToTop();
+        if (top) {
+          SearchPage.state.reset();
+        }
       }
       return;
     }

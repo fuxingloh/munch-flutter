@@ -132,8 +132,14 @@ class SearchDTJEList extends StatelessWidget {
           children: children,
         ),
         Padding(
-          padding: const EdgeInsets.all(24),
-          child: text != null ? Center(child: Text(text)) : Container(),
+          padding: const EdgeInsets.all(32),
+          child: text != null
+              ? Center(
+                  child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                ))
+              : Container(),
         ),
       ],
     );

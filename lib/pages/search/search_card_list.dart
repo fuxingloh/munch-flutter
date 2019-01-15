@@ -49,11 +49,15 @@ class SearchCardListState extends State<SearchCardList> {
     return _manager.start();
   }
 
-  void scrollToTop() {
+  /// whether it is already on top
+  bool scrollToTop() {
+    if (_controller.offset == 0) return true;
+
     if (_cards.isNotEmpty) {
       _controller.animateTo(0,
           duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
     }
+    return false;
   }
 
   void onScroll(ScrollPosition position) {

@@ -107,13 +107,12 @@ class RIPCardPhone extends RIPCardWidget {
 
   @override
   void onTap(BuildContext context, PlaceData data) {
-    _launch('tel:${data.place.phone}');
-  }
-
-  void _launch(String url) async {
-    if (await canLaunch(url)) {
-      await launch(url);
-    }
+    MunchDialog.showConfirm(context, onPressed: () async {
+      String url = 'tel:${data.place.phone}';
+      if (await canLaunch(url)) {
+        await launch(url);
+      }
+    }, content: "Call ${data.place.phone}?");
   }
 
   static bool isAvailable(PlaceData data) {
@@ -154,7 +153,7 @@ class RIPCardWebsite extends RIPCardWidget {
       if (await canLaunch(url)) {
         await launch(url);
       }
-    }, title: "Open Website?");
+    }, content: "Open Website?");
   }
 }
 
