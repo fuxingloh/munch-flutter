@@ -13,6 +13,7 @@ import 'package:munch_app/pages/places/cards/rip_card_menu.dart';
 import 'package:munch_app/pages/places/cards/rip_card_name_tag.dart';
 import 'package:munch_app/pages/places/cards/rip_card_suggest.dart';
 import 'package:munch_app/pages/places/cards/rip_card_tastebud.dart';
+import 'package:munch_app/pages/places/rip_page.dart';
 
 export 'package:flutter/widgets.dart';
 export 'package:munch_app/api/places_api.dart';
@@ -24,9 +25,9 @@ class RIPCardDelegator {
     return const [RIPCardLoadingBanner(), RIPCardLoadingName()];
   }
 
-  static List<RIPCardWidget> delegate(PlaceData data) {
+  static List<RIPCardWidget> delegate(PlaceData data, RIPPageState state) {
     List<RIPCardWidget> widgets = [];
-    widgets.add(RIPCardBanner(data));
+    widgets.add(RIPCardBanner(data, ripState: state));
 
     if (RIPCardClosed.isAvailable(data)) widgets.add(RIPCardClosed(data));
     if (RIPCardPreference.isAvailable(data)) widgets.add(RIPCardPreference(data));

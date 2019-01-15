@@ -22,7 +22,7 @@ class RIPPage extends StatefulWidget {
 }
 
 class RIPPageState extends State<RIPPage> {
-  ScrollController _controller;
+  ScrollController controller;
   RIPImageLoader _imageLoader;
   bool _clear = true;
 
@@ -41,15 +41,15 @@ class RIPPageState extends State<RIPPage> {
       MunchDialog.showError(context, error);
     });
 
-    _controller = ScrollController();
-    _controller.addListener(_scrollListener);
+    controller = ScrollController();
+    controller.addListener(_scrollListener);
   }
 
   _start(PlaceData placeData) {
     setState(() {
       this.placeData = placeData;
       this.images = placeData.images;
-      this.widgets = RIPCardDelegator.delegate(placeData);
+      this.widgets = RIPCardDelegator.delegate(placeData, this);
     });
 
     _imageLoader = RIPImageLoader();
@@ -79,13 +79,13 @@ class RIPPageState extends State<RIPPage> {
   _scrollListener() {
     // Check if to Load More
     if (_imageLoader.more) {
-      final position = _controller.position;
+      final position = controller.position;
       if (position.pixels > position.maxScrollExtent - 100) {
         _imageLoader.append();
       }
     }
 
-    if (_controller.offset > 120) {
+    if (controller.offset > 120) {
       if (!_clear) return;
       setState(() {
         _clear = false;
@@ -129,7 +129,7 @@ class RIPPageState extends State<RIPPage> {
     return Scaffold(
       body: Stack(children: [
         CustomScrollView(
-          controller: _controller,
+          controller: controller,
           slivers: slivers,
         ),
         RIPHeader(placeData: placeData, clear: _clear),

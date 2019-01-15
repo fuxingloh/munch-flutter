@@ -20,6 +20,26 @@ class MunchButtonStyle {
     this.textStyle,
   });
 
+  MunchButtonStyle copyWith({
+    Color textColor,
+    Color background,
+    Color borderColor,
+    double borderWidth,
+    double height,
+    double padding,
+    TextStyle textStyle,
+  }) {
+    return MunchButtonStyle(
+      textColor: textColor ?? this.textColor,
+      background: background ?? this.background,
+      borderColor: borderColor ?? this.borderColor,
+      borderWidth: borderWidth ?? this.borderWidth,
+      height: height ?? this.height,
+      padding: padding ?? this.padding,
+      textStyle: textStyle ?? this.textStyle,
+    );
+  }
+
   static const TextStyle _textStyle =
       TextStyle(fontSize: 17, fontWeight: FontWeight.w600);
   static const double _height = 40.0;
@@ -121,7 +141,11 @@ class MunchButton extends StatelessWidget {
           key: key,
           onPressed: onPressed,
           style: style,
-          child: Text(text, style: style.textStyle.copyWith(color: style.textColor)),
+          child: Text(
+            text,
+            style: style.textStyle.copyWith(color: style.textColor),
+            overflow: TextOverflow.ellipsis,
+          ),
         );
 
   MunchButton({

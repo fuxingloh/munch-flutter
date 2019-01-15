@@ -297,6 +297,10 @@ class SearchFilterLocationPoint {
       _$SearchFilterLocationPointFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchFilterLocationPointToJson(this);
+
+  static List<SearchFilterLocationPoint> fromJsonList(List<dynamic> list) {
+    return list.map((map) => SearchFilterLocationPoint.fromJson(map)).toList(growable: false);
+  }
 }
 
 enum SearchFilterLocationType { Between, Where, Nearby, Anywhere }

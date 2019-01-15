@@ -94,17 +94,21 @@ class SearchCardHomeTab extends SearchCardWidget {
     children.add(Container(
       margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
       child: Row(
-//      crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _buildTab("EatBetween", 'search_card_home_tab_between.jpg', () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (c) => FilterBetweenPage(
-                      searchQuery: SearchPage.state.searchQuery,
-                    ),
-              ),
-            );
+            // TODO Implement Map
+            Navigator.of(context)
+                .push(MaterialPageRoute(
+              fullscreenDialog: true,
+              builder: (c) => FilterBetweenPage(
+                    searchQuery: SearchPage.state.searchQuery,
+                  ),
+            ))
+                .then((searchQuery) {
+              if (searchQuery != null) {
+                SearchPage.state.push(searchQuery);
+              }
+            });
           }),
           _buildTab("Neighbourhoods", 'search_card_home_tab_location.jpg', () {
             SearchPage.state.push(SearchQuery.feature(SearchFeature.Location));

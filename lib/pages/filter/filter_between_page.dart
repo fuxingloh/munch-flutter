@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:munch_app/api/munch_data.dart';
+import 'package:munch_app/api/api.dart';
 import 'dart:convert';
 
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/components/bottom_sheet.dart';
+import 'package:munch_app/components/dialog.dart';
+import 'package:munch_app/pages/filter/filter_between_search.dart';
+import 'package:munch_app/pages/filter/filter_manager.dart';
 import 'package:munch_app/styles/munch.dart';
 
 class FilterBetweenPage extends StatefulWidget {
@@ -19,27 +23,113 @@ class FilterBetweenPage extends StatefulWidget {
 }
 
 class FilterBetweenState extends State<FilterBetweenPage> {
-  FilterBetweenState(this.searchQuery);
+  static const _api = MunchApi.instance;
+
+  FilterBetweenState(this.searchQuery) {
+    this.searchQuery.feature = SearchFeature.Search;
+    this.searchQuery.filter.location.type = SearchFilterLocationType.Between;
+  }
 
   SearchQuery searchQuery;
   GoogleMapController mapController;
 
+  FilterResult _result;
+
+  @override
+  void initState() {
+    super.initState();
+    refresh();
+  }
+
+  void refresh() {
+    setState(() {
+      this._result = null;
+    });
+
+    if (searchQuery.filter.location.points.length < 2) {
+      return;
+    }
+
+    _api.post('/search/filter', body: searchQuery).then((res) {
+      Map<String, dynamic> data = res.data;
+      return FilterResult.fromJson(data);
+    }).then((result) {
+      setState(() {
+        this._result = result;
+      });
+    }, onError: (error) {
+      MunchDialog.showError(context, error);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final googleMap = GoogleMap(
+      onMapCreated: _onMapCreated,
+      options: GoogleMapOptions(
+        compassEnabled: false,
+        myLocationEnabled: false,
+      ),
+    );
+
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Stack(
         children: <Widget>[
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            options: GoogleMapOptions(
-              compassEnabled: false,
-              myLocationEnabled: false,
-            ),
-          ),
-          AppBar(backgroundColor: MunchColors.clear),
+          googleMap,
+          _FilterBetweenBar(),
         ],
       ),
-      bottomNavigationBar: FilterBetweenBottom(),
+      bottomNavigationBar: _FilterBetweenBottom(
+        result: _result,
+        points: searchQuery.filter.location.points,
+        onRemove: (i) => _onRemove(context, i),
+        onApply: () {
+          Navigator.of(context).pop(searchQuery);
+        },
+        onAdd: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (c) => FilterBetweenSearchPage()),
+          ).then((point) {
+            if (point == null) return;
+
+            setState(() {
+              searchQuery.filter.location.points.add(point);
+              refresh();
+            });
+          });
+        },
+      ),
+    );
+  }
+
+  void _onRemove(BuildContext context, i) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return MunchBottomSheet(
+          children: [
+            MunchBottomSheetTile(
+              onPressed: () {
+                Navigator.pop(context);
+
+                setState(() {
+                  searchQuery.filter.location.points.removeAt(i);
+                  refresh();
+                });
+              },
+              icon: Icon(Icons.delete),
+              child: Text("Remove Location"),
+            ),
+            MunchBottomSheetTile(
+              onPressed: () => Navigator.pop(context),
+              icon: Icon(Icons.close),
+              child: Text("Cancel"),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -56,14 +146,14 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   }
 }
 
-class FilterBetweenBar extends StatelessWidget {
+class _FilterBetweenBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
       title: const Text("EatBetween"),
       backgroundColor: MunchColors.clear,
       elevation: 0,
-      iconTheme: IconThemeData(color: MunchColors.black),
+      iconTheme: const IconThemeData(color: MunchColors.black),
     );
 
     return Container(
@@ -78,27 +168,174 @@ class FilterBetweenBar extends StatelessWidget {
   }
 }
 
-class FilterBetweenBottom extends StatelessWidget {
-  final List<Area> areas = [];
+class _FilterBetweenBottom extends StatelessWidget {
+  const _FilterBetweenBottom({
+    Key key,
+    @required this.points,
+    @required this.onAdd,
+    @required this.onRemove,
+    @required this.onApply,
+    @required this.result,
+  }) : super(key: key);
+
+  final List<SearchFilterLocationPoint> points;
+  final ValueChanged<int> onRemove;
+  final VoidCallback onAdd;
+  final VoidCallback onApply;
+  final FilterResult result;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> children = [
+      Padding(
+        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+        child: Text("Enter everyone’s location and we’ll find the "
+            "most ideal spot for a meal together."),
+      )
+    ];
+
+    if (points.isNotEmpty) {
+      children.add(_FilterBetweenRow(points: points, onRemove: onRemove));
+    }
+
+    children.add(Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: _FilterBetweenAction(
+        onAdd: onAdd,
+        onApply: onApply,
+        result: result,
+        points: points,
+      ),
+    ));
+
+    return Container(
+      decoration:
+          const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
+      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
+    );
+  }
+}
+
+class _FilterBetweenRow extends StatelessWidget {
+  const _FilterBetweenRow({
+    Key key,
+    @required this.points,
+    @required this.onRemove,
+  }) : super(key: key);
+
+  final List<SearchFilterLocationPoint> points;
+  final ValueChanged<int> onRemove;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration:
-          const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
-      height: 120,
-      padding: EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Text("EatBetween", style: MTextStyle.h2),
-          ),
-          Text(
-              "Enter everyone’s location and we’ll find the most ideal spot for a meal together.")
-        ],
+      height: 48,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 24, right: 24),
+        itemCount: points.length,
+        itemBuilder: (context, i) {
+          return GestureDetector(
+            onTap: () => onRemove(i),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: MunchColors.whisper100,
+                  borderRadius: BorderRadius.circular(3)),
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: Center(child: Text('${i + 1}. ${points[i].name}')),
+            ),
+          );
+        },
+        separatorBuilder: (c, _) => SizedBox(width: 16),
       ),
     );
+  }
+}
+
+class _FilterBetweenAction extends StatelessWidget {
+  _FilterBetweenAction({
+    Key key,
+    @required this.onAdd,
+    @required this.onApply,
+    @required this.result,
+    @required this.points,
+  }) : super(key: key);
+
+  final List<SearchFilterLocationPoint> points;
+  final VoidCallback onAdd;
+  final VoidCallback onApply;
+  final FilterResult result;
+
+  final MunchButtonStyle fade = MunchButtonStyle.secondary.copyWith(
+      background: MunchColors.secondary050,
+      borderColor: MunchColors.secondary050,
+      textColor: MunchColors.secondary700);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 24, right: 12),
+          child: _addButton,
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 12, right: 24),
+            child: _applyButton,
+          ),
+        ),
+      ],
+    );
+  }
+
+  MunchButton get _addButton {
+    if (points.length < 10) {
+      return MunchButton.text(
+        "+ Location",
+        onPressed: onAdd,
+        style: MunchButtonStyle.secondaryOutline,
+      );
+    } else {
+      return MunchButton.text(
+        "Max 10",
+        onPressed: null,
+        style: fade,
+      );
+    }
+  }
+
+  MunchButton get _applyButton {
+    if (points.length < 2) {
+      return MunchButton.text(
+        "Require 2 Location",
+        onPressed: null,
+        style: fade,
+      );
+    }
+
+    if (result == null) {
+      return MunchButton.text(
+        "Loading...",
+        onPressed: null,
+        style: fade,
+      );
+    } else if (result.count > 0) {
+      return MunchButton.text(
+        FilterManager.countTitle(count: result.count, postfix: "Places"),
+        onPressed: onApply,
+      );
+    } else {
+      return MunchButton.text(
+        "No Results",
+        onPressed: null,
+        style: fade,
+      );
+    }
   }
 }

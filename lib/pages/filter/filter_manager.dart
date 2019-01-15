@@ -64,7 +64,6 @@ class FilterManager {
     _controller.close();
   }
 
-  //    func dispatch(delay: RxTimeInterval = 0.2) {
   void dispatch() {
     _result = null;
     _loading = true;
