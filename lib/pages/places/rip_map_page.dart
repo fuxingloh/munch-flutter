@@ -17,7 +17,7 @@ class RIPMapPage extends StatefulWidget {
 
   LatLng get latLng {
     var location = placeData.place.location;
-    var split = location.latLng.split(",");
+    var split = location.latLng.split(',');
     return LatLng(double.parse(split[0]), double.parse(split[1]));
   }
 }

@@ -113,6 +113,7 @@ abstract class SearchCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => onTap(context),
       child: Container(margin: margin, child: buildCard(context)),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/pages/filter/filter_area_page.dart';
+import 'package:munch_app/pages/filter/filter_between_page.dart';
 import 'package:munch_app/pages/filter/filter_manager.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/colors.dart';
@@ -65,7 +66,13 @@ class FilterCellLocation extends StatelessWidget {
               selected: type == SearchFilterLocationType.Between,
               text: "EatBetween",
               onPressed: () {
-                // TODO
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    fullscreenDialog: true,
+                    builder: (c) =>
+                        FilterBetweenPage(searchQuery: manager.searchQuery),
+                  ),
+                );
               }),
           _FilterLocationButton(
               icon: MunchIcons.filter_nearby,
@@ -158,7 +165,6 @@ class WhereButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TOOD Cancel
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -179,7 +185,10 @@ class WhereButton extends StatelessWidget {
             Container(
               alignment: Alignment.centerRight,
               margin: EdgeInsets.only(right: 12),
-              child: Icon(MunchIcons.filter_cancel, color: MunchColors.white,),
+              child: Icon(
+                MunchIcons.filter_cancel,
+                color: MunchColors.white,
+              ),
             )
           ],
         ),

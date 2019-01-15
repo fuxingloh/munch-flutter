@@ -5,7 +5,7 @@ import 'package:munch_app/styles/texts.dart';
 
 class SearchCardHeader extends SearchCardWidget {
   SearchCardHeader(SearchCard card)
-      : super(card, margin: SearchCardInsets.only(bottom: 0));
+      : super(card, margin: const SearchCardInsets.only(bottom: 0));
 
   @override
   Widget buildCard(BuildContext context) {

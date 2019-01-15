@@ -31,11 +31,11 @@ class SearchCardHomePopularPlace extends SearchCardWidget {
               style: MTextStyle.h6),
         ),
         Container(
-          margin: EdgeInsets.only(top: 24, bottom: 24),
+          margin: const EdgeInsets.only(top: 24, bottom: 24),
           child: SearchCardPlaceCollection(places: _places),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 24, right: 24),
+          padding: const EdgeInsets.only(left: 24, right: 24),
           child: MunchButton.text("Show all popular places",
               onPressed: onPressed, style: MunchButtonStyle.secondaryOutline),
         ),

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:munch_app/pages/filter/filter_between_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
 String _title() {
@@ -83,7 +85,7 @@ class SearchCardHomeTab extends SearchCardWidget {
 //        }
       },
       child: const Padding(
-        padding: EdgeInsets.only(top: 4, left: 24, right: 24),
+        padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
         child: Text("(Not Samantha? Create an account here.)",
             style: MTextStyle.h6),
       ),
@@ -95,10 +97,14 @@ class SearchCardHomeTab extends SearchCardWidget {
 //      crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           _buildTab("EatBetween", 'search_card_home_tab_between.jpg', () {
-            // TODO Eat Between
-          }),
-          _buildTab("Inspiration", 'search_card_home_tab_feed.jpg', () {
-            // TODO Feed
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (c) => FilterBetweenPage(
+                      searchQuery: SearchPage.state.searchQuery,
+                    ),
+              ),
+            );
           }),
           _buildTab("Neighbourhoods", 'search_card_home_tab_location.jpg', () {
             SearchPage.state.push(SearchQuery.feature(SearchFeature.Location));

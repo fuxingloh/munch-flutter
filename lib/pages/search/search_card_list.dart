@@ -31,7 +31,6 @@ class SearchCardListState extends State<SearchCardList> {
     _controller.addListener(() => onScroll(_controller.position));
   }
 
-
   @override
   void dispose() {
     _manager.dispose();
