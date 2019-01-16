@@ -58,7 +58,7 @@ class SuggestManager {
         .distinct()
         .debounce(const Duration(milliseconds: 300))
         .switchMap((text) async* {
-      if (text.length < 3) {
+      if (text.length < 2) {
         yield await this.history;
       } else {
         yield <SuggestItem>[];

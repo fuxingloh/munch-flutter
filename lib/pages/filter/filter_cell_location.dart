@@ -35,7 +35,7 @@ class FilterCellLocation extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Text("Where", style: MTextStyle.h2),
+            const Text("Where", style: MTextStyle.h2),
             MunchButton.text("Search",
                 onPressed: () => _onSearch(context), style: _searchStyle)
           ],

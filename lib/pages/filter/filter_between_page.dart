@@ -57,13 +57,32 @@ class FilterBetweenState extends State<FilterBetweenPage> {
       setState(() {
         this._result = result;
         mapController.clearMarkers();
-//        mapController.addMarker(MarkerOptions(
-//
-//        ));
+        refreshMap();
       });
     }, onError: (error) {
       MunchDialog.showError(context, error);
     });
+  }
+
+  void refreshMap() {
+    mapController.clearMarkers();
+
+    searchQuery.filter.location.points.forEach((point) {
+      var ll = point.latLng.split(",");
+      var latLng = LatLng(double.parse(ll[0]), double.parse(ll[1]));
+      mapController.addMarker(MarkerOptions(
+        position: latLng,
+        infoWindowText: InfoWindowText(point.name, null),
+      ));
+    });
+
+
+//    mapController.moveCamera(CameraUpdate.newCameraPosition(
+//      CameraPosition(
+//        target: widget.latLng,
+//        zoom: 16.0,
+//      ),
+//    ));
   }
 
   @override
@@ -327,7 +346,7 @@ class _FilterBetweenAction extends StatelessWidget {
   MunchButton get _applyButton {
     if (points.length < 2) {
       return MunchButton.text(
-        "Require 2 Location",
+        "Require 2",
         onPressed: null,
         style: fade,
       );

@@ -77,8 +77,20 @@ class FilterAreaPageState extends State<FilterAreaPage> {
           _filtered = _FilterAreaAlpha.search(_areas, text);
         });
       },
-      style: TextStyle(
-          fontSize: 19, color: Colors.black, fontWeight: FontWeight.w600),
+      decoration: InputDecoration(
+        border: InputBorder.none,
+        hintText: "Search here",
+        hintStyle: const TextStyle(
+          fontSize: 19,
+          color: MunchColors.black75,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      style: const TextStyle(
+        fontSize: 19,
+        color: Colors.black,
+        fontWeight: FontWeight.w600,
+      ),
     );
 
     return Scaffold(

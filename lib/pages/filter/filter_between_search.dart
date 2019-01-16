@@ -28,14 +28,13 @@ class FilterBetweenSearchPageState extends State<FilterBetweenSearchPage> {
         .distinct()
         .debounce(const Duration(milliseconds: 300))
         .switchMap((text) async* {
-      if (text.length < 3) {
+      if (text.length < 2) {
         yield [false, <SearchFilterLocationPoint>[]];
       } else {
         yield [true, <SearchFilterLocationPoint>[]];
 
-        final points = await _api.post('/search/filter/between/search', body: {
-          'text': text.toLowerCase()
-        }).then((res) {
+        final points = await _api.post('/search/filter/between/search',
+            body: {'text': text.toLowerCase()}).then((res) {
           List<dynamic> data = res.data;
           return SearchFilterLocationPoint.fromJsonList(data);
         });
@@ -83,6 +82,15 @@ class FilterBetweenSearchPageState extends State<FilterBetweenSearchPage> {
           title: TextField(
         autofocus: true,
         onChanged: (text) => _onTextChanged.add(text),
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: "Search here",
+          hintStyle: const TextStyle(
+            fontSize: 19,
+            color: MunchColors.black75,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         style: const TextStyle(
           fontSize: 19,
           color: Colors.black,
