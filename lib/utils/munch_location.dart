@@ -103,7 +103,7 @@ class MunchLocation {
   String distanceAsDuration(String latLng, String toLatLng) {
     var split = toLatLng.split(",");
     var meter =
-    distance(latLng, double.parse(split[0]), double.parse(split[1]));
+        distance(latLng, double.parse(split[0]), double.parse(split[1]));
     int min = meter ~/ 70;
 
     if (min <= 1) {
@@ -112,4 +112,60 @@ class MunchLocation {
 
     return "$min min";
   }
+}
+
+String getCentroid(List<String> points) {
+  double cLat = 0, cLng = 0;
+
+  points.forEach((latLng) {
+    var ll = latLng.split(",");
+    cLat += double.parse(ll[0]);
+    cLng += double.parse(ll[1]);
+  });
+
+  return '${cLat / points.length},${cLng / points.length}';
+}
+
+double _toRad(double radiusInKm) {
+  return (1 / 110.54) * radiusInKm;
+}
+
+BoundingBox getBoundingBox(List<String> points, double offsetKm) {
+  if (points.isEmpty) return null;
+
+  final double offset = _toRad(offsetKm);
+
+  // Max: TopLat, BotLng, North East
+  // Min: TopLng, BotLat, South West
+  double topLat = -1000;
+  double topLng = 1000;
+  double botLat = 1000;
+  double botLng = -1000;
+
+  points.forEach((latLng) {
+    var ll = latLng.split(",");
+    double lat = double.parse(ll[0]);
+    double lng = double.parse(ll[1]);
+
+    if (topLat < lat) topLat = lat;
+    if (botLng < lng) botLng = lng;
+    if (topLng > lng) topLng = lng;
+    if (botLat > lat) botLat = lat;
+  });
+
+  return BoundingBox(
+    topLat: topLat + offset,
+    topLng: topLng - offset,
+    botLat: botLat - offset,
+    botLng: botLng + offset,
+  );
+}
+
+class BoundingBox {
+  const BoundingBox({this.topLat, this.topLng, this.botLat, this.botLng});
+
+  final double topLat;
+  final double topLng;
+  final double botLat;
+  final double botLng;
 }

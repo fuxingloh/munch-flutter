@@ -9,6 +9,7 @@ import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/filter/filter_between_search.dart';
 import 'package:munch_app/pages/filter/filter_manager.dart';
 import 'package:munch_app/styles/munch.dart';
+import 'package:munch_app/utils/munch_location.dart';
 
 class FilterBetweenPage extends StatefulWidget {
   const FilterBetweenPage({Key key, this.searchQuery}) : super(key: key);
@@ -67,7 +68,11 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   void refreshMap() {
     mapController.clearMarkers();
 
-    searchQuery.filter.location.points.forEach((point) {
+    final points = searchQuery.filter.location.points;
+    final List<String> latLngList =
+        points.map((p) => p.latLng).toList(growable: false);
+
+    points.forEach((point) {
       var ll = point.latLng.split(",");
       var latLng = LatLng(double.parse(ll[0]), double.parse(ll[1]));
       mapController.addMarker(MarkerOptions(
@@ -76,13 +81,14 @@ class FilterBetweenState extends State<FilterBetweenPage> {
       ));
     });
 
-
-//    mapController.moveCamera(CameraUpdate.newCameraPosition(
-//      CameraPosition(
-//        target: widget.latLng,
-//        zoom: 16.0,
-//      ),
-//    ));
+    var box = getBoundingBox(latLngList, 0);
+    mapController.moveCamera(CameraUpdate.newLatLngBounds(
+      LatLngBounds(
+        southwest: LatLng(box.botLat, box.topLng),
+        northeast: LatLng(box.topLat, box.botLng),
+      ),
+      80,
+    ));
   }
 
   @override
@@ -90,8 +96,21 @@ class FilterBetweenState extends State<FilterBetweenPage> {
     final googleMap = GoogleMap(
       onMapCreated: _onMapCreated,
       options: GoogleMapOptions(
+        scrollGesturesEnabled: false,
         compassEnabled: false,
         myLocationEnabled: false,
+      ),
+    );
+
+    final center = const Center(
+      child: SizedBox(
+        height: 40,
+        width: 40,
+        child: Icon(
+          MunchIcons.suggest_place,
+          color: MunchColors.secondary900,
+          size: 40,
+        ),
       ),
     );
 
@@ -101,6 +120,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
         children: <Widget>[
           googleMap,
           _FilterBetweenBar(),
+          _result != null ? center : Container(),
         ],
       ),
       bottomNavigationBar: _FilterBetweenBottom(
@@ -165,8 +185,8 @@ class FilterBetweenState extends State<FilterBetweenPage> {
       mapController = controller;
       mapController.moveCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
-          target: LatLng(1.28, 103.8),
-          zoom: 16.0,
+          target: LatLng(1.305270, 103.8),
+          zoom: 11.0,
         ),
       ));
     });
