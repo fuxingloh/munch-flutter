@@ -56,6 +56,10 @@ class FilterBetweenState extends State<FilterBetweenPage> {
     }).then((result) {
       setState(() {
         this._result = result;
+        mapController.clearMarkers();
+//        mapController.addMarker(MarkerOptions(
+//
+//        ));
       });
     }, onError: (error) {
       MunchDialog.showError(context, error);
@@ -83,28 +87,14 @@ class FilterBetweenState extends State<FilterBetweenPage> {
       bottomNavigationBar: _FilterBetweenBottom(
         result: _result,
         points: searchQuery.filter.location.points,
-        onRemove: (i) => _onRemove(context, i),
-        onApply: () {
-          Navigator.of(context).pop(searchQuery);
-        },
-        onAdd: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (c) => FilterBetweenSearchPage()),
-          ).then((point) {
-            if (point == null) return;
-
-            setState(() {
-              searchQuery.filter.location.points.add(point);
-              refresh();
-            });
-          });
-        },
+        onRemove: _onRemove,
+        onApply: _onApply,
+        onAdd: _onAdd,
       ),
     );
   }
 
-  void _onRemove(BuildContext context, i) {
+  void _onRemove(i) {
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -131,6 +121,24 @@ class FilterBetweenState extends State<FilterBetweenPage> {
         );
       },
     );
+  }
+
+  void _onApply() {
+    Navigator.of(context).pop(searchQuery);
+  }
+
+  void _onAdd() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (c) => FilterBetweenSearchPage()),
+    ).then((point) {
+      if (point == null) return;
+
+      setState(() {
+        searchQuery.filter.location.points.add(point);
+        refresh();
+      });
+    });
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -187,8 +195,8 @@ class _FilterBetweenBottom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [
-      Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24, bottom: 8),
+      const Padding(
+        padding: EdgeInsets.only(left: 24, right: 24, bottom: 8),
         child: Text("Enter everyone’s location and we’ll find the "
             "most ideal spot for a meal together."),
       )
@@ -197,7 +205,7 @@ class _FilterBetweenBottom extends StatelessWidget {
     if (points.isNotEmpty) {
       children.add(_FilterBetweenRow(points: points, onRemove: onRemove));
     } else {
-      children.add(Container(
+      children.add(const SizedBox(
         height: 48,
         child: Center(child: Text("Require 2 Locations")),
       ));

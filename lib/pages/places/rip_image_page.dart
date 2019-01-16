@@ -29,11 +29,19 @@ class RIPImagePage extends StatefulWidget {
 
 class RIPImagePageState extends State<RIPImagePage> {
   List<PlaceImage> images;
+  PageController controller;
 
   @override
   void initState() {
     super.initState();
     this.images = widget.imageLoader.images;
+    this.controller = PageController(initialPage: widget.index);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,8 +49,10 @@ class RIPImagePageState extends State<RIPImagePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.place.name, style: MTextStyle.navHeader),
+        elevation: 2,
       ),
       body: PageView.builder(
+        controller: controller,
         itemBuilder: (c, i) => _RIPImageContent(image: images[i]),
         onPageChanged: (i) {
           if (i > images.length - 5) {
