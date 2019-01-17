@@ -1,19 +1,32 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:munch_app/api/api.dart';
+import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/api/search_api.dart';
-import 'package:munch_app/api/structured_exception.dart';
-import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
-class SearchManager {
+class MapPlace {
+  MapPlace(this.place);
+
+  Place place;
+  Marker marker;
+
+  LatLng get latLng {
+    List<String> ll = place.location.latLng.split(",");
+    return LatLng(double.parse(ll[0]), double.parse(ll[1]));
+  }
+}
+
+class SearchMapManager {
   static const MunchApi _api = MunchApi.instance;
 
   final SearchQuery searchQuery;
   int _page = 0;
 
   List<SearchCard> _cards = [];
+  List<MapPlace> _places = [];
 
   /// Whether this card manager is currently loading more content
   bool _loading = false;
@@ -25,17 +38,12 @@ class SearchManager {
 
   bool get more => _more;
 
-  StreamController<List<SearchCard>> _controller;
+  StreamController<List<MapPlace>> _controller;
 
-  SearchManager(this.searchQuery);
+  SearchMapManager(this.searchQuery);
 
-  Stream<List<SearchCard>> stream() {
-    _controller = StreamController<List<SearchCard>>();
-    _controller.add([
-      SearchCard.cardId("SearchCardShimmer"),
-      SearchCard.cardId("SearchCardShimmer"),
-      SearchCard.cardId("SearchCardShimmer"),
-    ]);
+  Stream<List<MapPlace>> stream() {
+    _controller = StreamController<List<MapPlace>>();
     return _controller.stream;
   }
 
@@ -53,7 +61,7 @@ class SearchManager {
         }
       },
       onError: (error) {
-        _append([SearchCardError.location()]);
+        _controller.addError(error);
       },
     ).whenComplete(() {
       return _search();
@@ -68,7 +76,7 @@ class SearchManager {
     if (_loading || !_more) return Future.value();
 
     _loading = true;
-    var body = searchQuery.toJson();
+    final body = searchQuery.toJson();
     return _api.post('/search?page=$_page', body: body).then((res) {
       List<dynamic> list = res.data;
       var cards = list.map((data) => SearchCard(data));
@@ -79,19 +87,13 @@ class SearchManager {
       this._more = cards.isNotEmpty;
       this._page += 1;
     }, onError: (error) {
-      debugPrint(error);
+      _controller.addError(error);
 
-      if (error is DeprecatedException) {
-        _append([SearchCard.cardId("SearchCardUnsupported")]);
-      } else if (error is StructuredException) {
-        _append([SearchCardError.error(error)]);
-      } else {
-        _append([SearchCardError.error(error)]);
-      }
+      debugPrint(error);
       this._more = false;
     }).whenComplete(() {
       this._loading = false;
-      _controller.add(_cards);
+      _controller.add(_places);
     });
   }
 
@@ -99,6 +101,10 @@ class SearchManager {
     cards.forEach((card) {
       if (_cards.contains(card)) return;
       _cards.add(card);
+
+      if (card.cardId == 'Place_2018-12-29') {
+        _places.add(MapPlace(Place.fromJson(card['place'])));
+      }
     });
   }
 }

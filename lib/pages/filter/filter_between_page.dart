@@ -70,7 +70,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
 
     final points = searchQuery.filter.location.points;
     final List<String> latLngList =
-        points.map((p) => p.latLng).toList(growable: false);
+    points.map((p) => p.latLng).toList(growable: false);
 
     points.forEach((point) {
       var ll = point.latLng.split(",");
@@ -99,6 +99,9 @@ class FilterBetweenState extends State<FilterBetweenPage> {
         scrollGesturesEnabled: false,
         compassEnabled: false,
         myLocationEnabled: false,
+        rotateGesturesEnabled: false,
+        tiltGesturesEnabled: false,
+        zoomGesturesEnabled: false,
       ),
     );
 
@@ -262,7 +265,7 @@ class _FilterBetweenBottom extends StatelessWidget {
 
     return Container(
       decoration:
-          const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
+      const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
       padding: const EdgeInsets.only(top: 16, bottom: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -350,7 +353,7 @@ class _FilterBetweenAction extends StatelessWidget {
   MunchButton get _addButton {
     if (points.length < 10) {
       return MunchButton.text(
-        "+ Location",
+        "Add",
         onPressed: onAdd,
         style: MunchButtonStyle.secondaryOutline,
       );

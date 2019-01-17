@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/pages/filter/filter_between_page.dart';
+import 'package:munch_app/pages/search/map/search_map_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
 String _title() {
@@ -76,14 +78,7 @@ class SearchCardHomeTab extends SearchCardWidget {
     ];
 
     children.add(GestureDetector(
-      onTap: () {
-//        Authentication.requireAuthentication(controller: self.controller) { state in
-//            guard case .loggedIn = state else {
-//                return
-//            }
-//            self.controller.reset()
-//        }
-      },
+      onTap: () => _onLogin(context),
       child: const Padding(
         padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
         child: Text("(Not Samantha? Create an account here.)",
@@ -91,28 +86,14 @@ class SearchCardHomeTab extends SearchCardWidget {
       ),
     ));
 
-    children.add(Container(
-      margin: const EdgeInsets.only(top: 16, left: 16, right: 16),
+    children.add(Padding(
+      padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
       child: Row(
         children: <Widget>[
-          _buildTab("EatBetween", 'search_card_home_tab_between.jpg', () {
-            // TODO Implement Map
-            Navigator.of(context)
-                .push(MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (c) => FilterBetweenPage(
-                    searchQuery: SearchPage.state.searchQuery,
-                  ),
-            ))
-                .then((searchQuery) {
-              if (searchQuery != null) {
-                SearchPage.state.push(searchQuery);
-              }
-            });
-          }),
-          _buildTab("Neighbourhoods", 'search_card_home_tab_location.jpg', () {
-            SearchPage.state.push(SearchQuery.feature(SearchFeature.Location));
-          }),
+          _buildTab("EatBetween", 'search_card_home_tab_between.jpg',
+              () => _onBetween(context)),
+          _buildTab("Neighbourhoods", 'search_card_home_tab_location.jpg',
+              () => _onLocation(context)),
         ],
       ),
     ));
@@ -121,5 +102,34 @@ class SearchCardHomeTab extends SearchCardWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: children,
     );
+  }
+
+  void _onLogin(BuildContext context) {
+    Authentication.instance.requireAuthentication(context).then((state) {
+      if (state != AuthenticationState.loggedIn) {
+        return;
+      }
+
+      SearchPage.state.reset();
+    });
+  }
+
+  void _onLocation(BuildContext context) {
+    SearchPage.state.push(SearchQuery.feature(SearchFeature.Location));
+  }
+
+  void _onBetween(BuildContext context) {
+    final searchQuery = SearchPage.state.searchQuery;
+
+    Future<SearchQuery> future = Navigator.of(context).push(MaterialPageRoute(
+      fullscreenDialog: true,
+      builder: (c) => FilterBetweenPage(searchQuery: searchQuery),
+    ));
+
+    future.then((searchQuery) {
+      if (searchQuery == null) return;
+
+      SearchPage.state.push(searchQuery);
+    });
   }
 }
