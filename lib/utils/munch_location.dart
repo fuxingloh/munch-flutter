@@ -33,15 +33,19 @@ class MunchLocation {
     }
   }
 
-  Future<String> request({bool force = false, bool permission = false}) async {
+  Future<String> request({
+    bool force = false,
+    bool permission = false,
+    Duration timeout = const Duration(seconds: 8),
+  }) async {
     if (await isEnabled()) {
-      return _request(force: force);
+      return _request(force: force).timeout(timeout);
     }
 
     if (permission) {
       await PermissionHandler()
           .shouldShowRequestPermissionRationale(PermissionGroup.location);
-      return _request(force: force);
+      return _request(force: force).timeout(timeout);
     }
 
     return null;

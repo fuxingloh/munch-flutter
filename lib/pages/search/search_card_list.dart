@@ -95,7 +95,7 @@ class SearchCardListState extends State<SearchCardList> {
         itemCount: _cards.length + 1,
         itemBuilder: (context, i) {
           if (_cards.length == i) {
-            return _SearchLoaderIndicator(loading: manager.more);
+            return _SearchLoaderIndicator(loading: manager?.more ?? true);
           }
           return SearchCardDelegator.delegate(_cards[i]);
         },

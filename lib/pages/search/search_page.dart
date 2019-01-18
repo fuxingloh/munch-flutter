@@ -23,41 +23,18 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
   RecentSearchQueryDatabase _recentSearchQueryDatabase =
       RecentSearchQueryDatabase();
 
-  SearchQuery get searchQuery => histories.last;
+  SearchQuery get searchQuery {
+    if (histories.isEmpty) return SearchQuery.feature(SearchFeature.Home);
+    return histories.last;
+  }
   SearchCardList _cardList = SearchCardList();
-  SearchAppBar _header;
+
+  bool hasHeader = true;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-
-    _header = SearchAppBar(
-        onBack: pop,
-        onSuggest: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (c) => SuggestPage(searchQuery: searchQuery)),
-          ).then((searchQuery) {
-            if (searchQuery != null && searchQuery is SearchQuery) {
-              push(searchQuery);
-            }
-          });
-        },
-        onFilter: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              fullscreenDialog: true,
-              builder: (c) => FilterPage(searchQuery: searchQuery),
-            ),
-          ).then((searchQuery) {
-            if (searchQuery != null && searchQuery is SearchQuery) {
-              push(searchQuery);
-            }
-          });
-        });
 
     UserSearchPreference.get().whenComplete(() {
       push(SearchQuery.feature(SearchFeature.Home));
@@ -87,15 +64,14 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
       _recentSearchQueryDatabase.put(searchQuery);
     }
 
-    _cardList.search(searchQuery);
-    _header.searchQuery = searchQuery;
+    _search(searchQuery);
   }
 
-  void edit(EditSearchQuery edit) {
+  void edit(EditSearchQuery _edit) {
     var last = histories.last;
     if (last == null) return;
 
-    edit(last);
+    _edit(last);
     push(last);
   }
 
@@ -103,9 +79,18 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     if (histories.length <= 1) return false;
 
     histories.removeLast();
-    _cardList.search(histories.last);
-    _header.searchQuery = searchQuery;
+    _search(searchQuery);
     return true;
+  }
+
+  void _search(SearchQuery searchQuery) {
+    if (searchQuery.feature == SearchFeature.Home) {
+      setState(() => hasHeader = false);
+    } else {
+      setState(() => hasHeader = true);
+    }
+
+    _cardList.search(histories.last);
   }
 
   void reset() {
@@ -127,8 +112,11 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final header = hasHeader ? SearchAppBar(searchQuery) : null;
+    final body = SafeArea(child: _cardList);
+
     return WillPopScope(
-      child: Scaffold(appBar: _header, body: _cardList),
+      child: Scaffold(appBar: header, body: body),
       onWillPop: () async {
         return !pop();
       },

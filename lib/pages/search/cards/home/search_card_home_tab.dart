@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/pages/filter/filter_between_page.dart';
-import 'package:munch_app/pages/search/map/search_map_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
 String _title() {

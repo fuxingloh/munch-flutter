@@ -50,13 +50,14 @@ class SearchManager {
   /// Start the stream of cards,
   /// The stream output the entire list.
   Future start() async {
-    return MunchLocation.instance.request().timeout(Duration(seconds: 6)).then(
+    return MunchLocation.instance.request().then(
       (latLng) {
         if (_cards.length == 1 && _cards[0]?.cardId == 'SearchCardError') {
           _cards = [];
         }
       },
       onError: (error) {
+        debugPrint(error);
         _append([SearchCardError.location()]);
       },
     ).whenComplete(() {

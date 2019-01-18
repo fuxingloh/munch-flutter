@@ -15,18 +15,14 @@ class SearchCardHomeNearby extends SearchCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 18),
-          child: Text("Discover Nearby", style: MTextStyle.h2),
-        ),
         Container(
           padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3),
+          decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(3)),
             image: DecorationImage(
               fit: BoxFit.cover,
               colorFilter:
-                  ColorFilter.mode(MunchColors.black50, BlendMode.srcOver),
+                  ColorFilter.mode(MunchColors.black40, BlendMode.srcOver),
               image:
                   AssetImage('assets/img/search_card_home_nearby_banner.jpg'),
             ),
@@ -35,19 +31,19 @@ class SearchCardHomeNearby extends SearchCardWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
+                  padding: const EdgeInsets.only(bottom: 32, top: 8),
                   child: Text(
-                    "Discover Places Near You",
+                    "Explore places around you",
                     style: MTextStyle.h4.copyWith(color: MunchColors.white),
                   ),
                 ),
               ),
               Container(
-                alignment: Alignment.centerRight,
+                alignment: Alignment.center,
                 child: MunchButton.text(
-                  "Discover",
+                  "Discover Nearby",
                   onPressed: () => onPressed(context).catchError((error) {
                         MunchDialog.showError(context, error);
                       }),
