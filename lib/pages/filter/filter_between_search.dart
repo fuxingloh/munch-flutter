@@ -70,7 +70,7 @@ class FilterBetweenSearchPageState extends State<FilterBetweenSearchPage> {
 
     children.add(Expanded(
       child: ListView.builder(
-        padding: EdgeInsets.only(left: 72, top: 8, bottom: 8, right: 24),
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
         itemBuilder: (_, i) => _FilterPointCell(point: points[i]),
         itemCount: points.length,
       ),
@@ -110,9 +110,10 @@ class _FilterPointCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => onTap(context),
       child: Container(
-        margin: EdgeInsets.only(top: 16, bottom: 16),
+        margin: const EdgeInsets.only(left: 72, right: 24, top: 16, bottom: 16),
         child: Text(
           point.name,
           style: MTextStyle.regular,

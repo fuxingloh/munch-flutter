@@ -64,7 +64,7 @@ class FilterAreaPageState extends State<FilterAreaPage> {
 
     children.add(Expanded(
       child: ListView.builder(
-        padding: EdgeInsets.only(left: 72, top: 8, bottom: 8, right: 24),
+        padding: const EdgeInsets.only(top: 8, bottom: 8),
         itemBuilder: (_, i) => _FilterAreaCell(area: _filtered[i]),
         itemCount: _filtered.length,
       ),
@@ -117,9 +117,10 @@ class _FilterAreaCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: () => onTap(context),
       child: Container(
-        margin: EdgeInsets.only(top: 16, bottom: 16),
+        margin: const EdgeInsets.only(left: 72, right: 24, top: 16, bottom: 16),
         child: Text(
           area.name,
           style: MTextStyle.regular,
