@@ -1,5 +1,3 @@
-// AreaClusterList_2018-06-21
-
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/api/user_api.dart';

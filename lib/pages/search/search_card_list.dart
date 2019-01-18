@@ -20,9 +20,8 @@ class SearchCardList extends StatefulWidget {
 
 class SearchCardListState extends State<SearchCardList> {
   final ScrollController _controller = ScrollController();
-  final SearchCardDelegator _delegator = SearchCardDelegator();
 
-  SearchManager _manager;
+  SearchManager manager;
   List<SearchCard> _cards = [];
 
   @override
@@ -33,20 +32,20 @@ class SearchCardListState extends State<SearchCardList> {
 
   @override
   void dispose() {
-    _manager.dispose();
+    manager.dispose();
     super.dispose();
   }
 
   Future _search(SearchQuery query) {
     scrollToTop();
-    _manager = SearchManager(query);
-    _manager.stream().listen((cards) {
+    manager = SearchManager(query);
+    manager.stream().listen((cards) {
       setState(() => this._cards = cards);
     }, onError: (error) {
       MunchDialog.showError(context, error);
     });
 
-    return _manager.start();
+    return manager.start();
   }
 
   /// whether it is already on top
@@ -54,22 +53,34 @@ class SearchCardListState extends State<SearchCardList> {
     if (_controller.offset == 0) return true;
 
     if (_cards.isNotEmpty) {
-      _controller.animateTo(0,
-          duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+      _controller.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
     }
     return false;
   }
 
+  void scrollTo(String uniqueId) {
+    double offset = SearchCardDelegator.offset(context, _cards, uniqueId);
+    _controller.animateTo(
+      offset,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
   void onScroll(ScrollPosition position) {
     if (position.pixels > position.maxScrollExtent - 100) {
-      _manager.append().then((_) {
+      manager.append().then((_) {
         setState(() {});
       });
     }
   }
 
   Future _handleRefresh() async {
-    return _search(_manager.searchQuery);
+    return _search(manager.searchQuery);
   }
 
   @override
@@ -84,9 +95,9 @@ class SearchCardListState extends State<SearchCardList> {
         itemCount: _cards.length + 1,
         itemBuilder: (context, i) {
           if (_cards.length == i) {
-            return _SearchLoaderIndicator(loading: _manager.more);
+            return _SearchLoaderIndicator(loading: manager.more);
           }
-          return _delegator.delegate(_cards[i]);
+          return SearchCardDelegator.delegate(_cards[i]);
         },
       ),
     );

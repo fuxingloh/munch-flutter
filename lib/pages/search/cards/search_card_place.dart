@@ -12,4 +12,10 @@ class SearchCardPlace extends SearchCardWidget {
     final Place place = Place.fromJson(card['place']);
     return PlaceCard(place: place);
   }
+
+  static double height(BuildContext context, SearchCard card) {
+    const insets = SearchCardInsets.only();
+    final width = MediaQuery.of(context).size.width - insets.horizontal;
+    return PlaceCard.height(width) + insets.vertical;
+  }
 }

@@ -94,6 +94,15 @@ class SearchCardError extends SearchCardWidget {
     );
   }
 
+  static double height(BuildContext context, SearchCard card) {
+    const insets = SearchCardInsets.only();
+    var total = insets.vertical + MTextStyle.h2.fontSize + 48;
+    if (card['message'] != null) {
+      return total + 16 + MTextStyle.regular.fontSize;
+    }
+    return total;
+  }
+
   static SearchCard message(String title, String message) {
     return SearchCard.cardId("SearchCardError", body: {
       'title': title,

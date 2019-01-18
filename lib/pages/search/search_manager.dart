@@ -11,6 +11,8 @@ class SearchManager {
   static const MunchApi _api = MunchApi.instance;
 
   final SearchQuery searchQuery;
+
+  String _qid;
   int _page = 0;
 
   List<SearchCard> _cards = [];
@@ -24,6 +26,8 @@ class SearchManager {
   bool _more = true;
 
   bool get more => _more;
+
+  String get qid => _qid;
 
   StreamController<List<SearchCard>> _controller;
 
@@ -70,6 +74,10 @@ class SearchManager {
     _loading = true;
     var body = searchQuery.toJson();
     return _api.post('/search?page=$_page', body: body).then((res) {
+      if (_page == 0) {
+        _qid = res['qid'];
+      }
+
       List<dynamic> list = res.data;
       var cards = list.map((data) => SearchCard(data));
       return cards.toList(growable: false);

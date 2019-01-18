@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/pages/search/cards/between/search_card_between_header.dart';
 import 'package:munch_app/pages/search/cards/collection/search_card_collection.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_award_collection.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_dtje.dart';
@@ -24,7 +25,38 @@ export 'package:munch_app/styles/buttons.dart';
 export 'package:munch_app/styles/colors.dart';
 
 class SearchCardDelegator {
-  Widget delegate(SearchCard card) {
+  /// This will only work if all the card height is implemented properly
+  static double offset(
+      BuildContext context, List<SearchCard> cards, String uniqueId) {
+    double offset = 0;
+    cards.takeWhile((c) => c.uniqueId != uniqueId).forEach((card) {
+      offset += height(context, card);
+    });
+    return offset;
+  }
+
+  static double height(BuildContext context, SearchCard card) {
+    switch (card.cardId) {
+      case "Header_2018-11-29":
+        return SearchCardHeader.height(context, card);
+
+      case "NoLocation_2017-10-20":
+        return SearchCardNoLocation.height(context, card);
+
+      case "BetweenHeader_2018-12-13":
+        return SearchCardBetweenHeader.height(context, card);
+
+      case "Place_2018-12-29":
+        return SearchCardPlace.height(context, card);
+
+      case "SearchCardError":
+        return SearchCardError.height(context, card);
+    }
+
+    return 0;
+  }
+
+  static Widget delegate(SearchCard card) {
     switch (card.cardId) {
       case "Header_2018-11-29":
         return SearchCardHeader(card);
@@ -84,7 +116,8 @@ class SearchCardDelegator {
       case "SuggestedTag_2018-05-11":
         return SearchCardTagSuggestion(card);
 
-//        register(SearchCardBetweenHeader.self)
+      case "BetweenHeader_2018-12-13":
+        return SearchCardBetweenHeader(card);
     }
 
     debugPrint('Required Card ${card.cardId} Not Found.');

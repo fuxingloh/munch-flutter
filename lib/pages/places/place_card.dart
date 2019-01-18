@@ -110,8 +110,7 @@ RichText _buildLocation(Place place) {
 }
 
 class PlaceHeartButton extends StatelessWidget {
-  const PlaceHeartButton({Key key, @required this.onPressed})
-      : super(key: key);
+  const PlaceHeartButton({Key key, @required this.onPressed}) : super(key: key);
 
   final VoidCallback onPressed;
 
@@ -132,7 +131,11 @@ class PlaceHeartButton extends StatelessWidget {
 }
 
 class PlaceCard extends StatefulWidget {
-  const PlaceCard({Key key, @required this.place, this.onHeart}) : super(key: key);
+  const PlaceCard({
+    Key key,
+    @required this.place,
+    this.onHeart,
+  }) : super(key: key);
 
   final Place place;
   final VoidCallback onHeart;
@@ -145,7 +148,7 @@ class PlaceCard extends StatefulWidget {
     height += 28 + 12;
     height += 27 + 6;
     height += 19 + 8;
-    return height.ceilToDouble();
+    return height;
   }
 }
 

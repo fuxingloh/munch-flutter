@@ -31,6 +31,14 @@ class SearchCardNoLocation extends SearchCardWidget {
     );
   }
 
+  static double height(BuildContext context, SearchCard card) {
+    const insets = SearchCardInsets.only();
+    return insets.vertical +
+        MTextStyle.regular.fontSize +
+        48 +
+        MunchButtonStyle.secondary.height;
+  }
+
   void onPressed(BuildContext context) {
     firebaseAnalytics.logEvent(name: 'enable_location');
     MunchLocation.instance.request(force: true, permission: true).then((_) {

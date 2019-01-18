@@ -70,7 +70,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
 
     final points = searchQuery.filter.location.points;
     final List<String> latLngList =
-    points.map((p) => p.latLng).toList(growable: false);
+        points.map((p) => p.latLng).toList(growable: false);
 
     points.forEach((point) {
       var ll = point.latLng.split(",");
@@ -107,14 +107,9 @@ class FilterBetweenState extends State<FilterBetweenPage> {
 
     final center = const Center(
       child: SizedBox(
-        height: 40,
-        width: 40,
-        child: Icon(
-          MunchIcons.suggest_place,
-          color: MunchColors.secondary900,
-          size: 40,
-        ),
-      ),
+          height: 30,
+          width: 30,
+          child: Image(image: AssetImage('assets/img/rip_map_centroid.png'))),
     );
 
     return Scaffold(
@@ -239,17 +234,19 @@ class _FilterBetweenBottom extends StatelessWidget {
     List<Widget> children = [
       const Padding(
         padding: EdgeInsets.only(left: 24, right: 24, bottom: 8),
-        child: Text("Enter everyone’s location and we’ll find the "
-            "most ideal spot for a meal together."),
+        child: Text(
+            "Enter everyone’s location and we’ll find the most ideal spot for a meal together."),
       )
     ];
 
     if (points.isNotEmpty) {
       children.add(_FilterBetweenRow(points: points, onRemove: onRemove));
     } else {
-      children.add(const SizedBox(
+      children.add(Container(
         height: 48,
-        child: Center(child: Text("Require 2 Locations")),
+        padding: EdgeInsets.only(left: 24),
+        alignment: Alignment.centerLeft,
+        child: Text("Requires 2 Locations"),
       ));
     }
 
@@ -265,7 +262,7 @@ class _FilterBetweenBottom extends StatelessWidget {
 
     return Container(
       decoration:
-      const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
+          const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
       padding: const EdgeInsets.only(top: 16, bottom: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -302,8 +299,21 @@ class _FilterBetweenRow extends StatelessWidget {
                 color: MunchColors.whisper100,
                 borderRadius: BorderRadius.all(Radius.circular(3)),
               ),
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Center(child: Text('${i + 1}. ${points[i].name}')),
+              padding: const EdgeInsets.only(left: 10),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Center(child: Text('${i + 1}. ${points[i].name}')),
+                  const Padding(
+                    padding: EdgeInsets.all(6.0),
+                    child: Icon(
+                      MunchIcons.filter_cancel,
+                      size: 20,
+                      color: MunchColors.black75,
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         },
@@ -327,22 +337,27 @@ class _FilterBetweenAction extends StatelessWidget {
   final VoidCallback onApply;
   final FilterResult result;
 
-  final MunchButtonStyle fade = MunchButtonStyle.secondary.copyWith(
-      background: MunchColors.secondary050,
-      borderColor: MunchColors.secondary050,
-      textColor: MunchColors.secondary700);
+  final MunchButtonStyle addStyle =
+      MunchButtonStyle.secondaryOutline.copyWith(padding: 16);
+
+  final MunchButtonStyle fadedStyle = MunchButtonStyle.secondary.copyWith(
+    background: MunchColors.secondary050,
+    borderColor: MunchColors.secondary050,
+    textColor: MunchColors.secondary700,
+    padding: 0
+  );
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 24, right: 12),
+          padding: const EdgeInsets.only(left: 24, right: 8),
           child: _addButton,
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(left: 12, right: 24),
+            padding: const EdgeInsets.only(left: 8, right: 24),
             child: _applyButton,
           ),
         ),
@@ -353,15 +368,15 @@ class _FilterBetweenAction extends StatelessWidget {
   MunchButton get _addButton {
     if (points.length < 10) {
       return MunchButton.text(
-        "Add",
+        "+ Location",
         onPressed: onAdd,
-        style: MunchButtonStyle.secondaryOutline,
+        style: addStyle,
       );
     } else {
       return MunchButton.text(
         "Max 10",
         onPressed: null,
-        style: fade,
+        style: fadedStyle,
       );
     }
   }
@@ -369,9 +384,9 @@ class _FilterBetweenAction extends StatelessWidget {
   MunchButton get _applyButton {
     if (points.length < 2) {
       return MunchButton.text(
-        "Require 2",
+        "Requires 2 Locations",
         onPressed: null,
-        style: fade,
+        style: fadedStyle,
       );
     }
 
@@ -379,7 +394,7 @@ class _FilterBetweenAction extends StatelessWidget {
       return MunchButton.text(
         "Loading...",
         onPressed: null,
-        style: fade,
+        style: fadedStyle,
       );
     } else if (result.count > 0) {
       return MunchButton.text(
@@ -390,7 +405,7 @@ class _FilterBetweenAction extends StatelessWidget {
       return MunchButton.text(
         "No Results",
         onPressed: null,
-        style: fade,
+        style: fadedStyle,
       );
     }
   }
