@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/main.dart';
-import 'package:munch_app/pages/filter/filter_page.dart';
 import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
-import 'package:munch_app/pages/suggest/suggest_page.dart';
 import 'package:munch_app/utils/recent_database.dart';
 
 class SearchPage extends StatefulWidget {
@@ -27,6 +25,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     if (histories.isEmpty) return SearchQuery.feature(SearchFeature.Home);
     return histories.last;
   }
+
   SearchCardList _cardList = SearchCardList();
 
   bool hasHeader = true;
@@ -116,7 +115,11 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     final body = SafeArea(child: _cardList);
 
     return WillPopScope(
-      child: Scaffold(appBar: header, body: body),
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: header,
+        body: body,
+      ),
       onWillPop: () async {
         return !pop();
       },

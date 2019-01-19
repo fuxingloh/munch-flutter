@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/pages/filter/filter_area_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 

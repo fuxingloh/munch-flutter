@@ -20,6 +20,8 @@ class MunchLocation {
   }
 
   Future<bool> isEnabled() async {
+    // TODO: I think this is causing delay
+
     PermissionStatus permission = await PermissionHandler()
         .checkPermissionStatus(PermissionGroup.location);
 

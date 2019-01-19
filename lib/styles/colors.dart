@@ -35,6 +35,7 @@ class MunchColors {
 
   static const Color black10 = Color(0x1A000000);
   static const Color black15 = Color(0x26000000);
+  static const Color black20 = Color(0x34000000);
   static const Color black40 = Color(0x66000000);
   static const Color black50 = Color(0x80000000);
   static const Color black75 = Color(0xBF000000);

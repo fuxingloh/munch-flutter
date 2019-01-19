@@ -19,6 +19,20 @@ class UserProfile {
       _$UserProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);
+
+  static Future<UserProfile> get() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var string = prefs.getString("UserProfile");
+    if (string == null) return null;
+
+    return UserProfile.fromJson(jsonDecode(string));
+  }
+
+  static Future put(UserProfile profile) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("UserProfile", jsonEncode(profile));
+  }
 }
 
 @JsonSerializable()
@@ -31,6 +45,20 @@ class UserSetting {
       _$UserSettingFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserSettingToJson(this);
+
+  static Future<UserSetting> get() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    var string = prefs.getString("UserSetting");
+    if (string == null) return null;
+
+    return UserSetting.fromJson(jsonDecode(string));
+  }
+
+  static Future put(UserSetting setting) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("UserSetting", jsonEncode(setting));
+  }
 }
 
 @JsonSerializable()
@@ -62,9 +90,7 @@ class UserSearchPreference {
   static Future put(UserSearchPreference preference) async {
     instance = preference;
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    var body = preference.toJson();
-    prefs.setString("UserSearchPreference", jsonEncode(body));
+    prefs.setString("UserSearchPreference", jsonEncode(preference));
   }
 }
 

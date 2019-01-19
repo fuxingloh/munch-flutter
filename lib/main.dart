@@ -12,6 +12,9 @@ import 'package:munch_app/styles/munch.dart';
 
 void main() => runApp(MunchApp());
 
+final MunchTabState tabState = MunchTabState();
+DateTime pausedDateTime = DateTime.now();
+
 final ThemeData theme = ThemeData(
   brightness: Brightness.light,
   primaryColor: MunchColors.white,
@@ -41,9 +44,6 @@ class MunchApp extends StatelessWidget {
     );
   }
 }
-
-final MunchTabState tabState = MunchTabState();
-DateTime pausedDateTime = DateTime.now();
 
 class MunchTabPage extends StatefulWidget {
   @override
@@ -80,6 +80,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    // TODO Offstage into more dynamic
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       bottomNavigationBar: MunchBottomBar(
@@ -130,11 +131,6 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
 }
 
 class MunchBottomBar extends StatelessWidget {
-  static const TextStyle style = TextStyle(
-    fontSize: 12,
-    height: 1.3,
-  );
-
   final ValueChanged<int> onTab;
   final int currentIndex;
 
@@ -154,20 +150,33 @@ class MunchBottomBar extends StatelessWidget {
         onTap: onTab,
         fixedColor: MunchColors.primary500,
         items: [
-          const BottomNavigationBarItem(
-            icon: Icon(MunchIcons.tabbar_discover),
-            title: Text('Discover', style: style),
+          MunchBottomBarItem(
+            icon: MunchIcons.tabbar_discover,
+            text: 'Discover',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(MunchIcons.tabbar_feed),
-            title: Text('Feed', style: style),
+          MunchBottomBarItem(
+            icon: MunchIcons.tabbar_feed,
+            text: 'Feed',
           ),
-          const BottomNavigationBarItem(
-            icon: Icon(MunchIcons.tabbar_profile),
-            title: Text('Tastebud', style: style),
+          MunchBottomBarItem(
+            icon: MunchIcons.tabbar_profile,
+            text: 'Tastebud',
           ),
         ],
       ),
     );
   }
+}
+
+class MunchBottomBarItem extends BottomNavigationBarItem {
+  static const TextStyle style = TextStyle(
+    fontSize: 12,
+    height: 1.3,
+  );
+
+  MunchBottomBarItem({IconData icon, String text})
+      : super(
+          icon: Icon(icon),
+          title: Text(text, style: style),
+        );
 }
