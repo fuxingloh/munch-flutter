@@ -53,11 +53,19 @@ class MunchTabPage extends StatefulWidget {
 class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
   int _currentIndex = 0;
 
-  final List<Widget> _children = [
-    SearchPage(),
-    FeedPage(),
-    TastebudPage(),
-  ];
+  Map<int, Widget> _children = {0: SearchPage()};
+
+  Widget getChild(int index) {
+    if (_children.containsKey(index)) return _children[index];
+    if (_currentIndex == index) {
+      if (index == 0) _children[0] = SearchPage();
+      if (index == 1) _children[1] = FeedPage();
+      if (index == 2) _children[2] = TastebudPage();
+
+      return _children[index];
+    }
+    return Container();
+  }
 
   @override
   void initState() {
@@ -80,7 +88,6 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    // TODO Offstage into more dynamic
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       bottomNavigationBar: MunchBottomBar(
@@ -93,7 +100,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
             offstage: _currentIndex != index,
             child: TickerMode(
               enabled: _currentIndex == index,
-              child: _children[index],
+              child: getChild(index),
             ),
           );
         }, growable: false),
