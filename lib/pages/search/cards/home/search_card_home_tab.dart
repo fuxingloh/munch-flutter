@@ -23,26 +23,6 @@ class _SearchCardHomeTabChild extends StatefulWidget {
   _SearchCardHomeTabChildState createState() => _SearchCardHomeTabChildState();
 }
 
-String _salutation() {
-  var date = DateTime.now();
-  var total = (date.hour * 60) + date.minute;
-
-  if (total >= 300 && total < 720) {
-    return "Good Morning";
-  } else if (total >= 720 && total < 1020) {
-    return "Good Afternoon";
-  } else {
-    return "Good Evening";
-  }
-}
-
-Future<String> _title() async {
-  final profile = await UserProfile.get();
-  final name = profile?.name ?? "Samantha";
-
-  return "${_salutation()}, $name. Feeling hungry?";
-}
-
 class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
   static const List<_HomeTab> tabs = [
     _HomeTab.between,
@@ -52,78 +32,42 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
 
   _HomeTab tab = tabs[0];
 
+  final profile = SearchHomeProfile();
+
   @override
   Widget build(BuildContext context) {
     List<Widget> children = [
-      Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24),
-        child: FutureBuilder(
-          future: _title(),
-          builder: (context, snapshot) {
-            final style = MTextStyle.h2.copyWith(color: Colors.white);
-
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Text(snapshot.data, style: style);
-            } else {
-              return Text(_salutation(), style: style);
-            }
+      profile,
+      Container(
+        height: 40,
+        margin: const EdgeInsets.only(top: 16),
+        child: ListView.separated(
+          padding: const EdgeInsets.only(left: 24, right: 24),
+          scrollDirection: Axis.horizontal,
+          itemBuilder: (c, i) {
+            return GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => setState(() => tab = tabs[i]),
+              child: SearchHomeTabCell(tabs[i].title, tab == tabs[i]),
+            );
           },
+          separatorBuilder: (c, i) => SizedBox(width: 32),
+          itemCount: tabs.length,
         ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
+        child: Text(
+          tab.message,
+          style: MTextStyle.h5.copyWith(color: Colors.white),
+        ),
+      ),
+      SearchHomeActionBar(
+        tab: tab,
+        onBar: _onBar,
+        onRight: _onRight,
       )
     ];
-
-    children.add(FutureBuilder(
-      future: UserProfile.get(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data == null) {
-          return GestureDetector(
-            onTap: _onLogin,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
-              child: Text(
-                "(Not Samantha? Create an account here.)",
-                style: MTextStyle.h6.copyWith(color: Colors.white),
-              ),
-            ),
-          );
-        } else {
-          return Container();
-        }
-      },
-    ));
-
-    children.add(Container(
-      height: 40,
-      margin: const EdgeInsets.only(top: 16),
-      child: ListView.separated(
-        padding: const EdgeInsets.only(left: 24, right: 24),
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (c, i) {
-          return GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () => setState(() => tab = tabs[i]),
-            child: SearchHomeTabCell(tabs[i].title, tab == tabs[i]),
-          );
-        },
-        separatorBuilder: (c, i) => SizedBox(width: 32),
-        itemCount: tabs.length,
-      ),
-    ));
-
-    children.add(Padding(
-      padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-      child: Text(
-        tab.message,
-        style: MTextStyle.h5.copyWith(color: Colors.white),
-      ),
-    ));
-
-    children.add(SearchHomeActionBar(
-      tab: tab,
-      onBar: _onBar,
-      onRight: _onRight,
-    ));
 
     return Stack(
       alignment: Alignment.topCenter,
@@ -149,16 +93,6 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
         ),
       ],
     );
-  }
-
-  void _onLogin() {
-    Authentication.instance.requireAuthentication(context).then((state) {
-      if (state != AuthenticationState.loggedIn) {
-        return;
-      }
-
-      SearchPage.state.reset();
-    });
   }
 
   void _onBar() {
@@ -214,6 +148,82 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
       if (searchQuery != null && searchQuery is SearchQuery) {
         SearchPage.state.push(searchQuery);
       }
+    });
+  }
+}
+
+class SearchHomeProfile extends StatelessWidget {
+  String _salutation() {
+    var date = DateTime.now();
+    var total = (date.hour * 60) + date.minute;
+
+    if (total >= 300 && total < 720) {
+      return "Good Morning";
+    } else if (total >= 720 && total < 1020) {
+      return "Good Afternoon";
+    } else {
+      return "Good Evening";
+    }
+  }
+
+  Future<String> _title() async {
+    final profile = await UserProfile.get();
+    final name = profile?.name ?? "Samantha";
+
+    return "${_salutation()}, $name. Feeling hungry?";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24),
+          child: FutureBuilder(
+            future: _title(),
+            builder: (context, snapshot) {
+              final style = MTextStyle.h2.copyWith(color: Colors.white);
+
+              if (snapshot.connectionState == ConnectionState.done) {
+                return Text(snapshot.data, style: style);
+              } else {
+                return Text(_salutation(), style: style);
+              }
+            },
+          ),
+        ),
+        FutureBuilder(
+          future: UserProfile.get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.data == null) {
+              return GestureDetector(
+                onTap: () => _onLogin(context),
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
+                  child: Text(
+                    "(Not Samantha? Create an account here.)",
+                    style: MTextStyle.h6.copyWith(color: Colors.white),
+                  ),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        )
+      ],
+    );
+  }
+
+  void _onLogin(BuildContext context) {
+    Authentication.instance.requireAuthentication(context).then((state) {
+      if (state != AuthenticationState.loggedIn) {
+        return;
+      }
+
+      SearchPage.state.reset();
     });
   }
 }

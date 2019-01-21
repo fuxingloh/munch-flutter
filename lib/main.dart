@@ -119,7 +119,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
       return;
     }
 
-    if (index == _children.length - 1) {
+    if (index == 2) {
       Authentication.instance.requireAuthentication(context).then((state) {
         if (state == AuthenticationState.loggedIn) {
           setState(() {
