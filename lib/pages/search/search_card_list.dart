@@ -42,7 +42,11 @@ class SearchCardListState extends State<SearchCardList> {
     manager.stream().listen((cards) {
       setState(() => this._cards = cards);
     }, onError: (error) {
-      MunchDialog.showError(context, error);
+      if (error == 'LocationError') {
+        MunchDialog.showOkay(context, title: 'Location Error', content: 'Unable to retrieve your location for search.');
+      } else {
+        MunchDialog.showError(context, error);
+      }
     });
 
     return manager.start();

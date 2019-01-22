@@ -58,7 +58,7 @@ class SearchManager {
       },
       onError: (error) {
         debugPrint(error);
-        _append([SearchCardError.location()]);
+        _controller.addError('LocationError');
       },
     ).whenComplete(() {
       return _search();
