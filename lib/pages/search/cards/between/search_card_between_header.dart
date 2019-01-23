@@ -47,9 +47,9 @@ class SearchCardBetweenHeader extends SearchCardWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 24, right: 16),
-                    child: Text(title, style: MTextStyle.h2),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 24, right: 16),
+                    child: Text("Ideal Locations", style: MTextStyle.h2),
                   ),
                   GestureDetector(
                     onTap: () => onEdit(context),
