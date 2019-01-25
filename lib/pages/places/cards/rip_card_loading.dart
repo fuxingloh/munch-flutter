@@ -1,4 +1,3 @@
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:munch_app/components/shimmer.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 
@@ -26,25 +25,5 @@ class RIPCardLoadingName extends RIPCardWidget {
       height: 40,
       child: Shimmer(),
     );
-  }
-}
-
-class RIPCardLoadingGallery extends RIPCardWidget {
-  const RIPCardLoadingGallery({this.loading = false}) : super(null);
-
-  final bool loading;
-
-  @override
-  Widget buildCard(BuildContext context, PlaceData data) {
-    if (loading) {
-      return Center(
-        child: SpinKitThreeBounce(
-          color: MunchColors.secondary500,
-          size: 24.0,
-        ),
-      );
-    } else {
-      return SizedBox(height: 24);
-    }
   }
 }

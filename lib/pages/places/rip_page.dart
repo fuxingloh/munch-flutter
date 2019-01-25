@@ -129,14 +129,16 @@ class RIPPageState extends State<RIPPage> {
           mainAxisSpacing: 16,
           staggeredTileBuilder: (i) => StaggeredTile.fit(1),
           itemBuilder: (context, i) =>
-              RIPGalleryImage(image: images[i], onPressed: () => onImage(i)),
+              RIPGalleryImageCard(image: images[i], onPressed: () => onImage(i)),
           itemCount: images.length,
         ),
       ));
 
-      slivers.add(SliverToBoxAdapter(
-        child: RIPCardLoadingGallery(loading: _imageLoader?.more ?? false),
-      ));
+      if (images.length > 0) {
+        slivers.add(SliverToBoxAdapter(
+          child: RIPGalleryFooterCard(loading: _imageLoader?.more ?? false),
+        ));
+      }
     }
 
     return Scaffold(

@@ -48,8 +48,8 @@ class RIPCardDelegator {
     widgets.add(RIPCardSuggestEdit(data));
 
     if (RIPCardArticle.isAvailable(data)) widgets.add(RIPCardArticle(data));
-    if (RIPCardGalleryHeader.isAvailable(data))
-      widgets.add(RIPCardGalleryHeader(data));
+    if (RIPGalleryHeaderCard.isAvailable(data))
+      widgets.add(RIPGalleryHeaderCard(data));
     return widgets;
   }
 }
