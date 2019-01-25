@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/components/munch_tag_view.dart';
@@ -16,7 +18,21 @@ class SuggestPage extends StatefulWidget {
   final SearchQuery searchQuery;
 
   @override
-  State<StatefulWidget> createState() => SuggestPageState(searchQuery);
+  State<StatefulWidget> createState() {
+    var json = jsonDecode(jsonEncode(searchQuery));
+    return SuggestPageState(SearchQuery.fromJson(json));
+  }
+
+  static Future<T> push<T extends Object>(BuildContext context, SearchQuery searchQuery) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (c) => SuggestPage(searchQuery: searchQuery),
+        settings: RouteSettings(name: '/search/suggest'),
+      ),
+    );
+  }
 }
 
 class SuggestPageState extends State<SuggestPage> {
@@ -196,10 +212,7 @@ class _SuggestPlaceCell extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (c) => RIPPage(place: item.place)),
-        );
+        RIPPage.push(context, item.place);
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
@@ -210,8 +223,7 @@ class _SuggestPlaceCell extends StatelessWidget {
             Icon(MunchIcons.suggest_place),
             Padding(
               padding: const EdgeInsets.only(left: 24),
-              child: Text(item.place.name,
-                  style: MTextStyle.regular),
+              child: Text(item.place.name, style: MTextStyle.regular),
             )
           ],
         ),
@@ -297,8 +309,7 @@ class _SuggestTextCell extends StatelessWidget {
             const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Text(
           "Did you mean ${item.text}",
-          style: MTextStyle.regular
-              .copyWith(fontWeight: FontWeight.w600),
+          style: MTextStyle.regular.copyWith(fontWeight: FontWeight.w600),
         ),
       ),
     );
@@ -312,8 +323,7 @@ class _SuggestNoResultCell extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
       child: Text(
         "No Results",
-        style: MTextStyle.regular
-            .copyWith(fontWeight: FontWeight.w600),
+        style: MTextStyle.regular.copyWith(fontWeight: FontWeight.w600),
       ),
     );
   }

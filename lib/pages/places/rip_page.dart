@@ -11,6 +11,7 @@ import 'package:munch_app/pages/places/rip_footer.dart';
 import 'package:munch_app/pages/places/rip_header.dart';
 import 'package:munch_app/pages/places/rip_image_loader.dart';
 import 'package:munch_app/pages/places/rip_image_page.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPPage extends StatefulWidget {
   const RIPPage({Key key, this.place}) : super(key: key);
@@ -19,6 +20,16 @@ class RIPPage extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() => RIPPageState();
+
+  static Future<T> push<T extends Object>(BuildContext context, Place place) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (c) => RIPPage(place: place),
+        settings: RouteSettings(name: '/places'),
+      ),
+    );
+  }
 }
 
 class RIPPageState extends State<RIPPage> {
@@ -43,6 +54,8 @@ class RIPPageState extends State<RIPPage> {
 
     controller = ScrollController();
     controller.addListener(_scrollListener);
+
+    MunchAnalytic.logEvent("rip_view");
   }
 
   _start(PlaceData placeData) {
@@ -139,16 +152,11 @@ class RIPPageState extends State<RIPPage> {
   }
 
   void onImage(int i) {
-    Navigator.push(
+    RIPImagePage.push(
       context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (context) => RIPImagePage(
-              index: i,
-              imageLoader: _imageLoader,
-              place: placeData.place,
-            ),
-      ),
+      index: i,
+      imageLoader: _imageLoader,
+      place: placeData.place,
     );
   }
 }

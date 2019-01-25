@@ -38,12 +38,7 @@ class _TastebudAppBar extends AppBar {
   static List<Widget> _buildActions(BuildContext context) {
     return [
       IconButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (c) => TastebudSettingPage()),
-          );
-        },
+        onPressed: () => TastebudSettingPage.push(context),
         icon: const Icon(MunchIcons.navigation_setting),
       ),
     ];
@@ -52,7 +47,7 @@ class _TastebudAppBar extends AppBar {
   _TastebudAppBar(BuildContext context)
       : super(
           title: const Text(
-            'Your Tastebud',
+            'Your Profile',
           ),
           bottom: _buildTabBar(context),
           actions: _buildActions(context),

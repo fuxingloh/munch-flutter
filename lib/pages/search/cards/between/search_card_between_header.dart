@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munch_app/pages/filter/filter_between_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/icons.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:share/share.dart';
 
 class SearchBetweenAnchor {
@@ -54,8 +55,7 @@ class SearchCardBetweenHeader extends SearchCardWidget {
                   GestureDetector(
                     onTap: () => onEdit(context),
                     child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 8, left: 24, right: 16),
+                      padding: const EdgeInsets.only(top: 8, left: 24, right: 16),
                       child: Row(
                         children: <Widget>[
                           Padding(
@@ -97,23 +97,12 @@ class SearchCardBetweenHeader extends SearchCardWidget {
 
   static double height(BuildContext context, SearchCard card) {
     const insets = SearchCardInsets.only();
-    return insets.vertical +
-        48 +
-        16 +
-        MTextStyle.h2.fontSize +
-        8 +
-        MTextStyle.regular.fontSize;
+    return insets.vertical + 48 + 16 + MTextStyle.h2.fontSize + 8 + MTextStyle.regular.fontSize;
   }
 
   void onEdit(BuildContext context) {
     final searchQuery = SearchPage.state.searchQuery;
-
-    Future<SearchQuery> future = Navigator.of(context).push(MaterialPageRoute(
-      fullscreenDialog: true,
-      builder: (c) => FilterBetweenPage(searchQuery: searchQuery),
-    ));
-
-    future.then((searchQuery) {
+    FilterBetweenPage.push(context, searchQuery).then((searchQuery) {
       if (searchQuery == null) return;
 
       SearchPage.state.push(searchQuery);
@@ -122,6 +111,7 @@ class SearchCardBetweenHeader extends SearchCardWidget {
 
   void onShare(BuildContext context) {
     final qid = SearchPage.state.qid;
+    MunchAnalytic.logSearchQueryShare(searchQuery: SearchPage.state.searchQuery, trigger: "search_card_between_header");
     Share.share("https://www.munch.app/search?qid=$qid&g=GB10");
   }
 }

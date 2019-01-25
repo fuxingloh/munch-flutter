@@ -8,6 +8,16 @@ import 'package:rxdart/rxdart.dart';
 class FilterBetweenSearchPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => FilterBetweenSearchPageState();
+
+  static Future<T> push<T extends Object>(BuildContext context) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (c) => FilterBetweenSearchPage(),
+        settings: RouteSettings(name: '/search/filter/between/search'),
+      ),
+    );
+  }
 }
 
 class FilterBetweenSearchPageState extends State<FilterBetweenSearchPage> {

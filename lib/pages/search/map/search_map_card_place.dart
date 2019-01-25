@@ -28,10 +28,7 @@ class _MapPlaceCardState extends State<MapPlaceCard> {
   }
 
   void onPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (c) => RIPPage(place: place)),
-    );
+    RIPPage.push(context, place);
   }
 
   @override

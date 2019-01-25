@@ -57,12 +57,7 @@ class SearchCardLocationBanner extends SearchCardWidget {
   }
 
   void onLocation(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FilterAreaPage(),
-      ),
-    ).then((area) {
+    FilterAreaPage.push(context).then((area) {
       if (area == null) return;
 
       var query = SearchQuery.search();

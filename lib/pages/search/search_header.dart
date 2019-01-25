@@ -102,10 +102,7 @@ class _SearchQueryBar extends StatelessWidget {
   void onSuggest(BuildContext context) {
     final searchQuery = SearchPage.state.searchQuery;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (c) => SuggestPage(searchQuery: searchQuery)),
-    ).then((searchQuery) {
+    SuggestPage.push(context, searchQuery).then((searchQuery) {
       if (searchQuery != null && searchQuery is SearchQuery) {
         SearchPage.state.push(searchQuery);
       }
@@ -198,13 +195,7 @@ class SearchActionButton extends StatelessWidget {
   void onFilter(BuildContext context) {
     final searchQuery = SearchPage.state.searchQuery;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (c) => FilterPage(searchQuery: searchQuery),
-      ),
-    ).then((searchQuery) {
+    FilterPage.push(context, searchQuery).then((searchQuery) {
       if (searchQuery != null && searchQuery is SearchQuery) {
         SearchPage.state.push(searchQuery);
       }

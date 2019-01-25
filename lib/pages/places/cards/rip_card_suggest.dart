@@ -5,6 +5,7 @@ import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/separators.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RIPCardSuggestEdit extends RIPCardWidget {
@@ -66,6 +67,7 @@ void _openSuggestEdit(String token, Place place) async {
 
   String url = uri.toString();
   if (await canLaunch(url)) {
+    MunchAnalytic.logEvent("rip_click_suggest_edit");
     await launch(url);
   }
 }

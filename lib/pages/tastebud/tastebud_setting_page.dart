@@ -14,22 +14,32 @@ class TastebudSettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Settings",
-          style: MTextStyle.navHeader,
-        ),
+        title: const Text("Settings", style: MTextStyle.navHeader),
         elevation: 2,
       ),
       body: Container(
         color: MunchColors.voided,
-        child: ListView(children: _list(context)),
+        child: _SettingList(),
       ),
     );
   }
 
-  List<Widget> _list(BuildContext context) {
-    return [
-      Container(height: 32),
+  static Future<T> push<T extends Object>(BuildContext context) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (c) => TastebudSettingPage(),
+        settings: RouteSettings(name: '/profile/setting'),
+      ),
+    );
+  }
+}
+
+class _SettingList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ListView(children: [
+      const SizedBox(height: 32),
       _SettingTile(
         "Instagram Partner",
         onPressed: () => _launch('https://partner.munch.app'),
@@ -43,21 +53,19 @@ class TastebudSettingPage extends StatelessWidget {
         "Send Feedback",
         onPressed: () => _launch('mailto:feedback@munch.app'),
       ),
-      Container(height: 32),
+      const SizedBox(height: 32),
       _SettingTile("Notification: Don't Think, Just Eat", onPressed: () {
-        showModalBottomSheet(context: context, builder: (_) {
-          return DTJEInfoPage();
-        });
+        showModalBottomSheet(context: context, builder: (_) => DTJEInfoPage());
       }),
-      Container(height: 32),
+      const SizedBox(height: 32),
       _SettingTile("Logout", onPressed: () {
         Authentication.instance.logout().then((v) {
           Navigator.of(context).pop();
           tabState.onTab(0);
         });
       }),
-      Container(height: 32),
-    ];
+      const SizedBox(height: 32),
+    ]);
   }
 
   void _launch(String url) async {
@@ -71,7 +79,7 @@ class _SettingTile extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  _SettingTile(this.text, {this.onPressed});
+  const _SettingTile(this.text, {this.onPressed});
 
   @override
   Widget build(BuildContext context) {

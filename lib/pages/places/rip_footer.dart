@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/api/places_api.dart';
 import 'package:munch_app/components/dialog.dart';
@@ -8,6 +9,7 @@ import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 
 import 'package:munch_app/pages/tastebud/tastebud_saved_place_database.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPFooter extends StatefulWidget {
   const RIPFooter({Key key, this.placeData}) : super(key: key);
@@ -21,26 +23,32 @@ class RIPFooter extends StatefulWidget {
 class RIPFooterState extends State<RIPFooter> {
   void onHeart() {
     Place place = widget.placeData.place;
+    
+    Authentication.instance.requireAuthentication(context).then((state) {
+      if (state != AuthenticationState.loggedIn) return;
 
-    if (isHeart) {
-      PlaceSavedDatabase.instance.delete(place.placeId).then((_) {
-        setState(() => localHeart = false);
-        Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text('Deleted "${place.name}" from your places.')),
-        );
-      }).catchError((error) {
-        MunchDialog.showError(context, error);
-      });
-    } else {
-      PlaceSavedDatabase.instance.put(place.placeId).then((_) {
-        setState(() => localHeart = true);
-        Scaffold.of(context).showSnackBar(
-          SnackBar(content: Text('Saved "${place.name}" from your places.')),
-        );
-      }).catchError((error) {
-        MunchDialog.showError(context, error);
-      });
-    }
+      if (isHeart) {
+        PlaceSavedDatabase.instance.delete(place.placeId).then((_) {
+          setState(() => localHeart = false);
+          MunchAnalytic.logEvent("rip_heart_deleted");
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('Deleted "${place.name}" from your places.')),
+          );
+        }).catchError((error) {
+          MunchDialog.showError(context, error);
+        });
+      } else {
+        PlaceSavedDatabase.instance.put(place.placeId).then((_) {
+          setState(() => localHeart = true);
+          MunchAnalytic.logEvent("rip_heart_saved");
+          Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text('Saved "${place.name}" from your places.')),
+          );
+        }).catchError((error) {
+          MunchDialog.showError(context, error);
+        });
+      }
+    });
   }
 
   bool localHeart;

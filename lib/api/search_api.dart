@@ -6,13 +6,11 @@ part 'search_api.g.dart';
 
 @JsonSerializable()
 class FilterTag extends Tag {
-  FilterTag(String tagId, String name, TagType type, this.count)
-      : super(tagId, name, type);
+  FilterTag(String tagId, String name, TagType type, this.count) : super(tagId, name, type);
 
   int count;
 
-  factory FilterTag.fromJson(Map<String, dynamic> json) =>
-      _$FilterTagFromJson(json);
+  factory FilterTag.fromJson(Map<String, dynamic> json) => _$FilterTagFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterTagToJson(this);
 
@@ -29,8 +27,7 @@ class FilterResult {
   FilterTagGraph tagGraph;
   FilterPriceGraph priceGraph;
 
-  factory FilterResult.fromJson(Map<String, dynamic> json) =>
-      _$FilterResultFromJson(json);
+  factory FilterResult.fromJson(Map<String, dynamic> json) => _$FilterResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterResultToJson(this);
 }
@@ -41,8 +38,7 @@ class FilterTagGraph {
 
   List<FilterTag> tags;
 
-  factory FilterTagGraph.fromJson(Map<String, dynamic> json) =>
-      _$FilterTagGraphFromJson(json);
+  factory FilterTagGraph.fromJson(Map<String, dynamic> json) => _$FilterTagGraphFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterTagGraphToJson(this);
 }
@@ -57,8 +53,7 @@ class FilterPriceGraph {
   List<FilterPriceGraphPoint> points;
   Map<String, FilterPriceGraphRange> ranges;
 
-  factory FilterPriceGraph.fromJson(Map<String, dynamic> json) =>
-      _$FilterPriceGraphFromJson(json);
+  factory FilterPriceGraph.fromJson(Map<String, dynamic> json) => _$FilterPriceGraphFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterPriceGraphToJson(this);
 }
@@ -70,8 +65,7 @@ class FilterPriceGraphPoint {
   double price;
   double count;
 
-  factory FilterPriceGraphPoint.fromJson(Map<String, dynamic> json) =>
-      _$FilterPriceGraphPointFromJson(json);
+  factory FilterPriceGraphPoint.fromJson(Map<String, dynamic> json) => _$FilterPriceGraphPointFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterPriceGraphPointToJson(this);
 }
@@ -83,8 +77,7 @@ class FilterPriceGraphRange {
   double min;
   double max;
 
-  factory FilterPriceGraphRange.fromJson(Map<String, dynamic> json) =>
-      _$FilterPriceGraphRangeFromJson(json);
+  factory FilterPriceGraphRange.fromJson(Map<String, dynamic> json) => _$FilterPriceGraphRangeFromJson(json);
 
   Map<String, dynamic> toJson() => _$FilterPriceGraphRangeToJson(this);
 }
@@ -97,8 +90,7 @@ class SuggestResult {
   List<Place> places;
   List<AssumptionQueryResult> assumptions;
 
-  factory SuggestResult.fromJson(Map<String, dynamic> json) =>
-      _$SuggestResultFromJson(json);
+  factory SuggestResult.fromJson(Map<String, dynamic> json) => _$SuggestResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$SuggestResultToJson(this);
 }
@@ -112,8 +104,7 @@ class AssumptionQueryResult {
   List<Place> place;
   int count;
 
-  factory AssumptionQueryResult.fromJson(Map<String, dynamic> json) =>
-      _$AssumptionQueryResultFromJson(json);
+  factory AssumptionQueryResult.fromJson(Map<String, dynamic> json) => _$AssumptionQueryResultFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssumptionQueryResultToJson(this);
 }
@@ -125,8 +116,7 @@ class AssumptionToken {
   String text;
   AssumptionType type;
 
-  factory AssumptionToken.fromJson(Map<String, dynamic> json) =>
-      _$AssumptionTokenFromJson(json);
+  factory AssumptionToken.fromJson(Map<String, dynamic> json) => _$AssumptionTokenFromJson(json);
 
   Map<String, dynamic> toJson() => _$AssumptionTokenToJson(this);
 }
@@ -146,15 +136,14 @@ class SearchQuery {
   SearchSort sort;
 
   SearchQuery.collection(SearchCollection collection)
-      : this(SearchFeature.Collection, collection,
-            SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
+      : this(SearchFeature.Collection, collection, SearchFilter.preference(UserSearchPreference.instance),
+            SearchSort(null));
 
   SearchQuery.feature(SearchFeature feature)
       : this(feature, null, SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
 
   SearchQuery.search()
-      : this(SearchFeature.Search, null, SearchFilter.preference(UserSearchPreference.instance),
-            SearchSort(null));
+      : this(SearchFeature.Search, null, SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
 
   bool get isSimple {
     if (sort != null) {
@@ -193,10 +182,24 @@ class SearchQuery {
     return true;
   }
 
-  factory SearchQuery.fromJson(Map<String, dynamic> json) =>
-      _$SearchQueryFromJson(json);
+  factory SearchQuery.fromJson(Map<String, dynamic> json) => _$SearchQueryFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchQueryToJson(this);
+
+  static String getFeatureName(SearchQuery searchQuery) {
+    return _$SearchFeatureEnumMap[searchQuery.feature];
+  }
+
+  static String getLocationTypeName(SearchQuery searchQuery) {
+    return _$SearchFilterLocationTypeEnumMap[searchQuery.filter.location.type];
+  }
+
+  static String getHourTypeName(SearchQuery searchQuery) {
+    var type = searchQuery.filter.hour?.type;
+    if (type == null) return null;
+
+    return _$SearchFilterHourTypeEnumMap[type];
+  }
 }
 
 enum SearchFeature { Home, Search, Location, Collection, Occasion }
@@ -208,8 +211,7 @@ class SearchCollection {
   String name;
   String collectionId;
 
-  factory SearchCollection.fromJson(Map<String, dynamic> json) =>
-      _$SearchCollectionFromJson(json);
+  factory SearchCollection.fromJson(Map<String, dynamic> json) => _$SearchCollectionFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchCollectionToJson(this);
 }
@@ -232,8 +234,7 @@ class SearchFilter {
     });
   }
 
-  factory SearchFilter.fromJson(Map<String, dynamic> json) =>
-      _$SearchFilterFromJson(json);
+  factory SearchFilter.fromJson(Map<String, dynamic> json) => _$SearchFilterFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchFilterToJson(this);
 }
@@ -246,8 +247,7 @@ class SearchFilterPrice {
   double min;
   double max;
 
-  factory SearchFilterPrice.fromJson(Map<String, dynamic> json) =>
-      _$SearchFilterPriceFromJson(json);
+  factory SearchFilterPrice.fromJson(Map<String, dynamic> json) => _$SearchFilterPriceFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchFilterPriceToJson(this);
 }
@@ -261,8 +261,7 @@ class SearchFilterHour {
   String open;
   String close;
 
-  factory SearchFilterHour.fromJson(Map<String, dynamic> json) =>
-      _$SearchFilterHourFromJson(json);
+  factory SearchFilterHour.fromJson(Map<String, dynamic> json) => _$SearchFilterHourFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchFilterHourToJson(this);
 }
@@ -273,15 +272,13 @@ enum SearchFilterHourType { OpenNow, OpenDay }
 class SearchFilterLocation {
   SearchFilterLocation(this.type, this.areas, this.points);
 
-  SearchFilterLocation.type(
-      {SearchFilterLocationType type = SearchFilterLocationType.Anywhere});
+  SearchFilterLocation.type({SearchFilterLocationType type = SearchFilterLocationType.Anywhere});
 
   SearchFilterLocationType type = SearchFilterLocationType.Anywhere;
   List<Area> areas = [];
   List<SearchFilterLocationPoint> points = [];
 
-  factory SearchFilterLocation.fromJson(Map<String, dynamic> json) =>
-      _$SearchFilterLocationFromJson(json);
+  factory SearchFilterLocation.fromJson(Map<String, dynamic> json) => _$SearchFilterLocationFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchFilterLocationToJson(this);
 }
@@ -293,8 +290,7 @@ class SearchFilterLocationPoint {
   String name;
   String latLng;
 
-  factory SearchFilterLocationPoint.fromJson(Map<String, dynamic> json) =>
-      _$SearchFilterLocationPointFromJson(json);
+  factory SearchFilterLocationPoint.fromJson(Map<String, dynamic> json) => _$SearchFilterLocationPointFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchFilterLocationPointToJson(this);
 
@@ -311,8 +307,7 @@ class SearchSort {
 
   String type;
 
-  factory SearchSort.fromJson(Map<String, dynamic> json) =>
-      _$SearchSortFromJson(json);
+  factory SearchSort.fromJson(Map<String, dynamic> json) => _$SearchSortFromJson(json);
 
   Map<String, dynamic> toJson() => _$SearchSortToJson(this);
 }
@@ -338,10 +333,7 @@ class SearchCard {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SearchCard &&
-          runtimeType == other.runtimeType &&
-          cardId == other.cardId &&
-          uniqueId == other.uniqueId;
+      other is SearchCard && runtimeType == other.runtimeType && cardId == other.cardId && uniqueId == other.uniqueId;
 
   @override
   int get hashCode => cardId.hashCode ^ uniqueId.hashCode;

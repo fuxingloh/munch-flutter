@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/places_api.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPImageLoader {
-
   bool _loading = false;
   List<PlaceImage> _images = [];
 
@@ -12,8 +12,8 @@ class RIPImageLoader {
   String _next;
 
   bool get more => _next != null;
-  List<PlaceImage> get images => _images;
 
+  List<PlaceImage> get images => _images;
 
   StreamController<List<PlaceImage>> _controller;
 
@@ -37,20 +37,20 @@ class RIPImageLoader {
     if (_loading) return Future.value();
     _loading = true;
 
-    return MunchApi.instance.get('/places/$_placeId/images?size=20&next.sort=$_next')
-        .then((res) {
+    return MunchApi.instance.get('/places/$_placeId/images?size=20&next.sort=$_next').then((res) {
       List<dynamic> list = res.data;
-      List<PlaceImage> images = list.map((data) => PlaceImage.fromJson(data))
-          .toList(growable: false);
+      List<PlaceImage> images = list.map((data) => PlaceImage.fromJson(data)).toList(growable: false);
+
       _loading = false;
       _next = res.next['sort'];
       _append(images);
       _controller.add(_images);
+
+      MunchAnalytic.logEvent("rip_image_query", parameters: {"count": images.length});
     }).catchError((error) {
       _controller.addError(error);
     });
   }
-
 
   void _append(List<PlaceImage> images) {
     images.forEach((image) {

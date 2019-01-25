@@ -20,6 +20,17 @@ class RIPMapPage extends StatefulWidget {
     var split = location.latLng.split(',');
     return LatLng(double.parse(split[0]), double.parse(split[1]));
   }
+
+  static Future<T> push<T extends Object>(BuildContext context, PlaceData placeData) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (c) => RIPMapPage(placeData: placeData),
+        settings: RouteSettings(name: '/places/map'),
+      ),
+    );
+  }
 }
 
 class RIPMapPageState extends State<RIPMapPage> {

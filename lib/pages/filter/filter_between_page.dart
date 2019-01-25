@@ -21,6 +21,17 @@ class FilterBetweenPage extends StatefulWidget {
     var json = jsonDecode(jsonEncode(searchQuery));
     return FilterBetweenState(SearchQuery.fromJson(json));
   }
+
+  static Future<T> push<T extends Object>(BuildContext context, SearchQuery searchQuery) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (c) => FilterBetweenPage(searchQuery: searchQuery),
+        settings: RouteSettings(name: '/search/filter/between'),
+      ),
+    );
+  }
 }
 
 class FilterBetweenState extends State<FilterBetweenPage> {
@@ -165,10 +176,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   }
 
   void _onAdd() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (c) => FilterBetweenSearchPage()),
-    ).then((point) {
+    FilterBetweenSearchPage.push(context).then((point) {
       if (point == null) return;
 
       setState(() {
@@ -341,11 +349,10 @@ class _FilterBetweenAction extends StatelessWidget {
       MunchButtonStyle.secondaryOutline.copyWith(padding: 16);
 
   final MunchButtonStyle fadedStyle = MunchButtonStyle.secondary.copyWith(
-    background: MunchColors.secondary050,
-    borderColor: MunchColors.secondary050,
-    textColor: MunchColors.secondary700,
-    padding: 0
-  );
+      background: MunchColors.secondary050,
+      borderColor: MunchColors.secondary050,
+      textColor: MunchColors.secondary700,
+      padding: 0);
 
   @override
   Widget build(BuildContext context) {

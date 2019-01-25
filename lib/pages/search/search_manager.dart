@@ -5,6 +5,7 @@ import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/api/structured_exception.dart';
 import 'package:munch_app/pages/search/cards/search_card_local.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 class SearchManager {
@@ -87,6 +88,8 @@ class SearchManager {
       this._append(cards);
       this._more = cards.isNotEmpty;
       this._page += 1;
+
+      MunchAnalytic.logSearchQueryAppend(searchQuery: searchQuery, cards: _cards, page: _page);
     }, onError: (error) {
       debugPrint(error);
 

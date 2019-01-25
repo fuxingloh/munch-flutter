@@ -9,6 +9,7 @@ import 'package:munch_app/pages/places/rip_image_loader.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RIPImagePage extends StatefulWidget {
@@ -25,6 +26,21 @@ class RIPImagePage extends StatefulWidget {
 
   @override
   RIPImagePageState createState() => new RIPImagePageState();
+
+  static Future<T> push<T extends Object>(BuildContext context, {int index, RIPImageLoader imageLoader, Place place}) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (context) => RIPImagePage(
+              index: index,
+              imageLoader: imageLoader,
+              place: place,
+            ),
+        settings: RouteSettings(name: '/places/images'),
+      ),
+    );
+  }
 }
 
 class RIPImagePageState extends State<RIPImagePage> {
@@ -36,6 +52,8 @@ class RIPImagePageState extends State<RIPImagePage> {
     super.initState();
     this.images = widget.imageLoader.images;
     this.controller = PageController(initialPage: widget.index);
+
+    MunchAnalytic.logEvent("rip_view_image", parameters: {"index": widget.index});
   }
 
   @override
@@ -55,6 +73,8 @@ class RIPImagePageState extends State<RIPImagePage> {
         controller: controller,
         itemBuilder: (c, i) => _RIPImageContent(image: images[i]),
         onPageChanged: (i) {
+          MunchAnalytic.logEvent("rip_view_image", parameters: {"index": i});
+
           if (i > images.length - 5) {
             widget.imageLoader.append().then((_) {
               setState(() => this.images = widget.imageLoader.images);
@@ -161,10 +181,11 @@ class _RIPImageContent extends StatelessWidget {
   }
 
   void _onReadMore(BuildContext context) {
-    _launch(String url) async {
+    _launch(String url, String event) async {
       if (url == null) return;
 
       if (await canLaunch(url)) {
+        MunchAnalytic.logEvent(event);
         await launch(url);
       }
     }
@@ -176,7 +197,7 @@ class _RIPImageContent extends StatelessWidget {
         cancel: 'Cancel',
         confirm: 'Open',
         onPressed: () {
-          _launch(image.article?.url);
+          _launch(image.article?.url, "rip_click_article");
         },
       );
     } else if (image.instagram != null) {
@@ -186,7 +207,7 @@ class _RIPImageContent extends StatelessWidget {
         cancel: 'Cancel',
         confirm: 'Open',
         onPressed: () {
-          _launch(image.instagram?.link);
+          _launch(image.instagram?.link, "rip_click_image");
         },
       );
     }

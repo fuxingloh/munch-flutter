@@ -50,10 +50,7 @@ class FeedImageView extends StatelessWidget {
   }
 
   void onItem(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FeedItemPage(item: item)),
-    );
+    FeedImagePage.push(context, item);
   }
 }
 

@@ -158,16 +158,12 @@ class PlaceCardState extends State<PlaceCard> {
   }
 
   void onPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (c) => RIPPage(place: place)),
-    );
+    RIPPage.push(context, place);
   }
 
   @override
   Widget build(BuildContext context) {
-    List<ImageSize> sizes =
-        place.images.isNotEmpty ? place.images.first.sizes : [];
+    List<ImageSize> sizes = place.images.isNotEmpty ? place.images.first.sizes : [];
 
     Column column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,

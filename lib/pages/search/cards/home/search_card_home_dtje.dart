@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/components/dialog.dart';
-import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class SearchCardHomeDTJE extends SearchCardWidget {
-  SearchCardHomeDTJE(SearchCard card)
-      : super(card, margin: const EdgeInsets.only());
+  SearchCardHomeDTJE(SearchCard card) : super(card, margin: const EdgeInsets.only());
 
   @override
   Widget buildCard(BuildContext context) {
@@ -109,13 +108,11 @@ class SearchDTJEList extends StatelessWidget {
 
     final min = _minute;
     if (min < 690) {
-      text =
-          "Suggestions will be out at 11:30am.\n\nSubscribe to receive a notification when the suggestions are out!";
+      text = "Suggestions will be out at 11:30am.\n\nSubscribe to receive a notification when the suggestions are out!";
     } else if (min >= 690 && min < 960) {
       items = card['lunch'];
     } else if (min < 1080) {
-      text =
-          "Suggestions will be out at 6pm.\n\nSubscribe to receive a notification when the suggestions are out!";
+      text = "Suggestions will be out at 6pm.\n\nSubscribe to receive a notification when the suggestions are out!";
     } else {
       items = card['dinner'];
     }
@@ -234,22 +231,12 @@ class DTJESubscribeButton extends StatefulWidget {
     switch (type) {
       case DTJENotification.Lunch:
         prefs.setBool('Notification.DTJE.Lunch', true);
-        await plugin.showDailyAtTime(
-            21033,
-            title,
-            'Your suggestions for lunch are ready.',
-            Time(11, 30, 0),
-            specifics);
+        await plugin.showDailyAtTime(21033, title, 'Your suggestions for lunch are ready.', Time(11, 30, 0), specifics);
         break;
 
       case DTJENotification.Dinner:
         prefs.setBool('Notification.DTJE.Dinner', true);
-        await plugin.showDailyAtTime(
-            21034,
-            title,
-            'Your suggestions for dinner are ready.',
-            Time(18, 0, 0),
-            specifics);
+        await plugin.showDailyAtTime(21034, title, 'Your suggestions for dinner are ready.', Time(18, 0, 0), specifics);
         break;
     }
   }
@@ -300,31 +287,27 @@ class DTJESubscribeButtonState extends State<DTJESubscribeButton> {
     return MunchButton.text(
       subscribed ? "Subscribed" : "Subscribe",
       onPressed: onPressed,
-      style: subscribed
-          ? MunchButtonStyle.secondaryOutline
-          : MunchButtonStyle.secondary,
+      style: subscribed ? MunchButtonStyle.secondaryOutline : MunchButtonStyle.secondary,
     );
   }
 
   void onPressed() async {
     if (subscribed) {
-      MunchDialog.showConfirm(context,
-          content: "Unsubscribe from 'don't think, just eat'?", onPressed: () {
-        firebaseAnalytics.logEvent(name: "dtje_unsubscribe");
+      MunchDialog.showConfirm(context, content: "Unsubscribe from 'don't think, just eat'?", onPressed: () {
+        MunchAnalytic.logEvent("dtje_unsubscribed");
         DTJESubscribeButton.unsubscribe(DTJENotification.Lunch);
         DTJESubscribeButton.unsubscribe(DTJENotification.Dinner);
         setState(() => subscribed = false);
       });
     } else {
-      firebaseAnalytics.logEvent(name: "dtje_subscribe");
+      MunchAnalytic.logEvent("dtje_subscribed");
       DTJESubscribeButton.subscribe(DTJENotification.Lunch);
       DTJESubscribeButton.subscribe(DTJENotification.Dinner);
       setState(() => subscribed = true);
       MunchDialog.showOkay(
         context,
         title: 'Subscribed!',
-        content:
-            'You will receive a notification when the suggestions are out.',
+        content: 'You will receive a notification when the suggestions are out.',
       );
     }
   }
@@ -349,8 +332,7 @@ class DTJEInfoPage extends StatelessWidget {
                 SliverToBoxAdapter(
                     child: Padding(
                   padding: const EdgeInsets.only(left: 24, right: 24),
-                  child: Text(
-                      """This feature provides you with 5 suggestions twice daily for lunch and dinner.
+                  child: Text("""This feature provides you with 5 suggestions twice daily for lunch and dinner.
                   
 Subscribe and receive notifications at 11:30 am and 6 pm on what to eat so you don’t have to think.
 """),
@@ -361,8 +343,7 @@ Subscribe and receive notifications at 11:30 am and 6 pm on what to eat so you d
         ),
         Container(
           alignment: Alignment.centerRight,
-          margin:
-              const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
+          margin: const EdgeInsets.only(left: 24, right: 24, top: 24, bottom: 24),
           child: DTJESubscribeButton(),
         ),
       ],

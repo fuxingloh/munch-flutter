@@ -16,6 +16,7 @@ import 'package:munch_app/pages/search/cards/search_card_injected.dart';
 import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/pages/search/cards/search_card_place.dart';
 import 'package:munch_app/pages/search/cards/search_card_tag.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 export 'package:flutter/widgets.dart';
 export 'package:munch_app/pages/search/search_page.dart';
@@ -26,8 +27,7 @@ export 'package:munch_app/styles/colors.dart';
 
 class SearchCardDelegator {
   /// This will only work if all the card height is implemented properly
-  static double offset(
-      BuildContext context, List<SearchCard> cards, String uniqueId) {
+  static double offset(BuildContext context, List<SearchCard> cards, String uniqueId) {
     double offset = 0;
     cards.takeWhile((c) => c.uniqueId != uniqueId).forEach((card) {
       offset += height(context, card);
@@ -145,9 +145,20 @@ abstract class SearchCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MunchAnalytic.logEvent(
+      "search_card_view",
+      parameters: {'id': card.cardId},
+    );
+
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      onTap: () => onTap(context),
+      onTap: () {
+        MunchAnalytic.logEvent(
+          "search_card_click",
+          parameters: {'id': card.cardId},
+        );
+        onTap(context);
+      },
       child: Container(margin: margin, child: buildCard(context)),
     );
   }

@@ -4,6 +4,7 @@ import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/search/search_card_list.dart';
 import 'package:munch_app/pages/search/search_header.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/recent_database.dart';
 
 class SearchPage extends StatefulWidget {
@@ -90,6 +91,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     }
 
     _cardList.search(histories.last);
+    MunchAnalytic.logSearchQuery(searchQuery: searchQuery);
   }
 
   void reset() {

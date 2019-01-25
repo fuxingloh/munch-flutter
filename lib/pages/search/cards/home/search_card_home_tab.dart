@@ -100,22 +100,14 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
     Future<SearchQuery> future;
 
     if (tab == _HomeTab.between) {
-      future = Navigator.of(context).push(MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (c) => FilterBetweenPage(searchQuery: searchQuery),
-      ));
+      future = FilterBetweenPage.push(context, searchQuery);
     } else if (tab == _HomeTab.search) {
-      future = Navigator.of(context).push(MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (c) => SuggestPage(searchQuery: searchQuery),
-      ));
+      future = SuggestPage.push(context, searchQuery);
     } else if (tab == _HomeTab.location) {
-      future = Navigator.of(context)
-          .push(MaterialPageRoute(
+      future = FilterAreaPage.push(
+        context,
         fullscreenDialog: true,
-        builder: (c) => FilterAreaPage(),
-      ))
-          .then((area) {
+      ).then((area) {
         if (area == null) return null;
 
         var query = SearchQuery.search();
@@ -138,13 +130,7 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
   void _onRight() {
     final searchQuery = SearchPage.state.searchQuery;
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (c) => FilterPage(searchQuery: searchQuery),
-      ),
-    ).then((searchQuery) {
+    FilterPage.push(context, searchQuery).then((searchQuery) {
       if (searchQuery != null && searchQuery is SearchQuery) {
         SearchPage.state.push(searchQuery);
       }

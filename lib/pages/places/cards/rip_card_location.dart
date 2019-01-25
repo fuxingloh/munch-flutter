@@ -4,6 +4,7 @@ import 'package:munch_app/pages/places/rip_map_page.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/separators.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 class RIPCardLocation extends RIPCardWidget {
@@ -71,13 +72,8 @@ class RIPCardLocation extends RIPCardWidget {
 
   @override
   void onTap(BuildContext context, PlaceData data) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (context) => RIPMapPage(placeData: data),
-      ),
-    );
+    MunchAnalytic.logEvent("rip_click_map");
+    RIPMapPage.push(context, data);
   }
 }
 

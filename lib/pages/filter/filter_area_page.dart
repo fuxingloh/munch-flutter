@@ -8,6 +8,17 @@ import 'package:munch_app/styles/texts.dart';
 class FilterAreaPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => FilterAreaPageState();
+
+  static Future<T> push<T extends Object>(BuildContext context, {bool fullscreenDialog = false}) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: fullscreenDialog,
+        builder: (c) => FilterAreaPage(),
+        settings: RouteSettings(name: '/search/filter/locations/search'),
+      ),
+    );
+  }
 }
 
 class FilterAreaPageState extends State<FilterAreaPage> {

@@ -6,6 +6,7 @@ import 'package:munch_app/main.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class OnBoardingPage extends StatelessWidget {
   @override
@@ -16,6 +17,17 @@ class OnBoardingPage extends StatelessWidget {
           Expanded(child: _OnBoardingInfo()),
           _OnBoardingBottom(),
         ],
+      ),
+    );
+  }
+
+  static Future<T> push<T extends Object>(BuildContext context) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (c) => OnBoardingPage(),
+        settings: RouteSettings(name: '/profile/on-boarding'),
       ),
     );
   }
@@ -41,8 +53,7 @@ class _OnBoardingInfo extends StatelessWidget {
               child: IconButton(
                 icon: Icon(MunchIcons.navigation_cancel),
                 color: MunchColors.white,
-                onPressed: () =>
-                    Navigator.of(context).pop(AuthenticationState.cancel),
+                onPressed: () => Navigator.of(context).pop(AuthenticationState.cancel),
               ),
             ),
             Expanded(
@@ -53,19 +64,16 @@ class _OnBoardingInfo extends StatelessWidget {
                     height: 64,
                     margin: EdgeInsets.only(top: 12),
                     child: Image(
-                      image:
-                          AssetImage('assets/img/munch_logo_titled_white.png'),
+                      image: AssetImage('assets/img/munch_logo_titled_white.png'),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(
-                        left: 24, right: 24, top: 40, bottom: 40),
+                    margin: EdgeInsets.only(left: 24, right: 24, top: 40, bottom: 40),
                     child: Column(
                       children: [
                         Text(
                           "Discover Delicious",
-                          style:
-                              MTextStyle.h1.copyWith(color: MunchColors.white),
+                          style: MTextStyle.h1.copyWith(color: MunchColors.white),
                           textAlign: TextAlign.center,
                         ),
                         Container(
@@ -81,9 +89,7 @@ class _OnBoardingInfo extends StatelessWidget {
                         ),
                         Text(
                           "'What do you want to eat?'",
-                          style: MTextStyle.regular.copyWith(
-                              color: MunchColors.white,
-                              fontWeight: FontWeight.w600),
+                          style: MTextStyle.regular.copyWith(color: MunchColors.white, fontWeight: FontWeight.w600),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -103,10 +109,12 @@ class _OnBoardingBottom extends StatelessWidget {
   void onLoggedIn(BuildContext context, String token) {
     MunchDialog.showProgress(context);
     Authentication.instance.loginFacebook(token).then((state) {
-      firebaseAnalytics.logSignUp(signUpMethod: 'facebook');
+      if (state == AuthenticationState.loggedIn) {
+        MunchAnalytic.logEvent("profile_login");
+      }
 
       Navigator.of(context).pop();
-      Navigator.of(context).pop(AuthenticationState.loggedIn);
+      Navigator.of(context).pop(state);
       return state;
     }).catchError((error) {
       Navigator.of(context).pop();
@@ -123,8 +131,7 @@ class _OnBoardingBottom extends StatelessWidget {
           break;
 
         case FacebookLoginStatus.error:
-          MunchDialog.showError(context, result.errorMessage,
-              type: 'Authentication Error');
+          MunchDialog.showError(context, result.errorMessage, type: 'Authentication Error');
           break;
 
         case FacebookLoginStatus.cancelledByUser:
@@ -149,8 +156,7 @@ class _OnBoardingBottom extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Icon(MunchIcons.onboarding_facebook,
-                    color: MunchColors.white),
+                const Icon(MunchIcons.onboarding_facebook, color: MunchColors.white),
                 const Expanded(
                   child: Text(
                     "Continue with Facebook",
@@ -172,8 +178,7 @@ class _OnBoardingBottom extends StatelessWidget {
             style: MTextStyle.subtext,
             textAlign: TextAlign.center,
           ),
-          margin:
-              const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
+          margin: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
         ),
       ],
     );

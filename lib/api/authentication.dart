@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/pages/tastebud/onboarding_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_saved_place_database.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
@@ -32,7 +33,6 @@ class Authentication {
   static Authentication instance = Authentication();
 
   final MunchApi _api = MunchApi.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<String> getCustomToken() {
     return _api
@@ -41,7 +41,7 @@ class Authentication {
   }
 
   Future<String> getToken() {
-    return _auth.currentUser().then((user) {
+    return FirebaseAuth.instance.currentUser().then((user) {
       if (user == null) return null;
       return user.getIdToken(refresh: false);
     });
@@ -49,9 +49,17 @@ class Authentication {
 
   Future<bool> isAuthenticated() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString("UserProfile") == null) return false;
+    if (prefs.getString("UserProfile") == null) {
+      MunchAnalytic.setUserId(null);
+      FirebaseAuth.instance.signOut();
+      return false;
+    }
 
-    return FirebaseAuth.instance.currentUser().then((user) => user != null);
+    return FirebaseAuth.instance.currentUser().then((user) {
+      if (user != null) return true;
+      MunchAnalytic.setUserId(null);
+      return false;
+    });
   }
 
   Future<AuthenticationState> requireAuthentication(BuildContext context) {
@@ -59,18 +67,12 @@ class Authentication {
       if (authenticated) return AuthenticationState.loggedIn;
 
       // If user is not logged in, preset boarding controller and try to login
-      return Navigator.push(
-        context,
-        MaterialPageRoute(
-          fullscreenDialog: true,
-          builder: (context) => OnBoardingPage(),
-        ),
-      );
+      return OnBoardingPage.push(context);
     });
   }
 
   Future<AuthenticationState> loginFacebook(String accessToken) {
-    return _auth.signInWithFacebook(accessToken: accessToken).then((user) {
+    return FirebaseAuth.instance.signInWithFacebook(accessToken: accessToken).then((user) {
       return _authenticate().then((_) => AuthenticationState.loggedIn);
     });
   }
@@ -98,6 +100,6 @@ class Authentication {
 
     PlaceSavedDatabase.instance.reset(reload: false);
 
-    return _auth.signOut();
+    return FirebaseAuth.instance.signOut();
   }
 }

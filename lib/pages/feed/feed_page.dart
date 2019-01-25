@@ -8,6 +8,7 @@ import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
 import 'package:munch_app/styles/colors.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class FeedPage extends StatefulWidget {
   FeedPage({Key key}) : super(key: key);
@@ -43,9 +44,7 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (DateTime.now().millisecondsSinceEpoch -
-              pausedDateTime.millisecondsSinceEpoch >
-          1000 * 60 * 60) {
+      if (DateTime.now().millisecondsSinceEpoch - pausedDateTime.millisecondsSinceEpoch > 1000 * 60 * 60) {
         manager.reset();
       }
     }
@@ -134,18 +133,13 @@ class FeedManager {
 
     _loading = true;
 
-    return _api
-        .get("/feed/images?country=sgp&latLng=1.3521,103.8198&next.from=$_from")
-        .then((res) {
+    return _api.get("/feed/images?country=sgp&latLng=1.3521,103.8198&next.from=$_from").then((res) {
       this._loading = false;
       this._from = res.next['from'];
 
       ImageFeedResult result = ImageFeedResult.fromJson(res.data);
       result.items.forEach((item) {
-        item.places = item.places
-            .map((p) => result.places[p.placeId])
-            .where((p) => p != null)
-            .toList(growable: false);
+        item.places = item.places.map((p) => result.places[p.placeId]).where((p) => p != null).toList(growable: false);
 
         // Only Add Items that have places to ensure non null constraints
         if (item.places.isEmpty) return;
@@ -153,6 +147,8 @@ class FeedManager {
       });
 
       _controller.add(collect());
+
+      MunchAnalytic.logEvent("feed_query", parameters: {"count": _from ?? 0});
     }).catchError((error) => _controller.addError(error));
   }
 

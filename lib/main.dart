@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
 
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/components/dialog.dart';
@@ -9,11 +7,14 @@ import 'package:munch_app/pages/search/search_page.dart';
 import 'package:munch_app/pages/feed/feed_page.dart';
 import 'package:munch_app/pages/tastebud/tastebud_page.dart';
 import 'package:munch_app/styles/munch.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 void main() => runApp(MunchApp());
 
 final MunchTabState tabState = MunchTabState();
 DateTime pausedDateTime = DateTime.now();
+
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 final ThemeData theme = ThemeData(
   brightness: Brightness.light,
@@ -25,8 +26,6 @@ final ThemeData theme = ThemeData(
   ),
 );
 
-final FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics();
-
 class MunchApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,12 +33,10 @@ class MunchApp extends StatelessWidget {
       title: 'Munch App',
       color: MunchColors.secondary500,
       theme: theme,
-      initialRoute: '/',
-      routes: {
-        '/': (c) => MunchTabPage(),
-      },
+      home: MunchTabPage(),
       navigatorObservers: [
-        FirebaseAnalyticsObserver(analytics: firebaseAnalytics),
+        MunchAnalyticNavigatorObserver(),
+        routeObserver,
       ],
     );
   }
@@ -50,17 +47,22 @@ class MunchTabPage extends StatefulWidget {
   State<StatefulWidget> createState() => tabState;
 }
 
-class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
-  int _currentIndex = 0;
+class MunchTabState extends State<MunchTabPage>
+    with WidgetsBindingObserver, RouteAware {
+  static const search = 0;
+  static const feed = 1;
+  static const profile = 2;
 
-  Map<int, Widget> _children = {0: SearchPage()};
+  int _currentIndex = search;
+
+  Map<int, Widget> _children = {search: SearchPage()};
 
   Widget getChild(int index) {
     if (_children.containsKey(index)) return _children[index];
     if (_currentIndex == index) {
-      if (index == 0) _children[0] = SearchPage();
-      if (index == 1) _children[1] = FeedPage();
-      if (index == 2) _children[2] = TastebudPage();
+      if (index == search) _children[search] = SearchPage();
+      if (index == feed) _children[feed] = FeedPage();
+      if (index == profile) _children[profile] = TastebudPage();
 
       return _children[index];
     }
@@ -71,6 +73,8 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+
+    MunchAnalytic.setScreen(routeName);
   }
 
   @override
@@ -81,9 +85,41 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context));
+  }
+
+  @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    routeObserver.unsubscribe(this);
     super.dispose();
+  }
+
+  String get routeName {
+    switch (_currentIndex) {
+      case search:
+        return "/search";
+      case feed:
+        return "/feed";
+      case profile:
+        return "/profile";
+      default:
+        return null;
+    }
+  }
+
+  /// Route was pushed onto navigator and is now topmost route.
+  @override
+  void didPush() {
+    MunchAnalytic.setScreen(routeName);
+  }
+
+  /// Covering route was popped off the navigator.
+  @override
+  void didPopNext() {
+    MunchAnalytic.setScreen(routeName);
   }
 
   @override
@@ -110,30 +146,35 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver {
 
   void onTab(int index) {
     if (_currentIndex == index) {
-      if (index == 0) {
-        bool top = SearchPage.state.scrollToTop();
-        if (top) {
-          SearchPage.state.reset();
-        }
+      switch (index) {
+        case search:
+          bool top = SearchPage.state.scrollToTop();
+          if (top) SearchPage.state.reset();
+          break;
       }
-      return;
-    }
-
-    if (index == 2) {
-      Authentication.instance.requireAuthentication(context).then((state) {
-        if (state == AuthenticationState.loggedIn) {
-          setState(() {
-            _currentIndex = index;
-          });
-        }
-      }).catchError((error) {
-        MunchDialog.showError(context, error);
-      });
     } else {
-      setState(() {
-        _currentIndex = index;
-      });
+      switch (index) {
+        case profile:
+          Authentication.instance.requireAuthentication(context).then((state) {
+            if (state == AuthenticationState.loggedIn) {
+              updateTab(index);
+            }
+          }).catchError((error) {
+            MunchDialog.showError(context, error);
+          });
+          break;
+
+        default:
+          updateTab(index);
+      }
     }
+  }
+
+  void updateTab(int index) {
+    setState(() {
+      _currentIndex = index;
+      MunchAnalytic.setScreen(routeName);
+    });
   }
 }
 
@@ -167,7 +208,7 @@ class MunchBottomBar extends StatelessWidget {
           ),
           MunchBottomBarItem(
             icon: MunchIcons.tabbar_profile,
-            text: 'Tastebud',
+            text: 'Profile',
           ),
         ],
       ),

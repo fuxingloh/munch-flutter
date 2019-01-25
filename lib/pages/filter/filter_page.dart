@@ -22,6 +22,17 @@ class FilterPage extends StatefulWidget {
     var json = jsonDecode(jsonEncode(searchQuery));
     return FilterPageState(SearchQuery.fromJson(json));
   }
+
+  static Future<T> push<T extends Object>(BuildContext context, SearchQuery searchQuery) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (c) => FilterPage(searchQuery: searchQuery),
+        settings: RouteSettings(name: '/search/filter'),
+      ),
+    );
+  }
 }
 
 class FilterPageState extends State<FilterPage> {

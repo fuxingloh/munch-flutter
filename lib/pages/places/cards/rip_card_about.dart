@@ -4,6 +4,7 @@ import 'package:munch_app/pages/places/cards/rip_card_award.dart';
 import 'package:munch_app/pages/places/cards/rip_card_hour.dart';
 import 'package:munch_app/pages/places/cards/rip_card_menu.dart';
 import 'package:munch_app/styles/separators.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
@@ -50,6 +51,8 @@ class RIPCardDescription extends RIPCardWidget {
 
   @override
   void onTap(BuildContext context, PlaceData data) {
+    MunchAnalytic.logEvent("rip_click_about");
+
     showModalBottomSheet(
       context: context,
       builder: (context) => _RIPDescriptionModal(data: data),
@@ -110,6 +113,7 @@ class RIPCardPhone extends RIPCardWidget {
     MunchDialog.showConfirm(context, onPressed: () async {
       String url = 'tel:${data.place.phone}';
       if (await canLaunch(url)) {
+        MunchAnalytic.logEvent("rip_click_phone");
         await launch(url);
       }
     }, content: "Call ${data.place.phone}?");
@@ -151,6 +155,7 @@ class RIPCardWebsite extends RIPCardWidget {
     MunchDialog.showConfirm(context, onPressed: () async {
       String url = data.place.website;
       if (await canLaunch(url)) {
+        MunchAnalytic.logEvent("rip_click_website");
         await launch(url);
       }
     }, content: "Open Website?");

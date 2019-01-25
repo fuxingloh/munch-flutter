@@ -9,6 +9,7 @@ import 'package:munch_app/pages/tastebud/tastebud_saved_place_database.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class TastebudPlacePage extends StatefulWidget {
   @override
@@ -82,15 +83,18 @@ class TastebudPlaceState extends State<TastebudPlacePage> {
   Container _buildPlace(Place place) {
     return Container(
       margin: EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 16),
-      child: PlaceCard(place: place, onHeart: () {
-        PlaceSavedDatabase.instance.delete(place.placeId).then((_) {
-          Scaffold.of(context).showSnackBar(
-            SnackBar(content: Text('Deleted "${place.name}" from your places.')),
-          );
-        }).catchError((error) {
-          MunchDialog.showError(context, error);
-        });
-      }),
+      child: PlaceCard(
+          place: place,
+          onHeart: () {
+            PlaceSavedDatabase.instance.delete(place.placeId).then((_) {
+              MunchAnalytic.logEvent("rip_heart_deleted");
+              Scaffold.of(context).showSnackBar(
+                SnackBar(content: Text('Deleted "${place.name}" from your places.')),
+              );
+            }).catchError((error) {
+              MunchDialog.showError(context, error);
+            });
+          }),
     );
   }
 }

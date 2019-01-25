@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/styles/icons.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPCardHour extends RIPCardWidget {
   RIPCardHour(PlaceData data) : super(data);
@@ -44,7 +45,11 @@ class RIPCardHour extends RIPCardWidget {
 
     children.add(Padding(
       padding: const EdgeInsets.only(top: 2),
-      child: Text(grouped.todayTime, maxLines: 1, overflow: TextOverflow.ellipsis,),
+      child: Text(
+        grouped.todayTime,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
     ));
 
     return Row(
@@ -63,6 +68,8 @@ class RIPCardHour extends RIPCardWidget {
 
   @override
   void onTap(BuildContext context, PlaceData data) {
+    MunchAnalytic.logEvent("rip_click_hour");
+
     showModalBottomSheet(
       context: context,
       builder: (context) => _HourListModal(data: data),
@@ -92,14 +99,12 @@ class _HourListModal extends StatelessWidget {
           case HourOpen.open:
           case HourOpen.opening:
           case HourOpen.closing:
-            children.add(Text(grouped[day],
-                style: const TextStyle(color: MunchColors.open)));
+            children.add(Text(grouped[day], style: const TextStyle(color: MunchColors.open)));
             break;
 
           case HourOpen.none:
           case HourOpen.closed:
-            children.add(Text(grouped[day],
-                style: const TextStyle(color: MunchColors.close)));
+            children.add(Text(grouped[day], style: const TextStyle(color: MunchColors.close)));
             break;
         }
       } else {

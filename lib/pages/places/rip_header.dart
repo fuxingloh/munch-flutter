@@ -5,6 +5,7 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:share/share.dart';
 import 'package:munch_app/pages/places/cards/rip_card_suggest.dart' as SuggestCard;
 
@@ -56,6 +57,8 @@ class RIPHeaderState extends State<RIPHeader> {
   }
 
   void onMore(BuildContext context) {
+    MunchAnalytic.logEvent("rip_click_more");
+
     showModalBottomSheet(
       context: context,
       builder: (context) {
@@ -89,6 +92,7 @@ class RIPHeaderState extends State<RIPHeader> {
   void onShare() {
     String placeId = widget.placeData?.place?.placeId ?? '';
     Share.share("https://www.munch.app/places/$placeId");
+    MunchAnalytic.logEvent("rip_share");
     Navigator.of(context).pop();
   }
 

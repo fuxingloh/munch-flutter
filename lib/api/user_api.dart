@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:json_annotation/json_annotation.dart';
 import 'package:munch_app/api/munch_data.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'user_api.g.dart';
@@ -32,6 +33,8 @@ class UserProfile {
   static Future put(UserProfile profile) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("UserProfile", jsonEncode(profile));
+
+    MunchAnalytic.setUserId(profile.userId);
   }
 }
 

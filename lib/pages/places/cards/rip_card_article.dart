@@ -3,11 +3,11 @@ import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/separators.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class RIPCardArticle extends RIPCardWidget {
-  RIPCardArticle(PlaceData data)
-      : super(data, margin: const RIPCardInsets.only(left: 0, right: 0));
+  RIPCardArticle(PlaceData data) : super(data, margin: const RIPCardInsets.only(left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
@@ -57,6 +57,7 @@ class RIPCardArticle extends RIPCardWidget {
   void _onArticle(Article article) async {
     String url = article.url;
     if (await canLaunch(url)) {
+      MunchAnalytic.logEvent("rip_click_article");
       await launch(url);
     }
   }
@@ -91,8 +92,7 @@ class _RIPArticleCell extends StatelessWidget {
             height: 100,
             width: double.infinity,
             decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(3), topRight: Radius.circular(3)),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(3), topRight: Radius.circular(3)),
             ),
             child: ShimmerSizeImage(
               sizes: article.thumbnail?.sizes,
@@ -114,8 +114,7 @@ class _RIPArticleCell extends StatelessWidget {
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 16),
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -131,8 +130,7 @@ class _RIPArticleCell extends StatelessWidget {
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      Text(_formatDate(article.createdMillis),
-                          maxLines: 1, style: MTextStyle.subtext),
+                      Text(_formatDate(article.createdMillis), maxLines: 1, style: MTextStyle.subtext),
                     ],
                   ),
                 ),

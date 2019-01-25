@@ -8,6 +8,7 @@ import 'package:munch_app/styles/separators.dart';
 import 'package:munch_app/styles/texts.dart';
 
 import 'package:intl/intl.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 DateFormat _format = DateFormat("MMM dd, yyyy");
@@ -16,19 +17,29 @@ String _formatDate(int millis) {
   return _format.format(DateTime.fromMillisecondsSinceEpoch(millis));
 }
 
-class FeedItemPage extends StatefulWidget {
-  final ImageFeedItem item;
+class FeedImagePage extends StatefulWidget {
+  const FeedImagePage({Key key, this.item}) : super(key: key);
 
-  const FeedItemPage({Key key, this.item}) : super(key: key);
+  final ImageFeedItem item;
 
   @override
-  State<StatefulWidget> createState() => FeedItemPageState(item);
+  State<StatefulWidget> createState() => FeedImagePageState();
+
+  static Future<T> push<T extends Object>(BuildContext context, ImageFeedItem item) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (c) => FeedImagePage(item: item),
+        settings: RouteSettings(name: '/feed/images'),
+      ),
+    );
+  }
 }
 
-class FeedItemPageState extends State<FeedItemPage> {
-  FeedItemPageState(this.item);
-
-  final ImageFeedItem item;
+class FeedImagePageState extends State<FeedImagePage> {
+  ImageFeedItem get item {
+    return widget.item;
+  }
 
   ScrollController _controller;
   Widget _body;
@@ -54,6 +65,8 @@ class FeedItemPageState extends State<FeedItemPage> {
       ),
     );
     super.initState();
+
+    MunchAnalytic.logEvent("feed_view");
   }
 
   void onPressed() {

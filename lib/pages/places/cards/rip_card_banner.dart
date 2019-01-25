@@ -3,6 +3,7 @@ import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/pages/places/rip_page.dart';
 import 'package:munch_app/styles/munch.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPCardBanner extends RIPCardWidget {
   RIPCardBanner(PlaceData data, {@required this.ripState})
@@ -29,8 +30,9 @@ class RIPCardBanner extends RIPCardWidget {
     final controller = ripState.controller;
     var max = controller.position.maxScrollExtent - 330;
     max = max < 0 ? 0 : max;
-    controller.animateTo(max,
-        duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+    controller.animateTo(max, duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+
+    MunchAnalytic.logEvent("rip_click_show_images");
   }
 
   @override
@@ -58,8 +60,7 @@ class RIPCardBanner extends RIPCardWidget {
         child: GestureDetector(
           onTap: onGallery,
           child: Container(
-            padding:
-                const EdgeInsets.only(left: 12, right: 12, bottom: 8, top: 8),
+            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8, top: 8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(3),
               color: MunchColors.white,

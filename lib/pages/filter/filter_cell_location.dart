@@ -92,13 +92,7 @@ class FilterCellLocation extends StatelessWidget {
   }
 
   void _onBetween(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        fullscreenDialog: true,
-        builder: (c) => FilterBetweenPage(searchQuery: manager.searchQuery),
-      ),
-    ).then((searchQuery) {
+    FilterBetweenPage.push(context, manager.searchQuery).then((searchQuery) {
       if (searchQuery == null) return;
 
       Navigator.of(context).pop(searchQuery);
@@ -106,10 +100,7 @@ class FilterCellLocation extends StatelessWidget {
   }
 
   void _onSearch(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (c) => FilterAreaPage()),
-    ).then((area) {
+    FilterAreaPage.push(context).then((area) {
       if (area == null) return;
       manager.selectArea(area);
     });
