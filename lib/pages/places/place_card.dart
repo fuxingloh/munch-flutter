@@ -7,6 +7,7 @@ import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/rip_page.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/icons.dart';
+import 'package:munch_app/styles/texts.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 MunchTagView _buildTag(Place place) {
@@ -153,9 +154,7 @@ class PlaceCard extends StatefulWidget {
 }
 
 class PlaceCardState extends State<PlaceCard> {
-  Place get place {
-    return widget.place;
-  }
+  Place get place => widget.place;
 
   void onPressed() {
     RIPPage.push(context, place);
@@ -163,8 +162,6 @@ class PlaceCardState extends State<PlaceCard> {
 
   @override
   Widget build(BuildContext context) {
-    List<ImageSize> sizes = place.images.isNotEmpty ? place.images.first.sizes : [];
-
     Column column = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -172,10 +169,7 @@ class PlaceCardState extends State<PlaceCard> {
           children: [
             AspectRatio(
               aspectRatio: 1 / 0.6,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: ShimmerSizeImage(sizes: sizes, fit: BoxFit.cover),
-              ),
+              child: _PlaceCardImage(place: place),
             ),
             Container(
               alignment: Alignment.topRight,
@@ -216,6 +210,34 @@ class PlaceCardState extends State<PlaceCard> {
       behavior: HitTestBehavior.opaque,
       child: column,
       onTap: onPressed,
+    );
+  }
+}
+
+class _PlaceCardImage extends StatelessWidget {
+  const _PlaceCardImage({Key key, this.place}) : super(key: key);
+
+  final Place place;
+
+  @override
+  Widget build(BuildContext context) {
+    List<ImageSize> sizes = place.images.isNotEmpty ? place.images.first.sizes : [];
+
+    if (sizes.isEmpty) {
+      return Container(
+        decoration: const BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          color: MunchColors.whisper100,
+        ),
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.bottomRight,
+        child: Text("No Image Available", style: MTextStyle.smallBold),
+      );
+    }
+
+    return ClipRRect(
+      borderRadius: const BorderRadius.all(Radius.circular(4)),
+      child: ShimmerSizeImage(sizes: sizes, fit: BoxFit.cover),
     );
   }
 }

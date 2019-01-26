@@ -45,10 +45,13 @@ class RIPCardBanner extends RIPCardWidget {
       Container(
         height: height,
         width: double.infinity,
-        child: ShimmerSizeImage(
-          minHeight: height,
-          sizes: sizes,
+        decoration: const BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+          color: MunchColors.whisper100,
         ),
+        padding: const EdgeInsets.all(8),
+        alignment: Alignment.bottomRight,
+        child: Text("No Image Available", style: MTextStyle.smallBold),
       )
     ];
 
@@ -62,7 +65,7 @@ class RIPCardBanner extends RIPCardWidget {
           child: Container(
             padding: const EdgeInsets.only(left: 12, right: 12, bottom: 8, top: 8),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: const BorderRadius.all(Radius.circular(3)),
               color: MunchColors.white,
               border: Border.all(color: MunchColors.black10, width: 1),
             ),
@@ -70,9 +73,9 @@ class RIPCardBanner extends RIPCardWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Icon(MunchIcons.rip_gallery, size: 20),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8),
+                const Icon(MunchIcons.rip_gallery, size: 20),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8),
                   child: Text(
                     "SHOW IMAGES",
                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
