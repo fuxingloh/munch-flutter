@@ -77,9 +77,7 @@ class SearchCardListState extends State<SearchCardList> {
 
   void onScroll(ScrollPosition position) {
     if (position.pixels > position.maxScrollExtent - 100) {
-      manager.append().then((_) {
-        setState(() {});
-      });
+      manager.append().then((_) => setState(() {}));
     }
   }
 
@@ -99,7 +97,14 @@ class SearchCardListState extends State<SearchCardList> {
         itemCount: _cards.length + 1,
         itemBuilder: (context, i) {
           if (_cards.length == i) {
-            return _SearchLoaderIndicator(loading: manager?.more ?? true);
+            final loading = manager?.more ?? true;
+
+            if (loading) {
+              // Loading might be loaded where scrolling is not allowed.
+              // This will remove it.
+              manager.append().then((_) => setState(() {}));
+            }
+            return _SearchLoaderIndicator(loading: loading);
           }
           return SearchCardDelegator.delegate(_cards[i]);
         },
@@ -109,8 +114,7 @@ class SearchCardListState extends State<SearchCardList> {
 }
 
 class _SearchLoaderIndicator extends StatelessWidget {
-  const _SearchLoaderIndicator({Key key, @required this.loading})
-      : super(key: key);
+  const _SearchLoaderIndicator({Key key, @required this.loading}) : super(key: key);
 
   final bool loading;
 
@@ -118,7 +122,7 @@ class _SearchLoaderIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 64,
-      margin: EdgeInsets.only(bottom: 48),
+      margin: const EdgeInsets.only(bottom: 48),
       alignment: Alignment.center,
       child: loading
           ? SpinKitThreeBounce(

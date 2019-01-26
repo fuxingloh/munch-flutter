@@ -118,15 +118,15 @@ class PlaceHeartButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (onPressed == null) {
-      return Container();
+      return SizedBox();
     }
 
     return IconButton(
       onPressed: onPressed,
-      icon: Icon(MunchIcons.rip_heart_filled, color: MunchColors.white),
+      icon: const Icon(MunchIcons.rip_heart_filled, color: MunchColors.white),
       iconSize: 24,
       color: MunchColors.white,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
     );
   }
 }
@@ -231,7 +231,7 @@ class _PlaceCardImage extends StatelessWidget {
         ),
         padding: const EdgeInsets.all(8),
         alignment: Alignment.bottomRight,
-        child: Text("No Image Available", style: MTextStyle.smallBold),
+        child: const Text("No Image Available", style: MTextStyle.smallBold),
       );
     }
 
