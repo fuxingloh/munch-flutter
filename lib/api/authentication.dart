@@ -97,6 +97,7 @@ class Authentication {
     prefs.remove("UserProfile");
     prefs.remove("UserSetting");
     prefs.remove("UserSearchPreference");
+    UserSearchPreference.instance = null;
 
     PlaceSavedDatabase.instance.reset(reload: false);
 

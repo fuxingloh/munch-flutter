@@ -135,13 +135,16 @@ class SearchQuery {
   SearchFilter filter;
   SearchSort sort;
 
+  /// UserSearchPreference.instance must be loaded before calling SearchQuery
   SearchQuery.collection(SearchCollection collection)
       : this(SearchFeature.Collection, collection, SearchFilter.preference(UserSearchPreference.instance),
             SearchSort(null));
 
+  /// UserSearchPreference.instance must be loaded before calling SearchQuery
   SearchQuery.feature(SearchFeature feature)
       : this(feature, null, SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
 
+  /// UserSearchPreference.instance must be loaded before calling SearchQuery
   SearchQuery.search()
       : this(SearchFeature.Search, null, SearchFilter.preference(UserSearchPreference.instance), SearchSort(null));
 
