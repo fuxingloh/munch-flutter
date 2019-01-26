@@ -15,7 +15,7 @@ class SearchCardPlaceCollection extends StatelessWidget {
       height: PlaceCard.height(width),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.only(left: 24, right: 24),
+        padding: const EdgeInsets.only(left: 24, right: 24),
         itemBuilder: (context, i) {
           return Container(
             width: width,
@@ -23,7 +23,7 @@ class SearchCardPlaceCollection extends StatelessWidget {
           );
         },
         itemCount: places.length,
-        separatorBuilder: (c, i) => SizedBox(width: 24),
+        separatorBuilder: (c, i) => const SizedBox(width: 24),
       ),
     );
   }

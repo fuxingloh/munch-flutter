@@ -3,8 +3,7 @@ import 'package:munch_app/pages/filter/filter_area_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
 class SearchCardLocationBanner extends SearchCardWidget {
-  SearchCardLocationBanner(SearchCard card)
-      : super(card, margin: SearchCardInsets.only(left: 0, right: 0, top: 0));
+  SearchCardLocationBanner(SearchCard card) : super(card, margin: SearchCardInsets.only(left: 0, right: 0, top: 0));
 
   @override
   Widget buildCard(BuildContext context) {
@@ -14,7 +13,7 @@ class SearchCardLocationBanner extends SearchCardWidget {
     );
     var overlay = Container(
       color: MunchColors.black50,
-      padding: EdgeInsets.all(24),
+      padding: const EdgeInsets.all(24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -24,7 +23,7 @@ class SearchCardLocationBanner extends SearchCardWidget {
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 8),
               child: Text(
                 "Enter a location and we’ll tell you what’s delicious around.",
                 style: MTextStyle.h5.copyWith(color: MunchColors.white),

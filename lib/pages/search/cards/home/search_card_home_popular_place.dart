@@ -13,8 +13,7 @@ class SearchCardHomePopularPlace extends SearchCardWidget {
   SearchCardHomePopularPlace(SearchCard card)
       : _collection = UserPlaceCollection.fromJson(card['collection']),
         _places = Place.fromJsonList(card['places']),
-        super(card,
-            margin: SearchCardInsets.only(bottom: 36, left: 0, right: 0));
+        super(card, margin: SearchCardInsets.only(bottom: 36, left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context) {
@@ -27,11 +26,10 @@ class SearchCardHomePopularPlace extends SearchCardWidget {
         ),
         const Padding(
           padding: EdgeInsets.only(top: 4, left: 24, right: 24),
-          child: Text("Where the cool kids and food geeks go.",
-              style: MTextStyle.h6),
+          child: Text("Where the cool kids and food geeks go.", style: MTextStyle.h6),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 24, bottom: 24),
+        Padding(
+          padding: const EdgeInsets.only(top: 24, bottom: 24),
           child: SearchCardPlaceCollection(places: _places),
         ),
         Padding(
@@ -44,8 +42,7 @@ class SearchCardHomePopularPlace extends SearchCardWidget {
   }
 
   void onPressed() {
-    var query = SearchQuery.collection(
-        SearchCollection(_collection.name, _collection.collectionId));
+    var query = SearchQuery.collection(SearchCollection(_collection.name, _collection.collectionId));
     SearchPage.state.push(query);
   }
 }

@@ -10,12 +10,10 @@ import 'package:munch_app/styles/icons.dart';
 
 class SearchCardHomeTab extends SearchCardWidget {
   SearchCardHomeTab(SearchCard card)
-      : super(card, margin: SearchCardInsets.only(left: 0, right: 0));
+      : super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
 
   @override
-  Widget buildCard(BuildContext context) {
-    return _SearchCardHomeTabChild();
-  }
+  Widget buildCard(BuildContext context) => _SearchCardHomeTabChild();
 }
 
 class _SearchCardHomeTabChild extends StatefulWidget {
@@ -51,7 +49,7 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
               child: SearchHomeTabCell(tabs[i].title, tab == tabs[i]),
             );
           },
-          separatorBuilder: (c, i) => SizedBox(width: 32),
+          separatorBuilder: (c, i) => const SizedBox(width: 32),
           itemCount: tabs.length,
         ),
       ),

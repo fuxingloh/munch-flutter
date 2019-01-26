@@ -14,30 +14,36 @@ class SearchCardShimmer extends SearchCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AspectRatio(
+        const AspectRatio(
           aspectRatio: 1 / 0.6,
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(3),
-            child: const Shimmer(),
+            borderRadius: BorderRadius.all(Radius.circular(3)),
+            child: Shimmer(),
           ),
         ),
-        Container(
+        const SizedBox(
           height: 18,
           width: 200,
-          margin: const EdgeInsets.only(top: 8),
-          child: const Shimmer(),
+          child: Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Shimmer(),
+          ),
         ),
-        Container(
+        const SizedBox(
           height: 16,
           width: 160,
-          margin: const EdgeInsets.only(top: 8),
-          child: const Shimmer(),
+          child: Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Shimmer(),
+          ),
         ),
-        Container(
+        const SizedBox(
           height: 16,
           width: 260,
-          margin: const EdgeInsets.only(top: 8),
-          child: const Shimmer(),
+          child: Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: Shimmer(),
+          ),
         ),
       ],
     );
@@ -52,11 +58,10 @@ class SearchCardNoResult extends SearchCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("No Results", style: MTextStyle.h2),
-        Container(
-          margin: EdgeInsets.only(top: 16),
-          child:
-              Text("We could not find anything. Try broadening your search?"),
+        const Text("No Results", style: MTextStyle.h2),
+        const Padding(
+          padding: const EdgeInsets.only(top: 16),
+          child: Text("We could not find anything. Try broadening your search?"),
         ),
       ],
     );
@@ -85,8 +90,7 @@ class SearchCardError extends SearchCardWidget {
 
     return Container(
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-          color: MunchColors.peach100, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(color: MunchColors.peach100, borderRadius: BorderRadius.circular(4)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: children,
@@ -147,9 +151,9 @@ class SearchCardUnsupported extends SearchCardWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text("Welcome back to Munch!", style: MTextStyle.h2),
-        Container(
-          margin: const EdgeInsets.only(top: 16, bottom: 24),
-          child: Text(
+        const Padding(
+          padding: const EdgeInsets.only(top: 16, bottom: 24),
+          child: const Text(
               "While you were away, we have been working very hard to add more sugar and spice to the app to enhance your food discovery journey! Update Munch now to discover what's delicious!",
               style: MTextStyle.regular),
         ),
@@ -162,8 +166,7 @@ class SearchCardUnsupported extends SearchCardWidget {
   }
 
   void onPressed() async {
-    String url =
-        'https://play.google.com/store/apps/details?id=app.munch.munchapp';
+    String url = 'https://play.google.com/store/apps/details?id=app.munch.munchapp';
     if (await canLaunch(url)) {
       await launch(url);
     }

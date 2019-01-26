@@ -1,7 +1,5 @@
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/api/munch_data.dart';
-import 'package:munch_app/api/user_api.dart';
-import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
@@ -12,7 +10,7 @@ class SearchCardAreaClusterList extends SearchCardWidget {
       : _areas = Area.fromJsonList(card['areas']),
         super(
           card,
-          margin: SearchCardInsets.only(left: 0, right: 0),
+          margin: const SearchCardInsets.only(left: 0, right: 0),
         );
 
   @override
@@ -20,7 +18,7 @@ class SearchCardAreaClusterList extends SearchCardWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
+        const Padding(
           padding: EdgeInsets.only(left: 24, right: 24, bottom: 18),
           child: Text("Discover Locations", style: MTextStyle.h2),
         ),
@@ -28,11 +26,9 @@ class SearchCardAreaClusterList extends SearchCardWidget {
           height: 110,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(left: 24, right: 24),
-            itemBuilder: (context, i) {
-              return _SearchCardAreaCell(area: _areas[i]);
-            },
-            separatorBuilder: (c, i) => SizedBox(width: 18),
+            padding: const EdgeInsets.only(left: 24, right: 24),
+            itemBuilder: (context, i) => _SearchCardAreaCell(area: _areas[i]),
+            separatorBuilder: (c, i) => const SizedBox(width: 18),
             itemCount: _areas.length,
           ),
         ),
@@ -52,7 +48,7 @@ class _SearchCardAreaCell extends StatelessWidget {
 
     var container = Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3),
+        borderRadius: const BorderRadius.all(Radius.circular(3)),
         border: Border.all(color: MunchColors.black15, width: 1),
       ),
       child: Column(
@@ -60,14 +56,13 @@ class _SearchCardAreaCell extends StatelessWidget {
         children: <Widget>[
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(2), topRight: Radius.circular(2)),
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(2), topRight: Radius.circular(2)),
               child: ShimmerSizeImage(sizes: sizes),
             ),
           ),
           Container(
             height: 40,
-            padding: EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
+            padding: const EdgeInsets.only(left: 6, right: 6, top: 4, bottom: 4),
             child: Text(
               area.name,
               maxLines: 2,
@@ -118,7 +113,7 @@ class SearchCardAreaClusterHeader extends SearchCardWidget {
           child: AspectRatio(
             aspectRatio: 4,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(3),
+              borderRadius: const BorderRadius.all(Radius.circular(3)),
               child: ShimmerSizeImage(sizes: area.images[0].sizes),
             ),
           ),

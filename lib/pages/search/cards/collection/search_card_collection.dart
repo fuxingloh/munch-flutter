@@ -14,12 +14,14 @@ class SearchCardCollectionHeader extends SearchCardWidget {
 
     if (_collection.description != null) {
       children.add(Padding(
-        padding: EdgeInsets.only(top: 4),
+        padding: const EdgeInsets.only(top: 4),
         child: Text(_collection.description, style: MTextStyle.h6),
       ));
     }
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch, children: children);
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: children,
+    );
   }
 }

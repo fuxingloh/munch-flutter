@@ -4,7 +4,6 @@ import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/pages/search/search_page.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/texts.dart';
-import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 class SearchCardNoLocation extends SearchCardWidget {

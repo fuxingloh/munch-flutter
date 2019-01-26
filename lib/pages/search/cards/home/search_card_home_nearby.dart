@@ -18,13 +18,11 @@ class SearchCardHomeNearby extends SearchCardWidget {
         Container(
           padding: const EdgeInsets.all(24),
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(3)),
-            image: DecorationImage(
+            borderRadius: const BorderRadius.all(Radius.circular(3)),
+            image: const DecorationImage(
               fit: BoxFit.cover,
-              colorFilter:
-                  ColorFilter.mode(MunchColors.black40, BlendMode.srcOver),
-              image:
-                  AssetImage('assets/img/search_card_home_nearby_banner.jpg'),
+              colorFilter: ColorFilter.mode(MunchColors.black40, BlendMode.srcOver),
+              image: AssetImage('assets/img/search_card_home_nearby_banner.jpg'),
             ),
           ),
           child: Column(
