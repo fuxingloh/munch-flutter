@@ -27,7 +27,7 @@ class RIPMapPage extends StatefulWidget {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (c) => RIPMapPage(placeData: placeData),
-        settings: RouteSettings(name: '/places/map'),
+        settings: const RouteSettings(name: '/places/map'),
       ),
     );
   }
@@ -42,10 +42,12 @@ class RIPMapPageState extends State<RIPMapPage> {
       body: Stack(children: [
         GoogleMap(
           onMapCreated: _onMapCreated,
-          options: GoogleMapOptions(
-            compassEnabled: false,
-            myLocationEnabled: false,
+          initialCameraPosition: CameraPosition(
+            target: widget.latLng,
+            zoom: 16.0,
           ),
+          compassEnabled: false,
+          myLocationEnabled: false,
         ),
         RIPHeader(
           placeData: widget.placeData,
@@ -60,13 +62,6 @@ class RIPMapPageState extends State<RIPMapPage> {
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
-      mapController.moveCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: widget.latLng,
-          zoom: 16.0,
-        ),
-      ));
-
       mapController.addMarker(MarkerOptions(
         position: widget.latLng,
         infoWindowText: InfoWindowText(
@@ -102,8 +97,7 @@ class RIPMapBottom extends StatelessWidget {
               "Open Map",
               onPressed: () async {
                 var latLng = placeData.place.location.latLng;
-                var address =
-                    Uri.encodeFull(placeData.place.location.address).toString();
+                var address = Uri.encodeFull(placeData.place.location.address).toString();
                 String url = 'geo:$latLng?q=$address';
                 if (await canLaunch(url)) {
                   await launch(url);

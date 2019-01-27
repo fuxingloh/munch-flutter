@@ -47,8 +47,7 @@ class MunchTabPage extends StatefulWidget {
   State<StatefulWidget> createState() => tabState;
 }
 
-class MunchTabState extends State<MunchTabPage>
-    with WidgetsBindingObserver, RouteAware {
+class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, RouteAware {
   static const search = 0;
   static const feed = 1;
   static const profile = 2;
@@ -222,7 +221,7 @@ class MunchBottomBarItem extends BottomNavigationBarItem {
     height: 1.3,
   );
 
-  MunchBottomBarItem({IconData icon, String text})
+  MunchBottomBarItem({@required IconData icon, @required String text})
       : super(
           icon: Icon(icon),
           title: Text(text, style: style),

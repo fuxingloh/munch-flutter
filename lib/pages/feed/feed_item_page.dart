@@ -30,7 +30,7 @@ class FeedImagePage extends StatefulWidget {
       context,
       MaterialPageRoute(
         builder: (c) => FeedImagePage(item: item),
-        settings: RouteSettings(name: '/feed/images'),
+        settings: const RouteSettings(name: '/feed/images'),
       ),
     );
   }

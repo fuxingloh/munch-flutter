@@ -27,7 +27,7 @@ class OnBoardingPage extends StatelessWidget {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (c) => OnBoardingPage(),
-        settings: RouteSettings(name: '/profile/on-boarding'),
+        settings: const RouteSettings(name: '/profile/on-boarding'),
       ),
     );
   }

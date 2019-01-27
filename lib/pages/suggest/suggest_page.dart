@@ -29,7 +29,7 @@ class SuggestPage extends StatefulWidget {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (c) => SuggestPage(searchQuery: searchQuery),
-        settings: RouteSettings(name: '/search/suggest'),
+        settings: const RouteSettings(name: '/search/suggest'),
       ),
     );
   }
@@ -144,9 +144,10 @@ class _SuggestHeaderBar extends PreferredSize {
               child: Container(
                 margin: const EdgeInsets.only(top: 12, bottom: 12, left: 24),
                 child: SearchTextField(
-                    autofocus: true,
-                    onChanged: onChanged,
-                    controller: controller),
+                  autofocus: true,
+                  onChanged: onChanged,
+                  controller: controller,
+                ),
               ),
             ),
             GestureDetector(
@@ -187,8 +188,7 @@ class _SuggestQueryCell extends StatelessWidget {
       onTap: () => Navigator.of(context).pop(item.searchQuery),
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding:
-            const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
+        padding: const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Row(
           children: [
             Icon(item.iconData),
@@ -216,11 +216,10 @@ class _SuggestPlaceCell extends StatelessWidget {
       },
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding:
-            const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
+        padding: const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Row(
           children: [
-            Icon(MunchIcons.suggest_place),
+            const Icon(MunchIcons.suggest_place),
             Padding(
               padding: const EdgeInsets.only(left: 24),
               child: Text(item.place.name, style: MTextStyle.regular),
@@ -240,12 +239,10 @@ class _SuggestAssumptionCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.of(context).pop(item.assumptionQueryResult.searchQuery),
+      onTap: () => Navigator.of(context).pop(item.assumptionQueryResult.searchQuery),
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding:
-            const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
+        padding: const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Row(
           children: [
             const Icon(MunchIcons.suggest_pointer),
@@ -305,8 +302,7 @@ class _SuggestTextCell extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding:
-            const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
+        padding: const EdgeInsets.only(top: 12, bottom: 12, right: 24, left: 24),
         child: Text(
           "Did you mean ${item.text}",
           style: MTextStyle.regular.copyWith(fontWeight: FontWeight.w600),

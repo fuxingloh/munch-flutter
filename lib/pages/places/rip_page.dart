@@ -26,7 +26,7 @@ class RIPPage extends StatefulWidget {
       context,
       MaterialPageRoute(
         builder: (c) => RIPPage(place: place),
-        settings: RouteSettings(name: '/places'),
+        settings: const RouteSettings(name: '/places'),
       ),
     );
   }

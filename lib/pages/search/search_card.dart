@@ -35,6 +35,7 @@ class SearchCardDelegator {
     return offset;
   }
 
+  /// Calculate card height for scroll to
   static double height(BuildContext context, SearchCard card) {
     switch (card.cardId) {
       case "Header_2018-11-29":

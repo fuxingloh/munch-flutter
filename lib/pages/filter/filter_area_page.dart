@@ -15,7 +15,7 @@ class FilterAreaPage extends StatefulWidget {
       MaterialPageRoute(
         fullscreenDialog: fullscreenDialog,
         builder: (c) => FilterAreaPage(),
-        settings: RouteSettings(name: '/search/filter/locations/search'),
+        settings: const RouteSettings(name: '/search/filter/locations/search'),
       ),
     );
   }

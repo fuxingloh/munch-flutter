@@ -28,7 +28,7 @@ class FilterBetweenPage extends StatefulWidget {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (c) => FilterBetweenPage(searchQuery: searchQuery),
-        settings: RouteSettings(name: '/search/filter/between'),
+        settings: const RouteSettings(name: '/search/filter/between'),
       ),
     );
   }
@@ -80,8 +80,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
     mapController.clearMarkers();
 
     final points = searchQuery.filter.location.points;
-    final List<String> latLngList =
-        points.map((p) => p.latLng).toList(growable: false);
+    final List<String> latLngList = points.map((p) => p.latLng).toList(growable: false);
 
     points.forEach((point) {
       var ll = point.latLng.split(",");
@@ -105,22 +104,21 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   @override
   Widget build(BuildContext context) {
     final googleMap = GoogleMap(
-      onMapCreated: _onMapCreated,
-      options: GoogleMapOptions(
-        scrollGesturesEnabled: false,
-        compassEnabled: false,
-        myLocationEnabled: false,
-        rotateGesturesEnabled: false,
-        tiltGesturesEnabled: false,
-        zoomGesturesEnabled: false,
+      initialCameraPosition: const CameraPosition(
+        target: LatLng(1.305270, 103.8),
+        zoom: 11.0,
       ),
+      onMapCreated: _onMapCreated,
+      scrollGesturesEnabled: false,
+      compassEnabled: false,
+      myLocationEnabled: false,
+      rotateGesturesEnabled: false,
+      tiltGesturesEnabled: false,
+      zoomGesturesEnabled: false,
     );
 
     final center = const Center(
-      child: SizedBox(
-          height: 30,
-          width: 30,
-          child: Image(image: AssetImage('assets/img/rip_map_centroid.png'))),
+      child: SizedBox(height: 30, width: 30, child: Image(image: AssetImage('assets/img/rip_map_centroid.png'))),
     );
 
     return Scaffold(
@@ -157,13 +155,13 @@ class FilterBetweenState extends State<FilterBetweenPage> {
                   refresh();
                 });
               },
-              icon: Icon(Icons.delete),
-              child: Text("Remove Location"),
+              icon: const Icon(Icons.delete),
+              child: const Text("Remove Location"),
             ),
             MunchBottomSheetTile(
               onPressed: () => Navigator.pop(context),
-              icon: Icon(Icons.close),
-              child: Text("Cancel"),
+              icon: const Icon(Icons.close),
+              child: const Text("Cancel"),
             ),
           ],
         );
@@ -189,12 +187,6 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
-      mapController.moveCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(1.305270, 103.8),
-          zoom: 11.0,
-        ),
-      ));
     });
   }
 }
@@ -242,8 +234,7 @@ class _FilterBetweenBottom extends StatelessWidget {
     List<Widget> children = [
       const Padding(
         padding: EdgeInsets.only(left: 24, right: 24, bottom: 8),
-        child: Text(
-            "Enter everyone’s location and we’ll find the most ideal spot for a meal together."),
+        child: Text("Enter everyone’s location and we’ll find the most ideal spot for a meal together."),
       )
     ];
 
@@ -252,9 +243,9 @@ class _FilterBetweenBottom extends StatelessWidget {
     } else {
       children.add(Container(
         height: 48,
-        padding: EdgeInsets.only(left: 24),
+        padding: const EdgeInsets.only(left: 24),
         alignment: Alignment.centerLeft,
-        child: Text("Requires 2 Locations"),
+        child: const Text("Requires 2 Locations"),
       ));
     }
 
@@ -269,8 +260,7 @@ class _FilterBetweenBottom extends StatelessWidget {
     ));
 
     return Container(
-      decoration:
-          const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
+      decoration: const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
       padding: const EdgeInsets.only(top: 16, bottom: 16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -313,7 +303,7 @@ class _FilterBetweenRow extends StatelessWidget {
                 children: <Widget>[
                   Center(child: Text('${i + 1}. ${points[i].name}')),
                   const Padding(
-                    padding: EdgeInsets.all(6.0),
+                    padding: const EdgeInsets.all(6.0),
                     child: Icon(
                       MunchIcons.filter_cancel,
                       size: 20,
@@ -325,7 +315,7 @@ class _FilterBetweenRow extends StatelessWidget {
             ),
           );
         },
-        separatorBuilder: (c, _) => SizedBox(width: 16),
+        separatorBuilder: (c, _) => const SizedBox(width: 16),
       ),
     );
   }
@@ -345,8 +335,7 @@ class _FilterBetweenAction extends StatelessWidget {
   final VoidCallback onApply;
   final FilterResult result;
 
-  final MunchButtonStyle addStyle =
-      MunchButtonStyle.secondaryOutline.copyWith(padding: 16);
+  final MunchButtonStyle addStyle = MunchButtonStyle.secondaryOutline.copyWith(padding: 16);
 
   final MunchButtonStyle fadedStyle = MunchButtonStyle.secondary.copyWith(
       background: MunchColors.secondary050,

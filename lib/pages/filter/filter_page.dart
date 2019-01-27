@@ -29,7 +29,7 @@ class FilterPage extends StatefulWidget {
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (c) => FilterPage(searchQuery: searchQuery),
-        settings: RouteSettings(name: '/search/filter'),
+        settings: const RouteSettings(name: '/search/filter'),
       ),
     );
   }

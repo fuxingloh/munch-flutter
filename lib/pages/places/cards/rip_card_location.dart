@@ -8,8 +8,7 @@ import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 class RIPCardLocation extends RIPCardWidget {
-  RIPCardLocation(PlaceData data)
-      : super(data, margin: const RIPCardInsets.only(left: 0, right: 0));
+  RIPCardLocation(PlaceData data) : super(data, margin: const RIPCardInsets.only(left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
@@ -54,11 +53,9 @@ class RIPCardLocation extends RIPCardWidget {
     var landmarks = data.place.location.landmarks;
     if (landmarks != null && landmarks.isNotEmpty) {
       var landmark = landmarks[0];
-      var min = MunchLocation.instance
-          .distanceAsDuration(latLng, landmark.location.latLng);
+      var min = MunchLocation.instance.distanceAsDuration(latLng, landmark.location.latLng);
       children.add(TextSpan(text: ' • $min from '));
-      children.add(TextSpan(
-          text: landmark.name, style: TextStyle(fontWeight: FontWeight.w600)));
+      children.add(TextSpan(text: landmark.name, style: TextStyle(fontWeight: FontWeight.w600)));
     }
 
     return RichText(
@@ -100,15 +97,17 @@ class _RIPCardMapState extends State<_RIPCardMap> {
     return Stack(
       children: <Widget>[
         GoogleMap(
-          onMapCreated: _onMapCreated,
-          options: GoogleMapOptions(
-            scrollGesturesEnabled: false,
-            rotateGesturesEnabled: false,
-            compassEnabled: false,
-            myLocationEnabled: false,
-            tiltGesturesEnabled: false,
-            zoomGesturesEnabled: false,
+          initialCameraPosition: CameraPosition(
+            target: widget.latLng,
+            zoom: 16.0,
           ),
+          onMapCreated: _onMapCreated,
+          scrollGesturesEnabled: false,
+          rotateGesturesEnabled: false,
+          compassEnabled: false,
+          myLocationEnabled: false,
+          tiltGesturesEnabled: false,
+          zoomGesturesEnabled: false,
         ),
         Center(
           child: DecoratedBox(
@@ -116,8 +115,7 @@ class _RIPCardMapState extends State<_RIPCardMap> {
               color: MunchColors.white,
               borderRadius: BorderRadius.all(Radius.circular(22)),
             ),
-            child: Icon(MunchIcons.map_place,
-                color: MunchColors.primary500, size: 44),
+            child: Icon(MunchIcons.map_place, color: MunchColors.primary500, size: 44),
           ),
         )
       ],
@@ -127,12 +125,6 @@ class _RIPCardMapState extends State<_RIPCardMap> {
   void _onMapCreated(GoogleMapController controller) {
     setState(() {
       mapController = controller;
-      mapController.moveCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: widget.latLng,
-          zoom: 16.0,
-        ),
-      ));
     });
   }
 }

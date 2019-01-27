@@ -96,12 +96,14 @@ class SearchMapPageState extends State<SearchMapPage> {
       body: Stack(
         children: <Widget>[
           GoogleMap(
-            onMapCreated: _onMapCreated,
-            options: GoogleMapOptions(
-              compassEnabled: false,
-              tiltGesturesEnabled: false,
-              myLocationEnabled: false,
+            initialCameraPosition: CameraPosition(
+              target: LatLng(1.28, 103.8),
+              zoom: 12.0,
             ),
+            onMapCreated: _onMapCreated,
+            compassEnabled: false,
+            tiltGesturesEnabled: false,
+            myLocationEnabled: false,
           ),
           _SearchMapHeader()
         ],
@@ -120,13 +122,6 @@ class SearchMapPageState extends State<SearchMapPage> {
     setState(() {
       mapController = controller;
       mapManager.start();
-      mapController.moveCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(
-          target: LatLng(1.28, 103.8),
-          zoom: 12.0,
-        ),
-      ));
-
       mapController.onMarkerTapped.add(_onMarkerTapped);
     });
   }

@@ -37,7 +37,7 @@ class RIPImagePage extends StatefulWidget {
               imageLoader: imageLoader,
               place: place,
             ),
-        settings: RouteSettings(name: '/places/images'),
+        settings: const RouteSettings(name: '/places/images'),
       ),
     );
   }

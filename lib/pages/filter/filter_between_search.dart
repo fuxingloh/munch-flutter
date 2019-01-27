@@ -14,7 +14,7 @@ class FilterBetweenSearchPage extends StatefulWidget {
       context,
       MaterialPageRoute(
         builder: (c) => FilterBetweenSearchPage(),
-        settings: RouteSettings(name: '/search/filter/between/search'),
+        settings: const RouteSettings(name: '/search/filter/between/search'),
       ),
     );
   }

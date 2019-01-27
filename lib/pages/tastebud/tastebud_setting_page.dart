@@ -29,7 +29,7 @@ class TastebudSettingPage extends StatelessWidget {
       context,
       MaterialPageRoute(
         builder: (c) => TastebudSettingPage(),
-        settings: RouteSettings(name: '/profile/setting'),
+        settings: const RouteSettings(name: '/profile/setting'),
       ),
     );
   }
