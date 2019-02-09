@@ -50,14 +50,14 @@ class Authentication {
   Future<bool> isAuthenticated() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getString("UserProfile") == null) {
-      MunchAnalytic.setUserId(null);
+      MunchAnalytic.clearUserData();
       FirebaseAuth.instance.signOut();
       return false;
     }
 
     return FirebaseAuth.instance.currentUser().then((user) {
       if (user != null) return true;
-      MunchAnalytic.setUserId(null);
+      MunchAnalytic.clearUserData();
       return false;
     });
   }

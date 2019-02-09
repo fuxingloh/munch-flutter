@@ -5,6 +5,11 @@ import 'package:munch_app/api/search_api.dart';
 final FirebaseAnalytics _firebase = FirebaseAnalytics();
 
 class MunchAnalytic {
+  static void clearUserData() {
+    _firebase.setUserId(null);
+    debugPrint('MunchAnalytic clearUserData');
+  }
+
   static void setUserId(String userId) {
     _firebase.setUserId(userId);
     debugPrint('MunchAnalytic setUserId: $userId');
@@ -46,6 +51,14 @@ class MunchAnalytic {
   static void logSearchQuery({@required SearchQuery searchQuery}) {
     final parameters = _searchQueryParameters(searchQuery);
     MunchAnalytic.logEvent("search_query", parameters: parameters);
+
+    if (searchQuery.feature == SearchFeature.Search) {
+      if (searchQuery.filter.location.type == SearchFilterLocationType.Between) {
+        MunchAnalytic.logEvent("search_query_eat_between", parameters: {
+          "count": searchQuery.filter.location.points.length,
+        });
+      }
+    }
   }
 
   static void logSearchQueryAppend({
