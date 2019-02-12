@@ -5,7 +5,7 @@ import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/structured_exception.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
-String _url = 'https://api.munch.app/v0.18.0';
+String _url = 'https://api.munch.app/v0.19.0';
 DateFormat _format = DateFormat("yyyy-MM-dd'T'HH:MM:ss");
 
 class MunchApi {

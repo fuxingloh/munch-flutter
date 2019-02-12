@@ -9,8 +9,7 @@ import 'package:munch_app/pages/suggest/suggest_page.dart';
 import 'package:munch_app/styles/icons.dart';
 
 class SearchCardHomeTab extends SearchCardWidget {
-  SearchCardHomeTab(SearchCard card)
-      : super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
+  SearchCardHomeTab(SearchCard card) : super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context) => _SearchCardHomeTabChild();
@@ -180,8 +179,7 @@ class SearchHomeProfile extends StatelessWidget {
         FutureBuilder(
           future: UserProfile.get(),
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done &&
-                snapshot.data == null) {
+            if (snapshot.connectionState == ConnectionState.done && snapshot.data == null) {
               return GestureDetector(
                 onTap: () => _onLogin(context),
                 child: Padding(
@@ -263,8 +261,7 @@ class SearchHomeActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [
       Padding(
-        padding:
-            const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 10),
+        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 10),
         child: Icon(tab.leftIcon, size: 20),
       ),
       Expanded(
@@ -288,8 +285,7 @@ class SearchHomeActionBar extends StatelessWidget {
       children.add(GestureDetector(
         onTap: onRight,
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
+          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
           child: Icon(tab.rightIcon, size: 24),
         ),
       ));
@@ -315,9 +311,8 @@ class _HomeTab {
     title: 'EatBetween',
     image: 'search_card_home_tab_between.jpg',
     leftIcon: MunchIcons.filter_between,
-    hint: 'Enter Locations',
-    message:
-        'Enter everyone’s location and we’ll find the most ideal spot for a meal together.',
+    hint: 'Try EatBetween',
+    message: 'Enter everyone’s location and we’ll find the most ideal spot for a meal together.',
   );
 
   static const search = _HomeTab(
@@ -326,8 +321,7 @@ class _HomeTab {
     leftIcon: MunchIcons.search_header_search,
     rightIcon: MunchIcons.search_header_filter,
     hint: 'Search e.g. Italian in Orchard',
-    message:
-        'Search anything on Munch and we’ll give you the best recommendations.',
+    message: 'Search anything on Munch and we’ll give you the best recommendations.',
   );
   static const location = _HomeTab(
     title: 'Neighbourhoods',

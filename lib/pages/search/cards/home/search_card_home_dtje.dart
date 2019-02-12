@@ -15,7 +15,6 @@ class SearchCardHomeDTJE extends SearchCardWidget {
   @override
   Widget buildCard(BuildContext context) {
     return Container(
-      color: MunchColors.saltpan100,
       padding: const SearchCardInsets.only(),
       child: _SearchCardChild(card: card),
     );
@@ -66,8 +65,13 @@ class _SearchCardChildState extends State<_SearchCardChild> {
           ),
         ],
       ),
-      Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 0),
+      Container(
+        margin: const EdgeInsets.only(top: 24, bottom: 12),
+        decoration: const BoxDecoration(
+          color: MunchColors.peach100,
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        ),
+        padding: const EdgeInsets.only(left: 24, right: 24, top: 18, bottom: 18),
         child: SearchDTJEList(card: widget.card),
       ),
     ];
@@ -104,15 +108,18 @@ class SearchDTJEList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<dynamic> items = [null, null, null, null, null];
-    String text;
 
     final min = _minute;
     if (min < 690) {
-      text = "Suggestions will be out at 11:30am.\n\nSubscribe to receive a notification when the suggestions are out!";
+      return SearchDTJEPending(
+        text: "Your lunch suggestions are cooking and will be read at 11:30am.",
+      );
     } else if (min >= 690 && min < 960) {
       items = card['lunch'];
     } else if (min < 1080) {
-      text = "Suggestions will be out at 6pm.\n\nSubscribe to receive a notification when the suggestions are out!";
+      return SearchDTJEPending(
+        text: "Your dinner suggestions are cooking and will be read at 6pm.",
+      );
     } else {
       items = card['dinner'];
     }
@@ -122,23 +129,31 @@ class SearchDTJEList extends StatelessWidget {
       children.add(DTJEItem(number: '${i + 1}.', label: items[i]));
     }
 
-    return Stack(
-      children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: children,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(32),
-          child: text != null
-              ? Center(
-                  child: Text(
-                  text,
-                  textAlign: TextAlign.center,
-                ))
-              : Container(),
-        ),
-      ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: children,
+    );
+  }
+}
+
+class SearchDTJEPending extends StatelessWidget {
+  final String text;
+
+  const SearchDTJEPending({Key key, this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(24),
+      child: Column(
+        children: <Widget>[
+          const Padding(
+            padding: const EdgeInsets.only(bottom: 24),
+            child: Icon(MunchIcons.search_card_home_dtje_pan, size: 48),
+          ),
+          Text(text, textAlign: TextAlign.center),
+        ],
+      ),
     );
   }
 }

@@ -74,7 +74,7 @@ class SearchCardBetweenHeader extends SearchCardWidget {
               padding: const EdgeInsets.only(right: 24),
               child: MunchButton.text(
                 "SHARE",
-                style: MunchButtonStyle.borderSmall,
+                style: MunchButtonStyle.secondaryOutline ,
                 onPressed: () => onShare(context),
               ),
             )
