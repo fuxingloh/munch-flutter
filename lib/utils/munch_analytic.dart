@@ -1,17 +1,21 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/search_api.dart';
+import 'package:munch_app/utils/facebook_app_events.dart';
 
 final FirebaseAnalytics _firebase = FirebaseAnalytics();
+final FacebookAppEvents _facebook = FacebookAppEvents();
 
 class MunchAnalytic {
   static void clearUserData() {
     _firebase.setUserId(null);
+    _facebook.clearUserData();
     debugPrint('MunchAnalytic clearUserData');
   }
 
   static void setUserId(String userId) {
     _firebase.setUserId(userId);
+    _facebook.setUserId(userId);
     debugPrint('MunchAnalytic setUserId: $userId');
   }
 
@@ -22,6 +26,7 @@ class MunchAnalytic {
 
   static void logEvent(String name, {Map<String, dynamic> parameters}) {
     _firebase.logEvent(name: name, parameters: parameters);
+    _facebook.logEvent(name: name, parameters: parameters);
     debugPrint('MunchAnalytic logEvent: $name, p: ${parameters?.length ?? 0}');
   }
 

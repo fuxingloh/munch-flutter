@@ -112,13 +112,13 @@ class SearchDTJEList extends StatelessWidget {
     final min = _minute;
     if (min < 690) {
       return SearchDTJEPending(
-        text: "Your lunch suggestions are cooking and will be read at 11:30am.",
+        text: "Your lunch suggestions are cooking and will be ready at 11:30am.",
       );
     } else if (min >= 690 && min < 960) {
       items = card['lunch'];
     } else if (min < 1080) {
       return SearchDTJEPending(
-        text: "Your dinner suggestions are cooking and will be read at 6pm.",
+        text: "Your dinner suggestions are cooking and will be ready at 6pm.",
       );
     } else {
       items = card['dinner'];

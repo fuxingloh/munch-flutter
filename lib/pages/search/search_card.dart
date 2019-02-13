@@ -48,6 +48,9 @@ class SearchCardDelegator {
       case "BetweenHeader_2018-12-13":
         return SearchCardBetweenHeader.height(context, card);
 
+      case "BetweenReferral_2019-02-12":
+        return SearchCardBetweenReferral.height(context, card);
+
       case "Place_2018-12-29":
         return SearchCardPlace.height(context, card);
 

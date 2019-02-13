@@ -36,8 +36,7 @@ class RIPCardNameTag extends RIPCardWidget {
           child: Text(data.place.name, style: MTextStyle.h1),
         ),
         Padding(
-          padding:
-              const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
+          padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
           child: buildNeighbourhood(data),
         ),
         Padding(
@@ -53,9 +52,7 @@ class RIPCardNameTag extends RIPCardWidget {
   }
 
   Widget buildNeighbourhood(PlaceData data) {
-    String text = data.place.location.neighbourhood ??
-        data.place.location.street ??
-        data.place.location.address;
+    String text = data.place.location.neighbourhood ?? data.place.location.street ?? data.place.location.address;
 
     return Text(text, style: MTextStyle.h6, maxLines: 1);
   }
@@ -84,43 +81,4 @@ class RIPCardNameTag extends RIPCardWidget {
 
     return MunchTagView(tags: tags.take(8), spacing: 12);
   }
-
-// override func didLoad(data: PlaceData!) {
-//        self.nameLabel.text = data.place.name
-//        self.locationLabel.text = data.place.location.neighbourhood ?? data.place.location.street ?? data.place.location.address
-//
-//        var tags = data.place.tags.filter({ (tag: Tag) in tag.type != .Timing })
-//        if tags.isEmpty {
-//            tags.append(Tag.restaurant)
-//        }
-//        self.tagView = RIPTagCollection(tags: tags.map({ $0.name }))
-//
-//        self.addSubview(nameLabel)
-//        self.addSubview(locationLabel)
-//        self.addSubview(tagView)
-//        self.addSubview(separatorLine)
-//
-//        nameLabel.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(self).inset(12)
-//            maker.height.equalTo(42 * nameLabel.countLines(width: UIScreen.main.bounds.width - 48)).priority(.high)
-//        }
-//
-//        locationLabel.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(nameLabel.snp.bottom).inset(-4)
-//        }
-//
-//        tagView.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self).inset(24)
-//            maker.top.equalTo(locationLabel.snp.bottom).inset(-16)
-//        }
-//
-//        separatorLine.snp.makeConstraints { maker in
-//            maker.left.right.equalTo(self)
-//
-//            maker.top.equalTo(tagView.snp.bottom).inset(-24)
-//            maker.bottom.equalTo(self).inset(12)
-//        }
-//    }
 }
