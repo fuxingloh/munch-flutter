@@ -62,3 +62,96 @@ Map<String, dynamic> _$UserSavedPlaceToJson(UserSavedPlace instance) =>
       'createdMillis': instance.createdMillis,
       'place': instance.place
     };
+
+UserLocation _$UserLocationFromJson(Map<String, dynamic> json) {
+  return UserLocation(
+      json['userId'] as String,
+      json['sortId'] as String,
+      _$enumDecodeNullable(_$UserLocationTypeEnumMap, json['type']),
+      _$enumDecodeNullable(_$UserLocationInputEnumMap, json['input']),
+      json['name'] as String,
+      json['latLng'] as String,
+      json['address'] as String,
+      json['createdMillis'] as int,
+      json['updatedMillis'] as int);
+}
+
+Map<String, dynamic> _$UserLocationToJson(UserLocation instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+      'sortId': instance.sortId,
+      'type': _$UserLocationTypeEnumMap[instance.type],
+      'input': _$UserLocationInputEnumMap[instance.input],
+      'name': instance.name,
+      'latLng': instance.latLng,
+      'address': instance.address,
+      'createdMillis': instance.createdMillis,
+      'updatedMillis': instance.updatedMillis
+    };
+
+T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    throw ArgumentError('A value must be provided. Supported values: '
+        '${enumValues.values.join(', ')}');
+  }
+  return enumValues.entries
+      .singleWhere((e) => e.value == source,
+          orElse: () => throw ArgumentError(
+              '`$source` is not one of the supported values: '
+              '${enumValues.values.join(', ')}'))
+      .key;
+}
+
+T _$enumDecodeNullable<T>(Map<T, dynamic> enumValues, dynamic source) {
+  if (source == null) {
+    return null;
+  }
+  return _$enumDecode<T>(enumValues, source);
+}
+
+const _$UserLocationTypeEnumMap = <UserLocationType, dynamic>{
+  UserLocationType.home: 'home',
+  UserLocationType.work: 'work',
+  UserLocationType.saved: 'saved',
+  UserLocationType.recent: 'recent'
+};
+
+const _$UserLocationInputEnumMap = <UserLocationInput, dynamic>{
+  UserLocationInput.current: 'current',
+  UserLocationInput.searched: 'searched',
+  UserLocationInput.history: 'history'
+};
+
+UserRatedPlace _$UserRatedPlaceFromJson(Map<String, dynamic> json) {
+  return UserRatedPlace(
+      json['userId'] as String,
+      json['placeId'] as String,
+      _$enumDecodeNullable(_$UserRatedPlaceRatingEnumMap, json['rating']),
+      _$enumDecodeNullable(_$UserRatedPlaceStatusEnumMap, json['status']),
+      json['createdMillis'] as int,
+      json['updatedMillis'] as int);
+}
+
+Map<String, dynamic> _$UserRatedPlaceToJson(UserRatedPlace instance) =>
+    <String, dynamic>{
+      'userId': instance.userId,
+      'placeId': instance.placeId,
+      'rating': _$UserRatedPlaceRatingEnumMap[instance.rating],
+      'status': _$UserRatedPlaceStatusEnumMap[instance.status],
+      'createdMillis': instance.createdMillis,
+      'updatedMillis': instance.updatedMillis
+    };
+
+const _$UserRatedPlaceRatingEnumMap = <UserRatedPlaceRating, dynamic>{
+  UserRatedPlaceRating.star1: 'star1',
+  UserRatedPlaceRating.star2: 'star2',
+  UserRatedPlaceRating.star3: 'star3',
+  UserRatedPlaceRating.star4: 'star4',
+  UserRatedPlaceRating.star5: 'star5'
+};
+
+const _$UserRatedPlaceStatusEnumMap = <UserRatedPlaceStatus, dynamic>{
+  UserRatedPlaceStatus.draft: 'draft',
+  UserRatedPlaceStatus.published: 'published',
+  UserRatedPlaceStatus.deleted: 'deleted'
+};

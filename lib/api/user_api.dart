@@ -16,8 +16,7 @@ class UserProfile {
   String email;
   String photoUrl;
 
-  factory UserProfile.fromJson(Map<String, dynamic> json) =>
-      _$UserProfileFromJson(json);
+  factory UserProfile.fromJson(Map<String, dynamic> json) => _$UserProfileFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserProfileToJson(this);
 
@@ -44,8 +43,7 @@ class UserSetting {
 
   Map<String, bool> mailings;
 
-  factory UserSetting.fromJson(Map<String, dynamic> json) =>
-      _$UserSettingFromJson(json);
+  factory UserSetting.fromJson(Map<String, dynamic> json) => _$UserSettingFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserSettingToJson(this);
 
@@ -74,8 +72,7 @@ class UserSearchPreference {
   List<Tag> requirements;
   int updatedMillis;
 
-  factory UserSearchPreference.fromJson(Map<String, dynamic> json) =>
-      _$UserSearchPreferenceFromJson(json);
+  factory UserSearchPreference.fromJson(Map<String, dynamic> json) => _$UserSearchPreferenceFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserSearchPreferenceToJson(this);
 
@@ -99,8 +96,7 @@ class UserSearchPreference {
 
 @JsonSerializable()
 class UserSavedPlace {
-  UserSavedPlace(
-      this.userId, this.placeId, this.name, this.createdMillis, this.place);
+  UserSavedPlace(this.userId, this.placeId, this.name, this.createdMillis, this.place);
 
   String userId;
   String placeId;
@@ -109,14 +105,77 @@ class UserSavedPlace {
   int createdMillis;
   Place place;
 
-  factory UserSavedPlace.fromJson(Map<String, dynamic> json) =>
-      _$UserSavedPlaceFromJson(json);
+  factory UserSavedPlace.fromJson(Map<String, dynamic> json) => _$UserSavedPlaceFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserSavedPlaceToJson(this);
 }
 
+@JsonSerializable()
+class UserLocation {
+  UserLocation(
+    this.userId,
+    this.sortId,
+    this.type,
+    this.input,
+    this.name,
+    this.latLng,
+    this.address,
+    this.createdMillis,
+    this.updatedMillis,
+  );
+
+  String userId;
+  String sortId;
+
+  UserLocationType type;
+  UserLocationInput input;
+
+  String name;
+  String latLng;
+  String address;
+
+  int createdMillis;
+  int updatedMillis;
+
+  factory UserLocation.fromJson(Map<String, dynamic> json) => _$UserLocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserLocationToJson(this);
+}
+
+enum UserLocationType { home, work, saved, recent }
+enum UserLocationInput {
+  /// User current location
+  current,
+
+  /// User searched location
+  searched,
+
+  /// User selected from history
+  history,
+}
+
+@JsonSerializable()
+class UserRatedPlace {
+  UserRatedPlace(this.userId, this.placeId, this.rating, this.status, this.createdMillis, this.updatedMillis);
+
+  String userId;
+  String placeId;
+
+  UserRatedPlaceRating rating;
+  UserRatedPlaceStatus status;
+
+  int createdMillis;
+  int updatedMillis;
+
+  factory UserRatedPlace.fromJson(Map<String, dynamic> json) => _$UserRatedPlaceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$UserRatedPlaceToJson(this);
+}
+
+enum UserRatedPlaceStatus { draft, published, deleted }
+enum UserRatedPlaceRating { star1, star2, star3, star4, star5 }
+
 final List<Tag> possibleTagRequirements = [
   Tag("abb22d3d-7d23-4677-b4ef-a3e09f2f9ada", "Halal", TagType.Requirement),
-  Tag("fdf77b3b-8f90-419f-b711-dd25f97046fe", "Vegetarian Options",
-      TagType.Requirement),
+  Tag("fdf77b3b-8f90-419f-b711-dd25f97046fe", "Vegetarian Options", TagType.Requirement),
 ];
