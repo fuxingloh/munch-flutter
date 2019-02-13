@@ -6,6 +6,7 @@ import 'package:munch_app/pages/search/cards/home/search_card_home_dtje.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/separators.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
@@ -60,6 +61,7 @@ class _SettingList extends StatelessWidget {
       const SizedBox(height: 32),
       _SettingTile("Logout", onPressed: () {
         Authentication.instance.logout().then((v) {
+          MunchAnalytic.logEvent("profile_logout");
           Navigator.of(context).pop();
           tabState.onTab(0);
         });

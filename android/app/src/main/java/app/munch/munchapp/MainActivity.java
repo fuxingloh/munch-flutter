@@ -1,9 +1,9 @@
 package app.munch.munchapp;
 
 import android.os.Bundle;
+import app.munch.facebookappevents.FacebookAppEventsPlugin;
 import io.flutter.app.FlutterActivity;
 import io.flutter.plugins.GeneratedPluginRegistrant;
-import app.munch.facebookappevents.FacebookAppEventsPlugin;
 
 public class MainActivity extends FlutterActivity {
   @Override

@@ -1,16 +1,14 @@
 package app.munch.facebookappevents;
 
 import android.os.Bundle;
-
 import com.facebook.appevents.AppEventsLogger;
-
-import java.util.Map;
-
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+
+import java.util.Map;
 
 /**
  * FacebookAppEventsPlugin
