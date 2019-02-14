@@ -21,6 +21,7 @@ class MunchAnalytic {
 
   static void setScreen(String name) {
     _firebase.setCurrentScreen(screenName: name);
+    _facebook.logEvent(name: "setScreen", parameters: {"name": name});
     debugPrint('MunchAnalytic setScreen: $name');
   }
 

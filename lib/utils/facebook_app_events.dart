@@ -23,6 +23,10 @@ class FacebookAppEvents {
     await _channel.invokeMethod('setUserId', id);
   }
 
+  Future<void> clearUserId() async {
+    await _channel.invokeMethod('clearUserId');
+  }
+
   Future<void> clearUserData() async {
     await _channel.invokeMethod('clearUserData');
   }
