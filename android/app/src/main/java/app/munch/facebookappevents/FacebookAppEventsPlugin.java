@@ -35,7 +35,7 @@ public class FacebookAppEventsPlugin implements MethodCallHandler {
             case "setUserId":
                 handleSetUserId(call, result);
                 break;
-            case "clearUserId"
+            case "clearUserId":
                 handleClearUserId(call, result);
                 break;
             case "clearUserData":
@@ -65,7 +65,7 @@ public class FacebookAppEventsPlugin implements MethodCallHandler {
     }
 
     private void handleClearUserId(MethodCall call, Result result) {
-        AppEventsLogger.clearUserId();
+        AppEventsLogger.clearUserID();
         result.success(null);
     }
 

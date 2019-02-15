@@ -83,6 +83,7 @@ class FilterAreaPageState extends State<FilterAreaPage> {
 
     var _searchField = TextField(
       autofocus: true,
+      autocorrect: false,
       onChanged: (text) {
         setState(() {
           _filtered = _FilterAreaAlpha.search(_areas, text);

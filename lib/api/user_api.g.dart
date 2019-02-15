@@ -65,15 +65,15 @@ Map<String, dynamic> _$UserSavedPlaceToJson(UserSavedPlace instance) =>
 
 UserLocation _$UserLocationFromJson(Map<String, dynamic> json) {
   return UserLocation(
-      json['userId'] as String,
-      json['sortId'] as String,
-      _$enumDecodeNullable(_$UserLocationTypeEnumMap, json['type']),
-      _$enumDecodeNullable(_$UserLocationInputEnumMap, json['input']),
-      json['name'] as String,
-      json['latLng'] as String,
-      json['address'] as String,
-      json['createdMillis'] as int,
-      json['updatedMillis'] as int);
+      userId: json['userId'] as String,
+      sortId: json['sortId'] as String,
+      type: _$enumDecodeNullable(_$UserLocationTypeEnumMap, json['type']),
+      input: _$enumDecodeNullable(_$UserLocationInputEnumMap, json['input']),
+      name: json['name'] as String,
+      latLng: json['latLng'] as String,
+      address: json['address'] as String,
+      createdMillis: json['createdMillis'] as int,
+      updatedMillis: json['updatedMillis'] as int);
 }
 
 Map<String, dynamic> _$UserLocationToJson(UserLocation instance) =>

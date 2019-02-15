@@ -112,7 +112,7 @@ class UserSavedPlace {
 
 @JsonSerializable()
 class UserLocation {
-  UserLocation(
+  UserLocation({
     this.userId,
     this.sortId,
     this.type,
@@ -122,7 +122,7 @@ class UserLocation {
     this.address,
     this.createdMillis,
     this.updatedMillis,
-  );
+  });
 
   String userId;
   String sortId;
@@ -136,6 +136,10 @@ class UserLocation {
 
   int createdMillis;
   int updatedMillis;
+
+  static List<UserLocation> fromJsonList(List<dynamic> list) {
+    return list.map((map) => UserLocation.fromJson(map)).toList(growable: false);
+  }
 
   factory UserLocation.fromJson(Map<String, dynamic> json) => _$UserLocationFromJson(json);
 

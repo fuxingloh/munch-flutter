@@ -8,6 +8,7 @@ import 'package:munch_app/components/bottom_sheet.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/filter/filter_between_search.dart';
 import 'package:munch_app/pages/filter/filter_manager.dart';
+import 'package:munch_app/pages/filter/location_select_page.dart';
 import 'package:munch_app/styles/munch.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
@@ -174,10 +175,11 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   }
 
   void _onAdd() {
-    FilterBetweenSearchPage.push(context).then((point) {
-      if (point == null) return;
+    SearchLocationPage.push(context).then((location) {
+      if (location == null) return;
 
       setState(() {
+        var point = SearchFilterLocationPoint(location.name, location.latLng);
         searchQuery.filter.location.points.add(point);
         refresh();
       });
@@ -261,7 +263,7 @@ class _FilterBetweenBottom extends StatelessWidget {
 
     return Container(
       decoration: const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
-      padding: const EdgeInsets.only(top: 16, bottom: 16),
+      padding: const EdgeInsets.only(top: 24, bottom: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

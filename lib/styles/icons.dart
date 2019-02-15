@@ -62,4 +62,12 @@ class MunchIcons {
   static const IconData tastebud_places = const IconData(0xe827, fontFamily: _kFontFam);
   static const IconData tabbar_profile = const IconData(0xe828, fontFamily: _kFontFam);
   static const IconData tastebud_preferences = const IconData(0xe829, fontFamily: _kFontFam);
+  static const IconData location_home = const IconData(0xe82a, fontFamily: _kFontFam);
+  static const IconData location_cancel = const IconData(0xe82b, fontFamily: _kFontFam);
+  static const IconData location_recent = const IconData(0xe82c, fontFamily: _kFontFam);
+  static const IconData location_work = const IconData(0xe82e, fontFamily: _kFontFam);
+  static const IconData location_nearby = const IconData(0xe82f, fontFamily: _kFontFam);
+  static const IconData location_pin = const IconData(0xe830, fontFamily: _kFontFam);
+  static const IconData location_bookmark_filled = const IconData(0xe831, fontFamily: _kFontFam);
+  static const IconData location_bookmark = const IconData(0xe832, fontFamily: _kFontFam);
 }

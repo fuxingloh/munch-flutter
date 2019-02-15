@@ -8,27 +8,33 @@ final FacebookAppEvents _facebook = FacebookAppEvents();
 
 class MunchAnalytic {
   static void clearUserData() {
+    debugPrint('MunchAnalytic clearUserData');
     _firebase.setUserId(null);
     _facebook.clearUserData();
-    debugPrint('MunchAnalytic clearUserData');
   }
 
   static void setUserId(String userId) {
+    debugPrint('MunchAnalytic setUserId: $userId');
     _firebase.setUserId(userId);
     _facebook.setUserId(userId);
-    debugPrint('MunchAnalytic setUserId: $userId');
   }
 
   static void setScreen(String name) {
-    _firebase.setCurrentScreen(screenName: name);
-    _facebook.logEvent(name: "setScreen", parameters: {"name": name});
     debugPrint('MunchAnalytic setScreen: $name');
+
+    if (bool.fromEnvironment('dart.vm.product')) {
+      _firebase.setCurrentScreen(screenName: name);
+      _facebook.logEvent(name: "setScreen", parameters: {"name": name});
+    }
   }
 
   static void logEvent(String name, {Map<String, dynamic> parameters}) {
-    _firebase.logEvent(name: name, parameters: parameters);
-    _facebook.logEvent(name: name, parameters: parameters);
     debugPrint('MunchAnalytic logEvent: $name, p: ${parameters?.length ?? 0}');
+
+    if (bool.fromEnvironment('dart.vm.product')) {
+      _firebase.logEvent(name: name, parameters: parameters);
+      _facebook.logEvent(name: name, parameters: parameters);
+    }
   }
 
   static Map<String, dynamic> _searchQueryParameters(SearchQuery searchQuery) {

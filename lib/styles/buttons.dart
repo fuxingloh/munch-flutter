@@ -60,6 +60,16 @@ class MunchButtonStyle {
     textStyle: _textStyle,
   );
 
+  static const MunchButtonStyle disabled = MunchButtonStyle(
+    textColor: MunchColors.black20,
+    background: Color(0xFFFCFCFC),
+    borderColor: MunchColors.black15,
+    borderWidth: 1,
+    height: _height,
+    padding: _padding,
+    textStyle: _textStyle,
+  );
+
   static const MunchButtonStyle borderSmall = MunchButtonStyle(
     textColor: MunchColors.black75,
     background: Color(0xFFFCFCFC),
