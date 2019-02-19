@@ -1,4 +1,6 @@
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:munch_app/api/structured_exception.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:latlong/latlong.dart';
 
@@ -22,8 +24,7 @@ class MunchLocation {
   Future<bool> isEnabled() async {
     // TODO: I think this is causing delay
 
-    PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.location);
+    PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
 
     switch (permission) {
       case PermissionStatus.granted:
@@ -45,8 +46,7 @@ class MunchLocation {
     }
 
     if (permission) {
-      await PermissionHandler()
-          .shouldShowRequestPermissionRationale(PermissionGroup.location);
+      await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.location);
       return _request(force: force).timeout(timeout);
     }
 
@@ -56,14 +56,19 @@ class MunchLocation {
   Future<String> _request({bool force = false}) async {
     Position lastPosition = _lastPosition;
 
-    if (!force &&
-        lastPosition != null &&
-        DateTime.now().isBefore(_expiryDate)) {
+    if (!force && lastPosition != null && DateTime.now().isBefore(_expiryDate)) {
       return "${lastPosition.latitude},${lastPosition.longitude}";
     }
 
-    lastPosition = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    lastPosition = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high).catchError((error) {
+      if (error is PlatformException) {
+        throw StructuredException(
+          type: "Location Error",
+          message: error.message,
+        );
+      }
+      throw error;
+    });
 
     _lastPosition = lastPosition;
     _expiryDate = DateTime.now().add(Duration(seconds: _expirySecond));
@@ -108,8 +113,7 @@ class MunchLocation {
 
   String distanceAsDuration(String latLng, String toLatLng) {
     var split = toLatLng.split(",");
-    var meter =
-        distance(latLng, double.parse(split[0]), double.parse(split[1]));
+    var meter = distance(latLng, double.parse(split[0]), double.parse(split[1]));
     int min = meter ~/ 70;
 
     if (min <= 1) {

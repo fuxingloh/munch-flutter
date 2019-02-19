@@ -28,23 +28,16 @@ class SearchCardHomeNearby extends SearchCardWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 32, top: 8),
-                  child: Text(
-                    "Explore places around you",
-                    style: MTextStyle.h4.copyWith(color: MunchColors.white),
-                  ),
+              const Center(
+                child: const Padding(
+                  padding: EdgeInsets.only(bottom: 24, top: 0),
+                  child: Text("Explore places around you", style: MTextStyle.h4White),
                 ),
               ),
-              Container(
-                alignment: Alignment.center,
+              Center(
                 child: MunchButton.text(
                   "Discover Nearby",
-                  onPressed: () => onPressed(context).catchError((error) {
-                        MunchDialog.showError(context, error);
-                      }),
+                  onPressed: () => onPressed(context),
                   style: MunchButtonStyle.secondaryOutline,
                 ),
               )
@@ -55,12 +48,15 @@ class SearchCardHomeNearby extends SearchCardWidget {
     );
   }
 
-  Future onPressed(BuildContext context) async {
-    var latLng = await MunchLocation.instance.request(force: true, permission: true);
-    if (latLng == null) return;
+  onPressed(BuildContext context) {
+    Future future = MunchLocation.instance.request(force: true, permission: true).then((latLng) {
+      if (latLng == null) return;
 
-    var query = SearchQuery.search();
-    query.filter.location.type = SearchFilterLocationType.Nearby;
-    SearchPage.state.push(query);
+      SearchQuery query = SearchQuery.search();
+      query.filter.location.type = SearchFilterLocationType.Nearby;
+      SearchPage.state.push(query);
+    });
+
+    MunchDialog.showProgress(context, future: future, error: true);
   }
 }

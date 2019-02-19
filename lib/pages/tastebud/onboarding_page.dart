@@ -108,6 +108,7 @@ class _OnBoardingInfo extends StatelessWidget {
 class _OnBoardingBottom extends StatelessWidget {
   void onLoggedIn(BuildContext context, String token) {
     MunchDialog.showProgress(context);
+
     Authentication.instance.loginFacebook(token).then((state) {
       if (state == AuthenticationState.loggedIn) {
         MunchAnalytic.logEvent("profile_login");

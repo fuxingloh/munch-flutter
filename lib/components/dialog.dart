@@ -29,13 +29,11 @@ class MunchDialog extends Dialog {
           ),
         );
 
-  static void showError(BuildContext context, Object exception,
-      {String type = 'Error'}) {
+  static void showError(BuildContext context, Object exception, {String type = 'Error'}) {
     if (exception is StructuredException) {
       showDialog(
         context: context,
-        builder: (c) => MunchDialog.error(c,
-            title: exception.type ?? type, content: exception.message),
+        builder: (c) => MunchDialog.error(c, title: exception.type ?? type, content: exception.message),
       );
     } else {
       showDialog(
@@ -83,28 +81,41 @@ class MunchDialog extends Dialog {
     );
   }
 
-  static void showProgress(BuildContext context) {
+  /// future to close the progress automatically
+  /// error to show error dialog automatically
+  static void showProgress(BuildContext context, {Future future, bool error = true}) {
     showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) {
-          return Center(
-            child: Container(
-              padding: const EdgeInsets.all(32),
-              decoration: BoxDecoration(
-                color: MunchColors.white,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: SizedBox(
-                height: 48,
-                width: 48,
-                child: const CircularProgressIndicator(
-                  backgroundColor: MunchColors.secondary500,
-                ),
-              ),
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return Center(
+          child: Container(
+            padding: const EdgeInsets.all(32),
+            decoration: const BoxDecoration(
+              color: MunchColors.white,
+              borderRadius: BorderRadius.all(Radius.circular(4)),
             ),
-          );
+            child: const SizedBox(
+              height: 48,
+              width: 48,
+              child: const CircularProgressIndicator(backgroundColor: MunchColors.secondary500),
+            ),
+          ),
+        );
+      },
+    );
+
+    if (future != null) {
+      var completed = future.whenComplete(() {
+        Navigator.of(context).pop();
+      });
+
+      if (error) {
+        completed.catchError((error) {
+          MunchDialog.showError(context, error);
         });
+      }
+    }
   }
 
   MunchDialog.error(
@@ -170,8 +181,7 @@ class MunchDialog extends Dialog {
 }
 
 class _MunchDialogChild extends StatelessWidget {
-  const _MunchDialogChild({Key key, this.title, this.content, this.actions})
-      : super(key: key);
+  const _MunchDialogChild({Key key, this.title, this.content, this.actions}) : super(key: key);
 
   final Widget title;
   final Widget content;
@@ -184,8 +194,7 @@ class _MunchDialogChild extends StatelessWidget {
 
     if (title != null) {
       children.add(Padding(
-        padding:
-            EdgeInsets.fromLTRB(24.0, 24.0, 24.0, content == null ? 24.0 : 0.0),
+        padding: EdgeInsets.fromLTRB(24.0, 24.0, 24.0, content == null ? 24.0 : 0.0),
         child: DefaultTextStyle(
           style: MTextStyle.h3,
           child: Semantics(child: title, namesRoute: true),

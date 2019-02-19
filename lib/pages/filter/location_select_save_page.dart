@@ -108,7 +108,10 @@ class SearchLocationSavePageState extends State<SearchLocationSavePage> {
   }
 
   void onPressed() {
-    if (this.type == null) return;
+    if (this.type == null) {
+      MunchDialog.showOkay(context, title: "Type Required", content: "You need to select a type to save as.");
+      return;
+    }
 
     var location = UserLocation(
       type: this.type,

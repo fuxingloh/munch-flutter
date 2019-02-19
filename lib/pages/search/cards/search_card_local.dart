@@ -22,23 +22,23 @@ class SearchCardShimmer extends SearchCardWidget {
           ),
         ),
         const SizedBox(
-          height: 18,
+          height: 28,
           width: 200,
           child: Padding(
-            padding: EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 12),
             child: Shimmer(),
           ),
         ),
         const SizedBox(
-          height: 16,
+          height: 27,
           width: 160,
           child: Padding(
-            padding: EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 6),
             child: Shimmer(),
           ),
         ),
         const SizedBox(
-          height: 16,
+          height: 19,
           width: 260,
           child: Padding(
             padding: EdgeInsets.only(top: 8),

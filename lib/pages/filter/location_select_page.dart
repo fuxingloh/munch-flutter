@@ -66,9 +66,11 @@ class SearchLocationPageState extends State<SearchLocationPage> {
           onChanged: (text) => _onTextChanged.add(text),
         ),
       ),
-      body: GestureDetector(
-        onTapDown: (_) {
-          FocusScope.of(context).requestFocus(new FocusNode());
+      body: NotificationListener(
+        onNotification: (t) {
+          if (t is UserScrollNotification) {
+             FocusScope.of(context).requestFocus(FocusNode());
+          }
         },
         child: ListView.builder(
           padding: const EdgeInsets.only(top: 8, bottom: 8),
@@ -99,7 +101,7 @@ class SearchLocationPageState extends State<SearchLocationPage> {
             MunchDialog.showConfirm(
               context,
               title: "Removed Saved Location",
-              content: "${item.name} will be permamently removed from your saved locations. Do you want to continue?",
+              content: "${item.name} will be permanently removed from your saved locations. Do you want to continue?",
               onPressed: () {
                 MunchDialog.showProgress(context);
 
@@ -212,10 +214,11 @@ class SearchLocationPageState extends State<SearchLocationPage> {
                 ),
                 save: false,
               );
+              return;
             }
           }
 
-//          MunchDialog.showError(context, error);
+          MunchDialog.showError(context, error);
         });
         return;
       }

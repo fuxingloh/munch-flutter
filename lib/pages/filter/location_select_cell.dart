@@ -63,7 +63,7 @@ class SearchLocationTextCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 24, top: 12, bottom: 12),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 12, bottom: 12),
       child: Text(
         text,
         style: MTextStyle.regular,
