@@ -127,7 +127,7 @@ class SearchLocationPageState extends State<SearchLocationPage> {
           return SearchLocationLoadingCell();
 
         case _ItemLocationType.current:
-          return SearchLocationIconTextCell(left: MunchIcons.location_nearby, text: "Current Location");
+          return SearchLocationIconTextCell(left: MunchIcons.location_nearby, text: "Use current location");
 
         case _ItemLocationType.home:
           return buildSaved(MunchIcons.location_home);
