@@ -235,26 +235,29 @@ class _FilterBetweenBottom extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> children = [
       const Padding(
-        padding: EdgeInsets.only(left: 24, right: 24, bottom: 8),
+        padding: EdgeInsets.only(bottom: 8),
         child: Text("Enter everyone’s location to find the most ideal spot for a meal together. "),
       )
     ];
 
     if (points.isNotEmpty) {
-      children.add(_FilterBetweenRow(points: points, onRemove: onRemove));
+      for(var i = 0; i < points.length; i++){
+
+        children.add(_EatBetweenPoint(point: points[i], onRemove: () {
+          onRemove(i);
+        }));
+      }
     } else {
-      children.add(Container(
-        height: 48,
-        padding: const EdgeInsets.only(left: 24),
-        alignment: Alignment.centerLeft,
-        child: const Text("Requires 2 Locations"),
-      ));
+      children.add(SizedBox(height: 8));
+    }
+
+    if (points.length < 10) {
+      children.add(_SelectLocationButton(onPressed: onAdd));
     }
 
     children.add(Padding(
-      padding: const EdgeInsets.only(top: 8),
+      padding: const EdgeInsets.only(top: 16),
       child: _FilterBetweenAction(
-        onAdd: onAdd,
         onApply: onApply,
         result: result,
         points: points,
@@ -263,7 +266,7 @@ class _FilterBetweenBottom extends StatelessWidget {
 
     return Container(
       decoration: const BoxDecoration(boxShadow: elevation2, color: MunchColors.white),
-      padding: const EdgeInsets.only(top: 24, bottom: 24),
+      padding: const EdgeInsets.only(top: 24, bottom: 24, left: 24, right: 24),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -273,71 +276,20 @@ class _FilterBetweenBottom extends StatelessWidget {
   }
 }
 
-class _FilterBetweenRow extends StatelessWidget {
-  const _FilterBetweenRow({
-    Key key,
-    @required this.points,
-    @required this.onRemove,
-  }) : super(key: key);
-
-  final List<SearchFilterLocationPoint> points;
-  final ValueChanged<int> onRemove;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 48,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.only(top: 8, bottom: 8, left: 24, right: 24),
-        itemCount: points.length,
-        itemBuilder: (context, i) {
-          return GestureDetector(
-            onTap: () => onRemove(i),
-            child: Container(
-              decoration: const BoxDecoration(
-                color: MunchColors.whisper100,
-                borderRadius: BorderRadius.all(Radius.circular(3)),
-              ),
-              padding: const EdgeInsets.only(left: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Center(child: Text('${i + 1}. ${points[i].name}')),
-                  const Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Icon(
-                      MunchIcons.filter_cancel,
-                      size: 20,
-                      color: MunchColors.black75,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          );
-        },
-        separatorBuilder: (c, _) => const SizedBox(width: 16),
-      ),
-    );
-  }
-}
-
 class _FilterBetweenAction extends StatelessWidget {
   _FilterBetweenAction({
     Key key,
-    @required this.onAdd,
     @required this.onApply,
     @required this.result,
     @required this.points,
   }) : super(key: key);
 
   final List<SearchFilterLocationPoint> points;
-  final VoidCallback onAdd;
   final VoidCallback onApply;
   final FilterResult result;
 
-  final MunchButtonStyle addStyle = MunchButtonStyle.secondaryOutline.copyWith(padding: 16);
+  final MunchButtonStyle requireStyle = MunchButtonStyle.secondary.copyWith(
+      background: MunchColors.white, borderColor: MunchColors.white, textColor: MunchColors.black, padding: 0);
 
   final MunchButtonStyle fadedStyle = MunchButtonStyle.secondary.copyWith(
       background: MunchColors.secondary050,
@@ -347,64 +299,90 @@ class _FilterBetweenAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 24, right: 8),
-          child: _addButton,
-        ),
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8, right: 24),
-            child: _applyButton,
-          ),
-        ),
-      ],
-    );
-  }
-
-  MunchButton get _addButton {
-    if (points.length < 10) {
-      return MunchButton.text(
-        "+ Location",
-        onPressed: onAdd,
-        style: addStyle,
-      );
-    } else {
-      return MunchButton.text(
-        "Max 10",
-        onPressed: null,
-        style: fadedStyle,
-      );
-    }
-  }
-
-  MunchButton get _applyButton {
     if (points.length < 2) {
-      return MunchButton.text(
-        "Requires 2 Locations",
-        onPressed: null,
-        style: fadedStyle,
-      );
+      return MunchButton.text("Requires at least 2 locations", onPressed: null, style: requireStyle);
     }
 
     if (result == null) {
-      return MunchButton.text(
-        "Loading...",
-        onPressed: null,
-        style: fadedStyle,
-      );
+      return MunchButton.text("Loading...", onPressed: null, style: fadedStyle);
     } else if (result.count > 0) {
       return MunchButton.text(
         FilterManager.countTitle(count: result.count, postfix: "Places"),
         onPressed: onApply,
       );
     } else {
-      return MunchButton.text(
-        "No Results",
-        onPressed: null,
-        style: fadedStyle,
-      );
+      return MunchButton.text("No Results", onPressed: null, style: fadedStyle);
     }
+  }
+}
+
+class _SelectLocationButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const _SelectLocationButton({Key key, this.onPressed}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border.all(color: MunchColors.black20),
+          borderRadius: const BorderRadius.all(Radius.circular(4)),
+        ),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 7),
+              child: Icon(MunchIcons.location_pin, size: 24, color: MunchColors.black60),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Enter location", style: MTextStyle.regular.copyWith(color: MunchColors.black60)),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EatBetweenPoint extends StatelessWidget {
+  final VoidCallback onRemove;
+  final SearchFilterLocationPoint point;
+
+  const _EatBetweenPoint({Key key, this.onRemove, this.point}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8, right: 8),
+            child: Icon(MunchIcons.location_pin, size: 24, color: MunchColors.primary500),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  child: Text(point.name, maxLines: 1,),
+                ),
+                const SeparatorLine()
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: onRemove,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: Icon(MunchIcons.location_cancel, size: 20, color: MunchColors.black),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
