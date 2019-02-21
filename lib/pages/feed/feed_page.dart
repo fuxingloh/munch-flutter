@@ -11,14 +11,17 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
 
 class FeedPage extends StatefulWidget {
+  static _FeedState state = _FeedState();
+
   FeedPage({Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _FeedState();
+  State<StatefulWidget> createState() => state;
 }
 
 class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
   final FeedManager manager = FeedManager();
+  final ScrollController _controller = ScrollController();
   List<Object> items = [];
 
   @override
@@ -50,6 +53,23 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
     }
   }
 
+  bool scrollToTop() {
+    if (_controller.offset == 0) return true;
+
+    if (this.items.isNotEmpty) {
+      _controller.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+    return false;
+  }
+
+  void reset() {
+    manager.reset();
+  }
+
   Future _onRefresh() {
     return manager.reset();
   }
@@ -62,6 +82,7 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
         backgroundColor: MunchColors.white,
         onRefresh: _onRefresh,
         child: StaggeredGridView.countBuilder(
+          controller: _controller,
           crossAxisCount: 2,
           itemCount: this.items.length,
           itemBuilder: (BuildContext context, int index) {

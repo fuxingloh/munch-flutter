@@ -150,6 +150,11 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
           bool top = SearchPage.state.scrollToTop();
           if (top) SearchPage.state.reset();
           break;
+
+        case feed:
+          bool top = FeedPage.state.scrollToTop();
+          if (top) FeedPage.state.reset();
+          break;
       }
     } else {
       switch (index) {
