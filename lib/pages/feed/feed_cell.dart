@@ -65,3 +65,15 @@ class FeedLoadingView extends StatelessWidget {
     );
   }
 }
+
+class FeedNoResultView extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Text(
+      "Sorry! We couldn't not find anything in the provided location.",
+      textAlign: TextAlign.center,
+      style: MTextStyle.h5,
+    );
+  }
+}

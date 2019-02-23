@@ -109,7 +109,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
     _cardList.state.scrollTo(uniqueId);
   }
 
-  String get qid => _cardList.state.manager.qid;
+  String get qid => _cardList.state.manager?.qid;
 
   @override
   Widget build(BuildContext context) {

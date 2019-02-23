@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/feed_api.dart';
+import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
@@ -47,7 +48,9 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (DateTime.now().millisecondsSinceEpoch - pausedDateTime.millisecondsSinceEpoch > 1000 * 60 * 60) {
+      if (DateTime
+          .now()
+          .millisecondsSinceEpoch - pausedDateTime.millisecondsSinceEpoch > 1000 * 60 * 60) {
         manager.reset();
       }
     }
@@ -95,6 +98,9 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
                 manager.append();
                 return FeedLoadingView();
 
+              case FeedStaticCell.noResult:
+                return FeedNoResultView();
+
               default:
                 return FeedImageView(item: item);
             }
@@ -104,6 +110,7 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
             switch (item) {
               case FeedStaticCell.header:
               case FeedStaticCell.loading:
+              case FeedStaticCell.noResult:
                 return StaggeredTile.fit(2);
 
               default:
@@ -119,7 +126,7 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
   }
 }
 
-enum FeedStaticCell { header, loading }
+enum FeedStaticCell { header, loading, noResult }
 
 class FeedManager {
   final MunchApi _api = MunchApi.instance;
@@ -154,13 +161,14 @@ class FeedManager {
 
     _loading = true;
 
-    return _api.get("/feed/images?country=sgp&latLng=1.3521,103.8198&next.from=$_from").then((res) {
+    return _api.post("/feed/query?next.from=$_from", body: {}).then((res) {
       this._loading = false;
       this._from = res.next['from'];
 
-      ImageFeedResult result = ImageFeedResult.fromJson(res.data);
-      result.items.forEach((item) {
-        item.places = item.places.map((p) => result.places[p.placeId]).where((p) => p != null).toList(growable: false);
+      var items = ImageFeedItem.fromJsonList(res.data);
+      var places = Place.fromJsonMap(res['places']);
+      items.forEach((item) {
+        item.places = item.places.map((p) => places[p.placeId]).where((p) => p != null).toList(growable: false);
 
         // Only Add Items that have places to ensure non null constraints
         if (item.places.isEmpty) return;
@@ -177,7 +185,13 @@ class FeedManager {
     List<Object> collected = [];
     collected.add(FeedStaticCell.header);
     collected.addAll(_items);
-    collected.add(FeedStaticCell.loading);
+
+    if (_loading || _from != null) {
+      collected.add(FeedStaticCell.loading);
+    } else if (_items.isEmpty) {
+      collected.add(FeedStaticCell.noResult);
+    }
+
     return collected;
   }
 }

@@ -77,12 +77,15 @@ class SearchCardListState extends State<SearchCardList> {
 
   void onScroll(ScrollPosition position) {
     if (position.pixels > position.maxScrollExtent - 100) {
-      manager.append().then((_) => setState(() {}));
+      if (manager != null) manager.append().then((_) => setState(() {}));
     }
   }
 
   Future _handleRefresh() async {
-    return _search(manager.searchQuery);
+    final query = manager?.searchQuery;
+    if (query != null) {
+      return _search(query);
+    }
   }
 
   @override
@@ -99,7 +102,7 @@ class SearchCardListState extends State<SearchCardList> {
           if (_cards.length == i) {
             final loading = manager?.more ?? true;
 
-            if (loading) {
+            if (loading && manager != null) {
               // Loading might be loaded where scrolling is not allowed.
               // This will remove it.
               manager.append().then((_) => setState(() {}));

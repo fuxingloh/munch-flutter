@@ -51,6 +51,12 @@ class Place {
   static List<Place> fromJsonList(List<dynamic> list) {
     return list.map((map) => Place.fromJson(map)).toList(growable: false);
   }
+
+  static Map<String, Place> fromJsonMap(Map<String, dynamic> map) {
+    return map.map((placeId, place) {
+      return MapEntry(placeId, Place.fromJson(place));
+    });
+  }
 }
 
 enum PlaceStatusType { open, renovation, closed, moved }

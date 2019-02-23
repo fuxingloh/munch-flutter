@@ -92,7 +92,7 @@ class RIPGalleryConnectCard extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(bottom: 24),
-            child: Text("Join as Partner, show your images.", style: MTextStyle.h5),
+            child: Text("Join as a content partner, show your images.", style: MTextStyle.h5),
           ),
           MunchButton.text("Connect", onPressed: () {
             _launch('https://partner.munch.app/instagram');

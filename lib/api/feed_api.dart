@@ -47,6 +47,10 @@ class ImageFeedItem {
       _$ImageFeedItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$ImageFeedItemToJson(this);
+
+  static List<ImageFeedItem> fromJsonList(List<dynamic> list) {
+    return list.map((map) => ImageFeedItem.fromJson(map)).toList(growable: false);
+  }
 }
 
 @JsonSerializable()
