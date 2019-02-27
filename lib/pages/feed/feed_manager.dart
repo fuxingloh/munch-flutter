@@ -53,7 +53,11 @@ class FeedManager {
       this._from = res.next['from'];
 
       var items = FeedItem.fromJsonList(res.data);
+      print("Before");
+      print(res['places']);
       var places = Place.fromJsonMap(res['places']);
+      print("After");
+
       items.forEach((item) {
         item.places = item.places.map((p) => places[p.placeId]).where((p) => p != null).toList(growable: false);
 

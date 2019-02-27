@@ -54,6 +54,10 @@ class Place {
 
   static Map<String, Place> fromJsonMap(Map<String, dynamic> map) {
     return map.map((placeId, place) {
+      if (place == null) {
+        return MapEntry(placeId, null);
+      }
+
       return MapEntry(placeId, Place.fromJson(place));
     });
   }
@@ -67,8 +71,7 @@ class PlaceStatus {
 
   PlaceStatusType type;
 
-  factory PlaceStatus.fromJson(Map<String, dynamic> json) =>
-      _$PlaceStatusFromJson(json);
+  factory PlaceStatus.fromJson(Map<String, dynamic> json) => _$PlaceStatusFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaceStatusToJson(this);
 }
@@ -79,8 +82,7 @@ class PlaceMenu {
 
   String url;
 
-  factory PlaceMenu.fromJson(Map<String, dynamic> json) =>
-      _$PlaceMenuFromJson(json);
+  factory PlaceMenu.fromJson(Map<String, dynamic> json) => _$PlaceMenuFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlaceMenuToJson(this);
 }
@@ -91,8 +93,7 @@ class PlacePrice {
 
   double perPax;
 
-  factory PlacePrice.fromJson(Map<String, dynamic> json) =>
-      _$PlacePriceFromJson(json);
+  factory PlacePrice.fromJson(Map<String, dynamic> json) => _$PlacePriceFromJson(json);
 
   Map<String, dynamic> toJson() => _$PlacePriceToJson(this);
 }
@@ -129,19 +130,12 @@ class Landmark {
   String name;
   Location location;
 
-  factory Landmark.fromJson(Map<String, dynamic> json) =>
-      _$LandmarkFromJson(json);
+  factory Landmark.fromJson(Map<String, dynamic> json) => _$LandmarkFromJson(json);
 
   Map<String, dynamic> toJson() => _$LandmarkToJson(this);
 }
 
-enum AreaType {
-  City,
-  Superset,
-  Region,
-  Cluster,
-  Generated
-}
+enum AreaType { City, Superset, Region, Cluster, Generated }
 
 @JsonSerializable()
 class AreaCount {
@@ -149,8 +143,7 @@ class AreaCount {
 
   int total;
 
-  factory AreaCount.fromJson(Map<String, dynamic> json) =>
-      _$AreaCountFromJson(json);
+  factory AreaCount.fromJson(Map<String, dynamic> json) => _$AreaCountFromJson(json);
 
   Map<String, dynamic> toJson() => _$AreaCountToJson(this);
 }
@@ -220,8 +213,7 @@ class Location {
 
   List<Landmark> landmarks;
 
-  factory Location.fromJson(Map<String, dynamic> json) =>
-      _$LocationFromJson(json);
+  factory Location.fromJson(Map<String, dynamic> json) => _$LocationFromJson(json);
 
   Map<String, dynamic> toJson() => _$LocationToJson(this);
 }
@@ -232,8 +224,7 @@ class LocationPolygon {
 
   List<String> points;
 
-  factory LocationPolygon.fromJson(Map<String, dynamic> json) =>
-      _$LocationPolygonFromJson(json);
+  factory LocationPolygon.fromJson(Map<String, dynamic> json) => _$LocationPolygonFromJson(json);
 
   Map<String, dynamic> toJson() => _$LocationPolygonToJson(this);
 }
@@ -304,8 +295,7 @@ class HourGrouped {
     hours.forEach((Hour hour) {
       String time = _days[hour.day];
       if (time != null) {
-        _days[hour.day] =
-            "$time, ${_getTime(hour.open)} - ${_getTime(hour.close)}";
+        _days[hour.day] = "$time, ${_getTime(hour.open)} - ${_getTime(hour.close)}";
       } else {
         _days[hour.day] = "${_getTime(hour.open)} - ${_getTime(hour.close)}";
       }
