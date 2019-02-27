@@ -102,11 +102,15 @@ class FeedImageBottom extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 6, bottom: 6),
-          child: Text(
-            name,
-            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: MunchColors.black80),
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 6, bottom: 6),
+            child: Text(
+              name,
+              style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: MunchColors.black80),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         GestureDetector(

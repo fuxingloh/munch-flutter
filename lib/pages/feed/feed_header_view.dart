@@ -45,7 +45,12 @@ class FeedHeaderBar extends StatelessWidget {
                     onTap: onDiscover,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 14, right: 14, top: 10, bottom: 10),
-                      child: Text(text, style: MTextStyle.h6.copyWith(color: color), maxLines: 1),
+                      child: Text(
+                        text,
+                        style: MTextStyle.h6.copyWith(color: color),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ),
