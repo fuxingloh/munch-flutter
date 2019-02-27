@@ -48,27 +48,7 @@ class MunchTabPage extends StatefulWidget {
   State<StatefulWidget> createState() => tabState;
 }
 
-class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, RouteAware {
-  static const search = 0;
-  static const feed = 1;
-  static const profile = 2;
-
-  int _currentIndex = search;
-
-  Map<int, Widget> _children = {search: SearchPage()};
-
-  Widget getChild(int index) {
-    if (_children.containsKey(index)) return _children[index];
-    if (_currentIndex == index) {
-      if (index == search) _children[search] = SearchPage();
-      if (index == feed) _children[feed] = FeedPage();
-      if (index == profile) _children[profile] = ProfilePage();
-
-      return _children[index];
-    }
-    return Container();
-  }
-
+class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, RouteAware, TabParent {
   @override
   void initState() {
     super.initState();
@@ -96,19 +76,6 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
     WidgetsBinding.instance.removeObserver(this);
     routeObserver.unsubscribe(this);
     super.dispose();
-  }
-
-  String get routeName {
-    switch (_currentIndex) {
-      case search:
-        return "/search";
-      case feed:
-        return "/feed";
-      case profile:
-        return "/profile";
-      default:
-        return null;
-    }
   }
 
   /// Route was pushed onto navigator and is now topmost route.
@@ -148,19 +115,19 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
   void onTab(int index) {
     if (_currentIndex == index) {
       switch (index) {
-        case search:
+        case TabParent.search:
           bool top = SearchPage.state.scrollToTop();
           if (top) SearchPage.state.reset();
           break;
 
-        case feed:
+        case TabParent.feed:
           bool top = FeedPage.state.scrollToTop();
           if (top) FeedPage.state.reset();
           break;
       }
     } else {
       switch (index) {
-        case profile:
+        case TabParent.profile:
           Authentication.instance.requireAuthentication(context).then((state) {
             if (state == AuthenticationState.loggedIn) {
               updateTab(index);
@@ -183,14 +150,64 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
     });
 
     final tab = getChild(index);
-    if (tab is TabObserver) {
-      (tab as TabObserver).didTabAppear();
+    if (tab is TabWidget) {
+      (tab as TabWidget).didTabAppear(this);
     }
   }
 }
 
-abstract class TabObserver {
-  void didTabAppear() {}
+enum MunchTab { search, feed, profile }
+
+abstract class TabWidget {
+  void didTabAppear(TabParent parent) {}
+}
+
+abstract class TabParent {
+  static const search = 0;
+  static const feed = 1;
+  static const profile = 2;
+
+  int _currentIndex = search;
+
+  Map<int, Widget> _children = {search: SearchPage()};
+
+  Widget getChild(int index) {
+    if (_children.containsKey(index)) return _children[index];
+    if (_currentIndex == index) {
+      if (index == search) _children[search] = SearchPage();
+      if (index == feed) _children[feed] = FeedPage();
+      if (index == profile) _children[profile] = ProfilePage();
+
+      return _children[index];
+    }
+    return Container();
+  }
+
+  String get routeName {
+    switch (_currentIndex) {
+      case search:
+        return "/search";
+      case feed:
+        return "/feed";
+      case profile:
+        return "/profile";
+      default:
+        return null;
+    }
+  }
+
+  MunchTab get tab {
+    switch (_currentIndex) {
+      case search:
+        return MunchTab.search;
+      case feed:
+        return MunchTab.feed;
+      case profile:
+        return MunchTab.profile;
+      default:
+        return null;
+    }
+  }
 }
 
 class MunchBottomBar extends StatelessWidget {

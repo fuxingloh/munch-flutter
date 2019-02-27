@@ -13,7 +13,7 @@ import 'package:munch_app/styles/munch_bottom_dialog.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/user_defaults_key.dart';
 
-class FeedPage extends StatefulWidget with TabObserver {
+class FeedPage extends StatefulWidget with TabWidget {
   static FeedPageState state = FeedPageState();
 
   FeedPage({Key key}) : super(key: key);
@@ -22,19 +22,20 @@ class FeedPage extends StatefulWidget with TabObserver {
   State<StatefulWidget> createState() => state;
 
   @override
-  void didTabAppear() {
-//    Future.delayed(const Duration(milliseconds: 2000), () {
-//      final context = state.context;
-//      if (context == null) return;
-//
-//      UserDefaults.instance.notify(UserDefaultsKey.notifyFeedWelcome, () {
-//        showBottomDialog(
-//          context: context,
-//          title: "Welcome to the Munch Feed!",
-//          message: "See something you like? Click on any image to find out more.",
-//        );
-//      });
-//    });
+  void didTabAppear(TabParent parent) {
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      final context = state.context;
+      if (context == null) return;
+      if (parent.tab != MunchTab.feed) return;
+
+      UserDefaults.instance.notify(UserDefaultsKey.notifyFeedWelcome, () {
+        showBottomDialog(
+          context: context,
+          title: "Welcome to the Munch Feed!",
+          message: "See something you like? Click on any image to find out more.",
+        );
+      });
+    });
   }
 }
 

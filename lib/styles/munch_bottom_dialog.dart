@@ -73,14 +73,17 @@ class MunchBottomDialog extends StatelessWidget {
 
     if (buttonTitle != null) {
       children.add(Padding(
-        padding: const EdgeInsets.only(top: 24),
-        child: MunchButton.text(
-          buttonTitle,
-          onPressed: () {
-            Navigator.of(context).pop();
-            buttonCallback();
-          },
-          style: MunchButtonStyle.secondary,
+        padding: const EdgeInsets.only(top: 24, left: 24, right: 24),
+        child: Container(
+          alignment: Alignment.centerRight,
+          child: MunchButton.text(
+            buttonTitle,
+            onPressed: () {
+              Navigator.of(context).pop();
+              buttonCallback();
+            },
+            style: MunchButtonStyle.secondary,
+          ),
         ),
       ));
     }

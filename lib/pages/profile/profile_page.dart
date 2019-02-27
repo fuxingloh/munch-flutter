@@ -6,7 +6,7 @@ import 'package:munch_app/pages/profile/tastebud_preferences_page.dart';
 import 'package:munch_app/pages/profile/tastebud_setting_page.dart';
 import 'package:munch_app/styles/icons.dart';
 
-class ProfilePage extends StatelessWidget with TabObserver {
+class ProfilePage extends StatelessWidget with TabWidget {
   ProfilePage({Key key}) : super(key: key);
 
   @override
@@ -26,7 +26,7 @@ class ProfilePage extends StatelessWidget with TabObserver {
   }
 
   @override
-  void didTabAppear() {}
+  void didTabAppear(TabParent parent) {}
 }
 
 class _ProfileAppBar extends AppBar {

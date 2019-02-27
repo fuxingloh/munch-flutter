@@ -10,42 +10,41 @@ import 'package:munch_app/utils/recent_database.dart';
 import 'package:munch_app/utils/user_defaults_key.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class SearchPage extends StatefulWidget with TabObserver {
+class SearchPage extends StatefulWidget with TabWidget {
   static SearchPageState state = SearchPageState();
 
   @override
   State<StatefulWidget> createState() => state;
 
   @override
-  void didTabAppear() {
-//    UserDefaults.instance.clear();
-//
-//    Future.delayed(const Duration(milliseconds: 2000), () async {
-//      final context = state.context;
-//      if (context == null) return;
-//
-//      final defaults = UserDefaults.instance;
-//      final int viewRip = await defaults.getCount(UserDefaultsKey.countViewRip);
-//      final int openApp = await defaults.getCount(UserDefaultsKey.countOpenApp);
-//
-//      if (viewRip > 1 || openApp > 1) {
-//        defaults.notify(UserDefaultsKey.notifyShareFeedbackV1, () {
-//          MunchAnalytic.logEvent("notify_show_feedback");
-//          showBottomDialog(
-//              context: context,
-//              title: "Feed us with feedback",
-//              message: "Take a minute to tell us how to better serve you.",
-//              buttonTitle: "Share Feedback",
-//              buttonCallback: () async {
-//                String url = "https://airtable.com/shrp2EgmOUwshSZ3a";
-//                if (await canLaunch(url)) {
-//                  MunchAnalytic.logEvent("notify_click_feedback");
-//                  await launch(url);
-//                }
-//              });
-//        });
-//      }
-//    });
+  void didTabAppear(TabParent parent) {
+    Future.delayed(const Duration(milliseconds: 2000), () async {
+      final context = state.context;
+      if (context == null) return;
+      if (parent.tab != MunchTab.search) return;
+
+      final defaults = UserDefaults.instance;
+      final int viewRip = await defaults.getCount(UserDefaultsKey.countViewRip);
+      final int openApp = await defaults.getCount(UserDefaultsKey.countOpenApp);
+
+      if (viewRip > 1 || openApp > 1) {
+        defaults.notify(UserDefaultsKey.notifyShareFeedbackV1, () {
+          MunchAnalytic.logEvent("notify_show_feedback");
+          showBottomDialog(
+              context: context,
+              title: "Feed us with feedback",
+              message: "Take a minute to tell us how to better serve you.",
+              buttonTitle: "Share Feedback",
+              buttonCallback: () async {
+                String url = "https://airtable.com/shrp2EgmOUwshSZ3a";
+                if (await canLaunch(url)) {
+                  MunchAnalytic.logEvent("notify_click_feedback");
+                  await launch(url);
+                }
+              });
+        });
+      }
+    });
   }
 }
 
