@@ -39,19 +39,16 @@ class RIPCardBanner extends RIPCardWidget {
   Widget buildCard(BuildContext context, PlaceData data) {
     final height = (MediaQuery.of(context).size.height) * 0.38;
 
-    var sizes = buildImages(data);
+    final sizes = buildImages(data);
 
     List<Widget> children = [
       Container(
         height: height,
         width: double.infinity,
-        decoration: const BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
-          color: MunchColors.whisper100,
+        child: ShimmerSizeImage(
+          minHeight: height,
+          sizes: sizes,
         ),
-        padding: const EdgeInsets.all(8),
-        alignment: Alignment.bottomRight,
-        child: Text("No Image Available", style: MTextStyle.smallBold),
       )
     ];
 

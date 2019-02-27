@@ -12,6 +12,7 @@ import 'package:munch_app/pages/places/rip_header.dart';
 import 'package:munch_app/pages/places/rip_image_loader.dart';
 import 'package:munch_app/pages/places/rip_image_page.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
+import 'package:munch_app/utils/user_defaults_key.dart';
 
 class RIPPage extends StatefulWidget {
   const RIPPage({Key key, this.place}) : super(key: key);
@@ -45,10 +46,8 @@ class RIPPageState extends State<RIPPage> {
   void initState() {
     super.initState();
 //  Crashlytics.sharedInstance().setObjectValue(placeId, forKey: "RIPController.placeId")
-    MunchApi.instance
-        .get('/places/${widget.place.placeId}')
-        .then((res) => PlaceData.fromJson(res.data))
-        .then(_start, onError: (error) {
+    MunchApi.instance.get('/places/${widget.place.placeId}').then((res) => PlaceData.fromJson(res.data)).then(_start,
+        onError: (error) {
       MunchDialog.showError(context, error);
     });
 
@@ -56,6 +55,7 @@ class RIPPageState extends State<RIPPage> {
     controller.addListener(_scrollListener);
 
     MunchAnalytic.logEvent("rip_view");
+    UserDefaults.instance.count(UserDefaultsKey.countViewRip);
   }
 
   _start(PlaceData placeData) {
@@ -79,9 +79,7 @@ class RIPPageState extends State<RIPPage> {
 
     Authentication.instance.isAuthenticated().then((auth) {
       if (!auth) return;
-      MunchApi.instance
-          .put('/users/recent/places/${placeData.place.placeId}')
-          .catchError(
+      MunchApi.instance.put('/users/recent/places/${placeData.place.placeId}').catchError(
         (error) {
           MunchDialog.showError(context, error);
         },
@@ -128,8 +126,7 @@ class RIPPageState extends State<RIPPage> {
           crossAxisSpacing: 16,
           mainAxisSpacing: 16,
           staggeredTileBuilder: (i) => StaggeredTile.fit(1),
-          itemBuilder: (context, i) =>
-              RIPGalleryImageCard(image: images[i], onPressed: () => onImage(i)),
+          itemBuilder: (context, i) => RIPGalleryImageCard(image: images[i], onPressed: () => onImage(i)),
           itemCount: images.length,
         ),
       ));

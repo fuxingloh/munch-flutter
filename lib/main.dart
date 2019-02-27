@@ -5,9 +5,10 @@ import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/search/search_page.dart';
 import 'package:munch_app/pages/feed/feed_page.dart';
-import 'package:munch_app/pages/tastebud/tastebud_page.dart';
+import 'package:munch_app/pages/profile/profile_page.dart';
 import 'package:munch_app/styles/munch.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
+import 'package:munch_app/utils/user_defaults_key.dart';
 
 void main() => runApp(MunchApp());
 
@@ -61,7 +62,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
     if (_currentIndex == index) {
       if (index == search) _children[search] = SearchPage();
       if (index == feed) _children[feed] = FeedPage();
-      if (index == profile) _children[profile] = TastebudPage();
+      if (index == profile) _children[profile] = ProfilePage();
 
       return _children[index];
     }
@@ -74,6 +75,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
     WidgetsBinding.instance.addObserver(this);
 
     MunchAnalytic.setScreen(routeName);
+    UserDefaults.instance.count(UserDefaultsKey.countOpenApp);
   }
 
   @override
@@ -179,7 +181,16 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
       _currentIndex = index;
       MunchAnalytic.setScreen(routeName);
     });
+
+    final tab = getChild(index);
+    if (tab is TabObserver) {
+      (tab as TabObserver).didTabAppear();
+    }
   }
+}
+
+abstract class TabObserver {
+  void didTabAppear() {}
 }
 
 class MunchBottomBar extends StatelessWidget {

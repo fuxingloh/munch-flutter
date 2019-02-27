@@ -9,18 +9,36 @@ import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
 import 'package:munch_app/styles/colors.dart';
+import 'package:munch_app/styles/munch_bottom_dialog.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
+import 'package:munch_app/utils/user_defaults_key.dart';
 
-class FeedPage extends StatefulWidget {
-  static _FeedState state = _FeedState();
+class FeedPage extends StatefulWidget with TabObserver {
+  static FeedPageState state = FeedPageState();
 
   FeedPage({Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => state;
+
+  @override
+  void didTabAppear() {
+//    Future.delayed(const Duration(milliseconds: 2000), () {
+//      final context = state.context;
+//      if (context == null) return;
+//
+//      UserDefaults.instance.notify(UserDefaultsKey.notifyFeedWelcome, () {
+//        showBottomDialog(
+//          context: context,
+//          title: "Welcome to the Munch Feed!",
+//          message: "See something you like? Click on any image to find out more.",
+//        );
+//      });
+//    });
+  }
 }
 
-class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
+class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
   final FeedManager manager = FeedManager();
   final ScrollController _controller = ScrollController();
   List<Object> items = [];
@@ -48,9 +66,7 @@ class _FeedState extends State<FeedPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      if (DateTime
-          .now()
-          .millisecondsSinceEpoch - pausedDateTime.millisecondsSinceEpoch > 1000 * 60 * 60) {
+      if (DateTime.now().millisecondsSinceEpoch - pausedDateTime.millisecondsSinceEpoch > 1000 * 60 * 60) {
         manager.reset();
       }
     }

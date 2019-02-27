@@ -8,7 +8,7 @@ import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 
-import 'package:munch_app/pages/tastebud/tastebud_saved_place_database.dart';
+import 'package:munch_app/pages/profile/tastebud_saved_place_database.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPFooter extends StatefulWidget {

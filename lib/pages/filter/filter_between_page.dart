@@ -6,7 +6,6 @@ import 'dart:convert';
 import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/components/bottom_sheet.dart';
 import 'package:munch_app/components/dialog.dart';
-import 'package:munch_app/pages/filter/filter_between_search.dart';
 import 'package:munch_app/pages/filter/filter_manager.dart';
 import 'package:munch_app/pages/filter/location_select_page.dart';
 import 'package:munch_app/styles/munch.dart';

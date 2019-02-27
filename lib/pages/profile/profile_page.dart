@@ -1,19 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:munch_app/pages/tastebud/tastebud_places_page.dart';
-import 'package:munch_app/pages/tastebud/tastebud_preferences_page.dart';
-import 'package:munch_app/pages/tastebud/tastebud_setting_page.dart';
+import 'package:munch_app/main.dart';
+import 'package:munch_app/pages/profile/tastebud_places_page.dart';
+import 'package:munch_app/pages/profile/tastebud_preferences_page.dart';
+import 'package:munch_app/pages/profile/tastebud_setting_page.dart';
 import 'package:munch_app/styles/icons.dart';
 
-class TastebudPage extends StatelessWidget {
-  TastebudPage({Key key}) : super(key: key);
+class ProfilePage extends StatelessWidget with TabObserver {
+  ProfilePage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: _TastebudAppBar(context),
+        appBar: _ProfileAppBar(context),
         body: TabBarView(
           children: [
             TastebudPlacePage(),
@@ -23,9 +24,12 @@ class TastebudPage extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  void didTabAppear() {}
 }
 
-class _TastebudAppBar extends AppBar {
+class _ProfileAppBar extends AppBar {
   static TabBar _buildTabBar(BuildContext context) {
     return TabBar(
       tabs: [
@@ -44,7 +48,7 @@ class _TastebudAppBar extends AppBar {
     ];
   }
 
-  _TastebudAppBar(BuildContext context)
+  _ProfileAppBar(BuildContext context)
       : super(
           title: const Text(
             'Your Profile',

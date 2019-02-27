@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:munch_app/api/feed_api.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/feed/feed_item_page.dart';
+import 'package:munch_app/pages/places/rip_page.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
 
@@ -50,7 +51,12 @@ class FeedImageView extends StatelessWidget {
   }
 
   void onItem(BuildContext context) {
-    FeedImagePage.push(context, item);
+    final place = item.places?.first;
+
+    if (place != null) {
+      // TODO Place and items
+      RIPPage.push(context, place);
+    }
   }
 }
 
