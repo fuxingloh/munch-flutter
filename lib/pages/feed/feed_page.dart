@@ -4,10 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/feed_api.dart';
+import 'package:munch_app/api/location.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/main.dart';
 import 'package:munch_app/pages/feed/feed_cell.dart';
+import 'package:munch_app/pages/feed/feed_header_view.dart';
+import 'package:munch_app/pages/feed/feed_manager.dart';
+import 'package:munch_app/pages/filter/location_select_page.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/munch_bottom_dialog.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
@@ -24,7 +28,7 @@ class FeedPage extends StatefulWidget with TabWidget {
   @override
   void didTabAppear(TabParent parent) {
     Future.delayed(const Duration(milliseconds: 2000), () {
-      final context = state.context;
+      final context = state?.context;
       if (context == null) return;
       if (parent.tab != MunchTab.feed) return;
 
@@ -43,6 +47,7 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
   final FeedManager manager = FeedManager();
   final ScrollController _controller = ScrollController();
   List<Object> items = [];
+  NamedLocation location;
 
   @override
   void initState() {
@@ -86,7 +91,28 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
     return false;
   }
 
+  void onLocation() {
+    SearchLocationPage.push(context).then((location) {
+      if (location == null) return;
+
+      setState(() {
+        this.location = location;
+      });
+      manager.reset(latLng: location.latLng);
+    });
+  }
+
+  void clearLocation() {
+    setState(() {
+      location = null;
+    });
+    manager.reset();
+  }
+
   void reset() {
+    if (location != null) {
+      setState(() => location = null);
+    }
     manager.reset();
   }
 
@@ -97,118 +123,53 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: RefreshIndicator(
-        color: MunchColors.secondary500,
-        backgroundColor: MunchColors.white,
-        onRefresh: _onRefresh,
-        child: StaggeredGridView.countBuilder(
-          controller: _controller,
-          crossAxisCount: 2,
-          itemCount: this.items.length,
-          itemBuilder: (BuildContext context, int index) {
-            Object item = this.items[index];
-            switch (item) {
-              case FeedStaticCell.header:
-                return FeedHeaderView();
+      child: Stack(
+        children: [
+          RefreshIndicator(
+            color: MunchColors.secondary500,
+            backgroundColor: MunchColors.white,
+            onRefresh: _onRefresh,
+            child: StaggeredGridView.countBuilder(
+              controller: _controller,
+              crossAxisCount: 2,
+              itemCount: this.items.length,
+              itemBuilder: (BuildContext context, int index) {
+                Object item = this.items[index];
+                switch (item) {
+                  case FeedStaticCell.loading:
+                    manager.append();
+                    return FeedLoadingView();
 
-              case FeedStaticCell.loading:
-                manager.append();
-                return FeedLoadingView();
+                  case FeedStaticCell.noResult:
+                    return FeedNoResultView();
 
-              case FeedStaticCell.noResult:
-                return FeedNoResultView();
+                  default:
+                    return FeedImageView(item: item);
+                }
+              },
+              staggeredTileBuilder: (int index) {
+                Object item = this.items[index];
+                switch (item) {
+                  case FeedStaticCell.loading:
+                  case FeedStaticCell.noResult:
+                    return StaggeredTile.fit(2);
 
-              default:
-                return FeedImageView(item: item);
-            }
-          },
-          staggeredTileBuilder: (int index) {
-            Object item = this.items[index];
-            switch (item) {
-              case FeedStaticCell.header:
-              case FeedStaticCell.loading:
-              case FeedStaticCell.noResult:
-                return StaggeredTile.fit(2);
-
-              default:
-                return StaggeredTile.fit(1);
-            }
-          },
-          mainAxisSpacing: 16.0,
-          crossAxisSpacing: 16.0,
-          padding: const EdgeInsets.all(24),
-        ),
+                  default:
+                    return StaggeredTile.fit(1);
+                }
+              },
+              mainAxisSpacing: 16.0,
+              crossAxisSpacing: 16.0,
+              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 72),
+            ),
+          ),
+          FeedHeaderBar(
+            name: location?.name,
+            onDiscover: onLocation,
+            onCancel: clearLocation,
+          ),
+        ],
       ),
     );
-  }
-}
-
-enum FeedStaticCell { header, loading, noResult }
-
-class FeedManager {
-  final MunchApi _api = MunchApi.instance;
-
-  List<ImageFeedItem> _items = [];
-  DateTime lastEventDate;
-
-  int _from = 0;
-  bool _loading = false;
-
-  StreamController<List<Object>> _controller;
-
-  Stream<List<Object>> stream() {
-    _controller = StreamController<List<Object>>();
-    _controller.add(collect());
-    this.append();
-    return _controller.stream;
-  }
-
-  Future reset() {
-    _items.clear();
-    _from = 0;
-    _loading = false;
-    _controller.add(collect());
-    return append();
-  }
-
-  Future append() {
-    if (_from == null) return Future.value();
-    if (_from > 500) return Future.value();
-    if (_loading) return Future.value();
-
-    _loading = true;
-
-    return _api.post("/feed/query?next.from=$_from", body: {}).then((res) {
-      this._loading = false;
-      this._from = res.next['from'];
-
-      var items = ImageFeedItem.fromJsonList(res.data);
-      var places = Place.fromJsonMap(res['places']);
-      items.forEach((item) {
-        item.places = item.places.map((p) => places[p.placeId]).where((p) => p != null).toList(growable: false);
-
-        // Only Add Items that have places to ensure non null constraints
-        if (item.places.isEmpty) return;
-        this._items.add(item);
-      });
-
-      _controller.add(collect());
-
-      MunchAnalytic.logEvent("feed_query", parameters: {"count": _from ?? 0});
-    }).catchError((error) => _controller.addError(error));
-  }
-
-  List<Object> collect() {
-    List<Object> collected = [];
-    collected.add(FeedStaticCell.header);
-    collected.addAll(_items);
-
-    if (_loading || _from != null) {
-      collected.add(FeedStaticCell.loading);
-    } else if (_items.isEmpty) {
-      collected.add(FeedStaticCell.noResult);
-    }
-
-    return collected;
   }
 }

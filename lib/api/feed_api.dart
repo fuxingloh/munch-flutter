@@ -6,52 +6,80 @@ import 'package:munch_app/api/munch_data.dart';
 part 'feed_api.g.dart';
 
 @JsonSerializable()
-class ImageFeedResult {
-  ImageFeedResult(this.items, this.places);
+class FeedQuery {
+  FeedQueryLocation location;
 
-  List<ImageFeedItem> items;
-  Map<String, Place> places;
+  FeedQuery({this.location});
 
-  factory ImageFeedResult.fromJson(Map<String, dynamic> json) =>
-      _$ImageFeedResultFromJson(json);
+  FeedQuery.created({String latLng}) {
+    this.location = FeedQueryLocation(latLng: latLng);
+  }
 
-  Map<String, dynamic> toJson() => _$ImageFeedResultToJson(this);
+  factory FeedQuery.fromJson(Map<String, dynamic> json) => _$FeedQueryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FeedQueryToJson(this);
 }
 
 @JsonSerializable()
-class ImageFeedItem {
-  ImageFeedItem(
+class FeedQueryLocation {
+  String latLng;
+
+  FeedQueryLocation({this.latLng});
+
+  factory FeedQueryLocation.fromJson(Map<String, dynamic> json) => _$FeedQueryLocationFromJson(json);
+
+  Map<String, dynamic> toJson() => _$FeedQueryLocationToJson(this);
+}
+
+@JsonSerializable()
+class FeedItem {
+  FeedItem({
     this.itemId,
+    this.type,
     this.sort,
     this.country,
     this.latLng,
-    this.image,
-    this.createdMillis,
-    this.instagram,
+    this.author,
+    this.title,
     this.places,
-  );
+    this.createdMillis,
+    this.image,
+    this.instagram,
+  });
 
   String itemId;
+  FeedItemType type;
   String sort;
 
   String country;
   String latLng;
 
-  Image image;
+  String author;
+  String title;
+
+  List<Place> places;
   int createdMillis;
 
+  Image image;
   ImageFeedItemInstagram instagram;
-  List<Place> places;
 
-  factory ImageFeedItem.fromJson(Map<String, dynamic> json) =>
-      _$ImageFeedItemFromJson(json);
+  factory FeedItem.fromJson(Map<String, dynamic> json) => _$FeedItemFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ImageFeedItemToJson(this);
+  Map<String, dynamic> toJson() => _$FeedItemToJson(this);
 
-  static List<ImageFeedItem> fromJsonList(List<dynamic> list) {
-    return list.map((map) => ImageFeedItem.fromJson(map)).toList(growable: false);
+  static List<FeedItem> fromJsonList(List<dynamic> list) {
+    return list.map((map) => FeedItem.fromJson(map)).toList(growable: false);
+  }
+
+  static String getTypeName(FeedItem item) {
+    var type = item.type;
+    if (type == null) return null;
+
+    return _$FeedItemTypeEnumMap[type];
   }
 }
+
+enum FeedItemType { Article, InstagramMedia }
 
 @JsonSerializable()
 class ImageFeedItemInstagram {
@@ -75,8 +103,7 @@ class ImageFeedItemInstagram {
   String userId;
   String username;
 
-  factory ImageFeedItemInstagram.fromJson(Map<String, dynamic> json) =>
-      _$ImageFeedItemInstagramFromJson(json);
+  factory ImageFeedItemInstagram.fromJson(Map<String, dynamic> json) => _$ImageFeedItemInstagramFromJson(json);
 
   Map<String, dynamic> toJson() => _$ImageFeedItemInstagramToJson(this);
 }

@@ -1,9 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:munch_app/api/file_api.dart';
+import 'package:munch_app/components/bottom_sheet.dart';
+import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/pages/places/rip_page.dart';
 import 'package:munch_app/styles/munch.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class RIPCardBanner extends RIPCardWidget {
   RIPCardBanner(PlaceData data, {@required this.ripState})
@@ -13,18 +17,6 @@ class RIPCardBanner extends RIPCardWidget {
         );
 
   final RIPPageState ripState;
-
-  List<ImageSize> buildImages(PlaceData data) {
-    if (data.place.images.isNotEmpty) {
-      return data.place.images[0]?.sizes;
-    }
-
-    if (data.images.isNotEmpty) {
-      return data.images[0]?.sizes;
-    }
-
-    return [];
-  }
 
   void onGallery() {
     final controller = ripState.controller;
@@ -37,24 +29,36 @@ class RIPCardBanner extends RIPCardWidget {
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    final height = (MediaQuery.of(context).size.height) * 0.38;
+    CreditedImage image = ripState.focusedImage;
 
-    final sizes = buildImages(data);
-
-    List<Widget> children = [
-      Container(
-        height: height,
-        width: double.infinity,
-        child: ShimmerSizeImage(
-          minHeight: height,
-          sizes: sizes,
+    if (image != null) {
+      return Stack(children: [
+        AspectRatio(
+          aspectRatio: image.aspectRatio,
+          child: ShimmerSizeImage(
+            sizes: image.sizes,
+          ),
         ),
-      )
-    ];
+        GalleryButton(
+          onGallery: onGallery,
+        ),
+        ImageCredit(image: image),
+      ]);
+    }
 
-    if (sizes.isNotEmpty) {
-      children.add(Container(
-        height: height,
+    return Container();
+  }
+}
+
+class GalleryButton extends StatelessWidget {
+  final VoidCallback onGallery;
+
+  const GalleryButton({Key key, this.onGallery}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned.fill(
+      child: Container(
         alignment: Alignment.bottomRight,
         padding: const EdgeInsets.only(right: 24, bottom: 16),
         child: GestureDetector(
@@ -82,9 +86,67 @@ class RIPCardBanner extends RIPCardWidget {
             ),
           ),
         ),
-      ));
+      ),
+    );
+  }
+}
+
+class ImageCredit extends StatelessWidget {
+  final CreditedImage image;
+
+  const ImageCredit({Key key, this.image}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (image.name == null) {
+      return Container();
     }
 
-    return Stack(children: children);
+    return Positioned.fill(
+      child: Container(
+        alignment: Alignment.bottomLeft,
+        child: GestureDetector(
+          onTap: () => onTap(context),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 24, bottom: 16, right: 24),
+            child: Text("Image by:\n${image.name}", style: MTextStyle.smallBold.copyWith(color: MunchColors.white), maxLines: 2),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _launch(String url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    }
+  }
+
+  void onTap(BuildContext context) {
+    if (image.link == null) return;
+
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return MunchBottomSheet(
+          children: [
+            MunchBottomSheetTile(
+              onPressed: () {
+                Navigator.pop(context);
+                _launch(image.link);
+              },
+              icon: const Icon(Icons.person),
+              child: Text("More from ${image.name}"),
+            ),
+
+            MunchBottomSheetTile(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(Icons.close),
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

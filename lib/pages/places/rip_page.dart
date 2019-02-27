@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:munch_app/api/api.dart';
 import 'package:munch_app/api/authentication.dart';
+import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
@@ -15,18 +16,19 @@ import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:munch_app/utils/user_defaults_key.dart';
 
 class RIPPage extends StatefulWidget {
-  const RIPPage({Key key, this.place}) : super(key: key);
-
   final Place place;
+  final CreditedImage focusedImage;
+
+  const RIPPage({Key key, this.place, this.focusedImage}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => RIPPageState();
 
-  static Future<T> push<T extends Object>(BuildContext context, Place place) {
+  static Future<T> push<T extends Object>(BuildContext context, Place place, {CreditedImage focusedImage}) {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (c) => RIPPage(place: place),
+        builder: (c) => RIPPage(place: place, focusedImage: focusedImage),
         settings: const RouteSettings(name: '/places'),
       ),
     );
@@ -38,7 +40,9 @@ class RIPPageState extends State<RIPPage> {
   RIPImageLoader _imageLoader;
   bool _clear = true;
 
-  PlaceData placeData;
+  PlaceData data;
+  CreditedImage focusedImage;
+
   List<Widget> widgets = RIPCardDelegator.loading;
   List<PlaceImage> images;
 
@@ -59,8 +63,23 @@ class RIPPageState extends State<RIPPage> {
   }
 
   _start(PlaceData placeData) {
+    this.focusedImage = widget.focusedImage;
+    if (this.focusedImage == null && placeData.images.length > 0) {
+      final image = placeData.images[0];
+
+      if (image.instagram != null) {
+        final instagram = image.instagram;
+        this.focusedImage = CreditedImage(sizes: image.sizes, name: instagram.username, link: instagram.link);
+      } else if (image.article != null) {
+        final article = image.article;
+        this.focusedImage = CreditedImage(sizes: image.sizes, name: article.domain.name, link: article.url);
+      } else {
+        this.focusedImage = CreditedImage(sizes: image.sizes);
+      }
+    }
+
     setState(() {
-      this.placeData = placeData;
+      this.data = placeData;
       this.images = placeData.images;
       this.widgets = RIPCardDelegator.delegate(placeData, this);
     });
@@ -144,9 +163,9 @@ class RIPPageState extends State<RIPPage> {
           controller: controller,
           slivers: slivers,
         ),
-        RIPHeader(placeData: placeData, clear: _clear),
+        RIPHeader(placeData: data, clear: _clear),
       ]),
-      bottomNavigationBar: RIPFooter(placeData: placeData),
+      bottomNavigationBar: RIPFooter(placeData: data),
     );
   }
 
@@ -155,7 +174,7 @@ class RIPPageState extends State<RIPPage> {
       context,
       index: i,
       imageLoader: _imageLoader,
-      place: placeData.place,
+      place: data.place,
     );
   }
 }

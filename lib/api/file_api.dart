@@ -8,6 +8,27 @@ ImageSize maxSize(List<ImageSize> sizes) {
   });
 }
 
+class CreditedImage {
+  List<ImageSize> sizes;
+  String name;
+  String link;
+
+  CreditedImage({this.sizes, this.name, this.link});
+
+  @JsonKey(ignore: true)
+  ImageSize get maxSize {
+    return sizes.reduce((a, b) {
+      return a.width.compareTo(b.width) >= 0 ? a : b;
+    });
+  }
+
+  @JsonKey(ignore: true)
+  double get aspectRatio {
+    final max = maxSize;
+    return max.width.toDouble() / max.height.toDouble();
+  }
+}
+
 @JsonSerializable()
 class Image {
   Image(this.imageId, this.sizes);

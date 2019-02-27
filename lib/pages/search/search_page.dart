@@ -19,7 +19,7 @@ class SearchPage extends StatefulWidget with TabWidget {
   @override
   void didTabAppear(TabParent parent) {
     Future.delayed(const Duration(milliseconds: 2000), () async {
-      final context = state.context;
+      final context = state?.context;
       if (context == null) return;
       if (parent.tab != MunchTab.search) return;
 

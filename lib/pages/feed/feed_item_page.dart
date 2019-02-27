@@ -20,12 +20,12 @@ String _formatDate(int millis) {
 class FeedImagePage extends StatefulWidget {
   const FeedImagePage({Key key, this.item}) : super(key: key);
 
-  final ImageFeedItem item;
+  final FeedItem item;
 
   @override
   State<StatefulWidget> createState() => FeedImagePageState();
 
-  static Future<T> push<T extends Object>(BuildContext context, ImageFeedItem item) {
+  static Future<T> push<T extends Object>(BuildContext context, FeedItem item) {
     return Navigator.push(
       context,
       MaterialPageRoute(
@@ -37,7 +37,7 @@ class FeedImagePage extends StatefulWidget {
 }
 
 class FeedImagePageState extends State<FeedImagePage> {
-  ImageFeedItem get item {
+  FeedItem get item {
     return widget.item;
   }
 
@@ -136,7 +136,7 @@ class FeedImagePageState extends State<FeedImagePage> {
 class _FeedItemImage extends StatelessWidget {
   const _FeedItemImage({Key key, this.item}) : super(key: key);
 
-  final ImageFeedItem item;
+  final FeedItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -151,7 +151,7 @@ class _FeedItemImage extends StatelessWidget {
 class _FeedItemContent extends StatelessWidget {
   const _FeedItemContent({Key key, this.item}) : super(key: key);
 
-  final ImageFeedItem item;
+  final FeedItem item;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +189,7 @@ class _FeedItemContent extends StatelessWidget {
 class _FeedItemPlace extends StatelessWidget {
   const _FeedItemPlace({Key key, this.item}) : super(key: key);
 
-  final ImageFeedItem item;
+  final FeedItem item;
 
   @override
   Widget build(BuildContext context) {
