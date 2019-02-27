@@ -3,6 +3,7 @@ import 'package:munch_app/api/search_api.dart';
 import 'package:munch_app/pages/search/cards/between/search_card_between_header.dart';
 import 'package:munch_app/pages/search/cards/between/search_card_between_referral.dart';
 import 'package:munch_app/pages/search/cards/collection/search_card_collection.dart';
+import 'package:munch_app/pages/search/cards/content/search_card_series_list.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_award_collection.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_dtje.dart';
 import 'package:munch_app/pages/search/cards/home/search_card_home_nearby.dart';
@@ -126,6 +127,9 @@ class SearchCardDelegator {
 
       case "BetweenReferral_2019-02-12":
         return SearchCardBetweenReferral(card);
+
+      case "SeriesList_2019-02-25":
+        return SearchCardSeriesList(card);
     }
 
     debugPrint('Required Card ${card.cardId} Not Found.');
