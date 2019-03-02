@@ -95,7 +95,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       bottomNavigationBar: MunchBottomBar(
-        onTab: onTab,
+        onTab: _onTab,
         currentIndex: _currentIndex,
       ),
       body: Stack(
@@ -112,7 +112,21 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
     );
   }
 
-  void onTab(int index) {
+  void onTab(MunchTab tab) {
+    switch (tab) {
+      case MunchTab.search:
+        _onTab(TabParent.search);
+        return;
+      case MunchTab.feed:
+        _onTab(TabParent.feed);
+        return;
+      case MunchTab.profile:
+        _onTab(TabParent.profile);
+        return;
+    }
+  }
+
+  void _onTab(int index) {
     if (_currentIndex == index) {
       switch (index) {
         case TabParent.search:
@@ -173,6 +187,7 @@ abstract class TabParent {
 
   Widget getChild(int index) {
     if (_children.containsKey(index)) return _children[index];
+
     if (_currentIndex == index) {
       if (index == search) _children[search] = SearchPage();
       if (index == feed) _children[feed] = FeedPage();

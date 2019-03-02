@@ -10,24 +10,21 @@ class SearchCardBetweenReferral extends SearchCardWidget {
   Widget buildCard(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: MunchColors.primary050,
+        color: MunchColors.primary500,
         borderRadius: BorderRadius.all(Radius.circular(4)),
       ),
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 16, bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text("Teamwork makes the dream work.", style: MTextStyle.h2),
-          Padding(
-            padding: const EdgeInsets.only(top: 16, bottom: 24),
-            child: Text("You've done the tough part now share this with your friends and ask somebody to pick."),
-          ),
+          Text("Share search results with your friends.", style: MTextStyle.h3.copyWith(color: MunchColors.white)),
           Container(
+            margin: const EdgeInsets.only(top: 16),
             alignment: Alignment.centerRight,
             child: MunchButton.text(
               "SHARE",
               onPressed: () => onShare(context),
-              style: MunchButtonStyle.secondaryOutline,
+              style: MunchButtonStyle.primaryOutline,
             ),
           )
         ],

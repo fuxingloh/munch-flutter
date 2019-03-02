@@ -123,52 +123,55 @@ class FeedPageState extends State<FeedPage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Stack(
-        children: [
-          RefreshIndicator(
-            color: MunchColors.secondary500,
-            backgroundColor: MunchColors.white,
-            onRefresh: _onRefresh,
-            child: StaggeredGridView.countBuilder(
-              controller: _controller,
-              crossAxisCount: 2,
-              itemCount: this.items.length,
-              itemBuilder: (BuildContext context, int index) {
-                Object item = this.items[index];
-                switch (item) {
-                  case FeedStaticCell.loading:
-                    manager.append();
-                    return FeedLoadingView();
+      child: Container(
+        color: MunchColors.white,
+        child: Stack(
+          children: [
+            RefreshIndicator(
+              color: MunchColors.secondary500,
+              backgroundColor: MunchColors.white,
+              onRefresh: _onRefresh,
+              child: StaggeredGridView.countBuilder(
+                controller: _controller,
+                crossAxisCount: 2,
+                itemCount: this.items.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Object item = this.items[index];
+                  switch (item) {
+                    case FeedStaticCell.loading:
+                      manager.append();
+                      return FeedLoadingView();
 
-                  case FeedStaticCell.noResult:
-                    return FeedNoResultView();
+                    case FeedStaticCell.noResult:
+                      return FeedNoResultView();
 
-                  default:
-                    return FeedImageView(item: item);
-                }
-              },
-              staggeredTileBuilder: (int index) {
-                Object item = this.items[index];
-                switch (item) {
-                  case FeedStaticCell.loading:
-                  case FeedStaticCell.noResult:
-                    return StaggeredTile.fit(2);
+                    default:
+                      return FeedImageView(item: item);
+                  }
+                },
+                staggeredTileBuilder: (int index) {
+                  Object item = this.items[index];
+                  switch (item) {
+                    case FeedStaticCell.loading:
+                    case FeedStaticCell.noResult:
+                      return StaggeredTile.fit(2);
 
-                  default:
-                    return StaggeredTile.fit(1);
-                }
-              },
-              mainAxisSpacing: 16.0,
-              crossAxisSpacing: 16.0,
-              padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 72),
+                    default:
+                      return StaggeredTile.fit(1);
+                  }
+                },
+                mainAxisSpacing: 16.0,
+                crossAxisSpacing: 16.0,
+                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 24, top: 72),
+              ),
             ),
-          ),
-          FeedHeaderBar(
-            name: location?.name,
-            onDiscover: onLocation,
-            onCancel: clearLocation,
-          ),
-        ],
+            FeedHeaderBar(
+              name: location?.name,
+              onDiscover: onLocation,
+              onCancel: clearLocation,
+            ),
+          ],
+        ),
       ),
     );
   }

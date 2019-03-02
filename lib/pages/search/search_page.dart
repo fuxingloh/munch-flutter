@@ -34,7 +34,7 @@ class SearchPage extends StatefulWidget with TabWidget {
               context: context,
               title: "Feed us with feedback",
               message: "Take a minute to tell us how to better serve you.",
-              buttonTitle: "Share Feedback",
+              buttonTitle: "Give Feedback",
               buttonCallback: () async {
                 String url = "https://airtable.com/shrp2EgmOUwshSZ3a";
                 if (await canLaunch(url)) {

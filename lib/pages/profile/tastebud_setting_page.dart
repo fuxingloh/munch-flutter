@@ -63,7 +63,7 @@ class _SettingList extends StatelessWidget {
         Authentication.instance.logout().then((v) {
           MunchAnalytic.logEvent("profile_logout");
           Navigator.of(context).pop();
-          tabState.onTab(0);
+          tabState.onTab(MunchTab.search);
         });
       }),
       const SizedBox(height: 32),

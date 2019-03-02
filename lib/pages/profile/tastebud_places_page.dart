@@ -65,7 +65,7 @@ class TastebudPlaceState extends State<TastebudPlacePage> {
             margin: EdgeInsets.only(top: 16),
             alignment: Alignment.bottomRight,
             child: MunchButton.text("Discover", onPressed: () {
-              tabState.onTab(1);
+              tabState.onTab(MunchTab.feed);
             }),
           )
         ],
