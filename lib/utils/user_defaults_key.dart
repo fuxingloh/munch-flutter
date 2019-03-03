@@ -4,9 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum UserDefaultsKey {
   globalResignActiveDate,
   notifyFeedWelcome,
-  notifyShareFeedbackV1,
+  notifyGiveFeedbackV1,
+  notifyGiveFeedbackV2,
   countOpenApp,
   countViewRip,
+  countGiveFeedback,
 }
 
 class UserDefaults {
@@ -20,12 +22,16 @@ class UserDefaults {
         return "global.ResignActiveDate";
       case UserDefaultsKey.notifyFeedWelcome:
         return "notify.FeedWelcome";
-      case UserDefaultsKey.notifyShareFeedbackV1:
-        return "notify.ShareFeedbackV1";
+      case UserDefaultsKey.notifyGiveFeedbackV1:
+        return "notify.GiveFeedbackV1";
+      case UserDefaultsKey.notifyGiveFeedbackV2:
+        return "notify.GiveFeedbackV2";
       case UserDefaultsKey.countOpenApp:
         return "count.OpenApp";
       case UserDefaultsKey.countViewRip:
         return "count.ViewRip";
+      case UserDefaultsKey.countGiveFeedback:
+        return "count.GiveFeedback";
     }
 
     return "NotFound";

@@ -24,25 +24,37 @@ class SearchPage extends StatefulWidget with TabWidget {
       if (parent.tab != MunchTab.search) return;
 
       final defaults = UserDefaults.instance;
+
+      showGiveFeedback() {
+        MunchAnalytic.logEvent("notify_show_feedback");
+
+        showBottomDialog(
+          context: context,
+          title: "Feed us with feedback",
+          message: "Take a minute to tell us how to better serve you.",
+          buttonTitle: "Give Feedback",
+          buttonCallback: () async {
+            String url = "https://airtable.com/shrp2EgmOUwshSZ3a";
+
+            if (await canLaunch(url)) {
+              MunchAnalytic.logEvent("notify_click_feedback");
+              defaults.count(UserDefaultsKey.countGiveFeedback);
+              await launch(url);
+            }
+          },
+        );
+      }
+
       final int viewRip = await defaults.getCount(UserDefaultsKey.countViewRip);
       final int openApp = await defaults.getCount(UserDefaultsKey.countOpenApp);
 
       if (viewRip > 1 || openApp > 1) {
-        defaults.notify(UserDefaultsKey.notifyShareFeedbackV1, () {
-          MunchAnalytic.logEvent("notify_show_feedback");
-          showBottomDialog(
-              context: context,
-              title: "Feed us with feedback",
-              message: "Take a minute to tell us how to better serve you.",
-              buttonTitle: "Give Feedback",
-              buttonCallback: () async {
-                String url = "https://airtable.com/shrp2EgmOUwshSZ3a";
-                if (await canLaunch(url)) {
-                  MunchAnalytic.logEvent("notify_click_feedback");
-                  await launch(url);
-                }
-              });
-        });
+        defaults.notify(UserDefaultsKey.notifyGiveFeedbackV1, showGiveFeedback);
+
+        final int countFeedback = await defaults.getCount(UserDefaultsKey.countGiveFeedback);
+        if (viewRip > 3 && countFeedback == 0) {
+          defaults.notify(UserDefaultsKey.notifyGiveFeedbackV2, showGiveFeedback);
+        }
       }
     });
   }
