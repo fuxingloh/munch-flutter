@@ -174,7 +174,8 @@ class PlaceCardState extends State<PlaceCard> {
             Container(
               alignment: Alignment.topRight,
               child: PlaceHeartButton(onPressed: widget.onHeart),
-            )
+            ),
+            Positioned.fill(child: PlaceCardStatusOverlay(place: place)),
           ],
         ),
         Container(
@@ -210,6 +211,38 @@ class PlaceCardState extends State<PlaceCard> {
       behavior: HitTestBehavior.opaque,
       child: column,
       onTap: onPressed,
+    );
+  }
+}
+
+class PlaceCardStatusOverlay extends StatelessWidget {
+  final Place place;
+
+  const PlaceCardStatusOverlay({Key key, this.place}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (place.status.type == PlaceStatusType.open) {
+      return Container();
+    }
+
+    final type = PlaceStatusTypeMessage[place.status.type];
+    final title = type == null ? 'Permanently Closed' : type['title'];
+
+    List<Widget> children = [
+      Text(title, style: MTextStyle.h2.copyWith(color: MunchColors.white)),
+    ];
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: MunchColors.black50,
+        borderRadius: BorderRadius.all(Radius.circular(3)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: children,
+      ),
     );
   }
 }

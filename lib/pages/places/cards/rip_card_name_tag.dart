@@ -46,8 +46,6 @@ class RIPCardStatus extends RIPCardWidget {
   void onTap(BuildContext context, PlaceData data) {
     onSuggestEdit(context, data.place);
   }
-
-
 }
 
 class RIPCardNameTag extends RIPCardWidget {
