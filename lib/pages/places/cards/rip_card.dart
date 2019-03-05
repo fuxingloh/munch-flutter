@@ -29,7 +29,7 @@ class RIPCardDelegator {
     List<RIPCardWidget> widgets = [];
     widgets.add(RIPCardBanner(data, ripState: state));
 
-    if (RIPCardClosed.isAvailable(data)) widgets.add(RIPCardClosed(data));
+    if (RIPCardStatus.isAvailable(data)) widgets.add(RIPCardStatus(data));
     if (RIPCardPreference.isAvailable(data)) widgets.add(RIPCardPreference(data));
     widgets.add(RIPCardNameTag(data));
 

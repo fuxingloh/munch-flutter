@@ -63,13 +63,40 @@ class Place {
   }
 }
 
-enum PlaceStatusType { open, renovation, closed, moved }
+enum PlaceStatusType { open, renovation, closed, moved, deleted, renamed, redirected }
+
+const Map<PlaceStatusType, Map<String, String>> PlaceStatusTypeMessage = {
+  PlaceStatusType.open: {},
+  PlaceStatusType.renovation: {
+    'title': 'Under Renovation',
+    'message': 'Know this place?',
+  },
+  PlaceStatusType.closed: {
+    'title': 'Permanently Closed',
+    'message': 'Know this place?',
+  },
+  PlaceStatusType.moved: {
+    'title': 'Permanently Moved',
+    'message': 'Know this place?',
+  },
+  PlaceStatusType.deleted: {
+    'title': 'Deleted from Munch',
+    'message': 'This place has permanently closed or removed from Munch. Know this place?',
+  },
+  PlaceStatusType.renamed: {
+    'title': 'This place is renamed.',
+  },
+  PlaceStatusType.redirected: {
+    'title': 'This place has been redirected.',
+  },
+};
 
 @JsonSerializable()
 class PlaceStatus {
   PlaceStatus(this.type);
 
   PlaceStatusType type;
+  // TODO Deleted, Renamed, Redirected not implemented
 
   factory PlaceStatus.fromJson(Map<String, dynamic> json) => _$PlaceStatusFromJson(json);
 

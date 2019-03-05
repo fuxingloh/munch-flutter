@@ -93,7 +93,10 @@ const _$PlaceStatusTypeEnumMap = <PlaceStatusType, dynamic>{
   PlaceStatusType.open: 'open',
   PlaceStatusType.renovation: 'renovation',
   PlaceStatusType.closed: 'closed',
-  PlaceStatusType.moved: 'moved'
+  PlaceStatusType.moved: 'moved',
+  PlaceStatusType.deleted: 'deleted',
+  PlaceStatusType.renamed: 'renamed',
+  PlaceStatusType.redirected: 'redirected'
 };
 
 PlaceMenu _$PlaceMenuFromJson(Map<String, dynamic> json) {

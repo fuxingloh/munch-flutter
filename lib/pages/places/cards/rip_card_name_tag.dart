@@ -1,22 +1,53 @@
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/munch_tag_view.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
+import 'package:munch_app/pages/places/cards/rip_card_suggest.dart';
 import 'package:munch_app/styles/separators.dart';
 
-class RIPCardClosed extends RIPCardWidget {
-  RIPCardClosed(PlaceData data) : super(data);
+class RIPCardStatus extends RIPCardWidget {
+  RIPCardStatus(PlaceData data) : super(data);
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
-    return Text(
-      "Permanently Closed",
-      style: MTextStyle.h2.copyWith(color: MunchColors.close),
+    final type = PlaceStatusTypeMessage[data.place.status.type];
+    final title = type == null ? 'Permanently Closed' : type['title'];
+
+    List<Widget> children = [
+      Text(title, style: MTextStyle.h3.copyWith(color: MunchColors.white)),
+    ];
+
+    if (type != null && type['message'] != null) {
+      children.add(
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text("${type['message']} Suggest an edit." , style: MTextStyle.h6.copyWith(color: MunchColors.white)),
+        ),
+      );
+    }
+
+    return Container(
+      decoration: const BoxDecoration(
+        color: MunchColors.close,
+        borderRadius: BorderRadius.all(Radius.circular(3)),
+      ),
+      padding: const EdgeInsets.only(top: 16, bottom: 16, left: 24, right: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
     );
   }
 
   static bool isAvailable(PlaceData data) {
     return data.place.status.type != PlaceStatusType.open;
   }
+
+  @override
+  void onTap(BuildContext context, PlaceData data) {
+    onSuggestEdit(context, data.place);
+  }
+
+
 }
 
 class RIPCardNameTag extends RIPCardWidget {
