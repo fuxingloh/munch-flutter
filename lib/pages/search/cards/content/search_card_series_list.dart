@@ -6,15 +6,24 @@ import 'package:munch_app/styles/munch_horizontal_snap.dart';
 class SearchCardSeriesList extends SearchCardWidget {
   final CreatorSeries series;
   final List<CreatorContent> contents;
+  final dynamic options;
 
   SearchCardSeriesList(SearchCard card)
       : series = CreatorSeries.fromJson(card['series']),
         contents = CreatorContent.fromJsonList(card['contents']),
+        options = card['options'],
         super(card, margin: SearchCardInsets.only(left: 0, right: 0));
+
+  double getWidth(BuildContext context) {
+    if (options != null && options['expand'] == 'height') {
+      return (MediaQuery.of(context).size.width * 0.5);
+    }
+    return (MediaQuery.of(context).size.width - 48);
+  }
 
   @override
   Widget buildCard(BuildContext context) {
-    final width = (MediaQuery.of(context).size.width - 48);
+    final width = getWidth(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -28,20 +37,17 @@ class SearchCardSeriesList extends SearchCardWidget {
           child: Text(series.subtitle, style: MTextStyle.h6),
         ),
         MunchHorizontalSnap(
+          itemWidth: width,
           sampleBuilder: (context) {
-            return Container(
-              width: width,
-              child: SearchSeriesContentCard(content: CreatorContent(title: "", subtitle: " ", body: " \n \n ")),
+            return SearchSeriesContentCard(
+              content: CreatorContent(title: "", subtitle: " ", body: " \n \n "),
+              options: options,
             );
           },
           itemBuilder: (context, i) {
-            return Container(
-              width: width,
-              height: width,
-              child: GestureDetector(
-                onTap: () => onContent(contents[i]),
-                child: SearchSeriesContentCard(content: contents[i]),
-              ),
+            return GestureDetector(
+              onTap: () => onContent(contents[i]),
+              child: SearchSeriesContentCard(content: contents[i], options: options),
             );
           },
           itemCount: contents.length,
@@ -59,8 +65,34 @@ class SearchCardSeriesList extends SearchCardWidget {
 
 class SearchSeriesContentCard extends StatelessWidget {
   final CreatorContent content;
+  final dynamic options;
 
-  const SearchSeriesContentCard({Key key, this.content}) : super(key: key);
+  const SearchSeriesContentCard({
+    Key key,
+    this.content,
+    this.options,
+  }) : super(key: key);
+
+  double get aspectRatio {
+    if (options != null && options['expand'] == 'height') {
+      return 10 / 12;
+    }
+    return 1 / 0.6;
+  }
+
+  Alignment get imageTextAlignment {
+    if (options != null && options['expand'] == 'height') {
+      return Alignment.bottomCenter;
+    }
+    return Alignment.center;
+  }
+
+  TextStyle get imageTextStyle {
+    if (options != null && options['expand'] == 'height') {
+      return MTextStyle.h3.copyWith(color: MunchColors.white);
+    }
+    return MTextStyle.h2.copyWith(color: MunchColors.white);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,26 +102,27 @@ class SearchSeriesContentCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         AspectRatio(
-          aspectRatio: 1 / 0.6,
+          aspectRatio: aspectRatio,
           child: ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(3)),
+            borderRadius: const BorderRadius.all(Radius.circular(3)),
             child: Stack(
               fit: StackFit.expand,
               children: <Widget>[
                 ShimmerSizeImage(
                   minWidth: width,
+                  minHeight: width,
                   sizes: content?.image?.sizes,
                 ),
                 Container(
                   padding: const EdgeInsets.all(24),
-                  alignment: Alignment.center,
+                  alignment: imageTextAlignment,
                   color: MunchColors.black.withOpacity(0.45),
                   child: Text(
                     content.title,
-                    maxLines: 2,
+                    maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: MTextStyle.h2.copyWith(color: MunchColors.white),
+                    style: imageTextStyle,
                   ),
                 ),
               ],
@@ -103,7 +136,7 @@ class SearchSeriesContentCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: MTextStyle.h5.copyWith(color: MunchColors.secondary700),
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
           ),
         ),
         Padding(

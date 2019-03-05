@@ -110,6 +110,16 @@ class MunchButtonStyle {
     textStyle: _textStyle,
   );
 
+  static const MunchButtonStyle primaryOutlineSmall = MunchButtonStyle(
+    textColor: MunchColors.primary500,
+    background: MunchColors.white,
+    borderColor: MunchColors.primary500,
+    borderWidth: 1,
+    height: _smallHeight,
+    padding: _smallPadding,
+    textStyle: _smallTextStyle,
+  );
+
   static const MunchButtonStyle secondary = MunchButtonStyle(
     textColor: MunchColors.white,
     background: MunchColors.secondary500,
@@ -138,6 +148,16 @@ class MunchButtonStyle {
     height: _height,
     padding: _padding,
     textStyle: _textStyle,
+  );
+
+  static const MunchButtonStyle secondaryOutlineSmall = MunchButtonStyle(
+    textColor: MunchColors.secondary700,
+    background: MunchColors.white,
+    borderColor: MunchColors.secondary700,
+    borderWidth: 1,
+    height: _smallHeight,
+    padding: _smallPadding,
+    textStyle: _smallTextStyle,
   );
 }
 

@@ -235,7 +235,7 @@ class _FilterBetweenBottom extends StatelessWidget {
     List<Widget> children = [
       const Padding(
         padding: EdgeInsets.only(bottom: 8),
-        child: Text("Enter everyone’s location to find the most ideal spot for a meal together. "),
+        child: Text("Enter everyone’s location to find the most ideal spot for a meal together."),
       )
     ];
 

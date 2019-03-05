@@ -6,6 +6,7 @@ import 'package:munch_app/pages/filter/filter_between_page.dart';
 import 'package:munch_app/pages/filter/filter_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/pages/suggest/suggest_page.dart';
+import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
 
 class SearchCardHomeTab extends SearchCardWidget {
@@ -22,9 +23,7 @@ class _SearchCardHomeTabChild extends StatefulWidget {
 
 class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
   static const List<_HomeTab> tabs = [
-    _HomeTab.between,
     _HomeTab.search,
-    _HomeTab.location,
   ];
 
   _HomeTab tab = tabs[0];
@@ -33,63 +32,7 @@ class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> children = [
-      profile,
-      Container(
-        height: 40,
-        margin: const EdgeInsets.only(top: 16),
-        child: ListView.separated(
-          padding: const EdgeInsets.only(left: 24, right: 24),
-          scrollDirection: Axis.horizontal,
-          itemBuilder: (c, i) {
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => setState(() => tab = tabs[i]),
-              child: SearchHomeTabCell(tabs[i].title, tab == tabs[i]),
-            );
-          },
-          separatorBuilder: (c, i) => const SizedBox(width: 32),
-          itemCount: tabs.length,
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24, top: 16),
-        child: Text(
-          tab.message,
-          style: MTextStyle.h5.copyWith(color: Colors.white),
-        ),
-      ),
-      SearchHomeActionBar(
-        tab: tab,
-        onBar: _onBar,
-        onRight: _onRight,
-      )
-    ];
-
-    return Stack(
-      alignment: Alignment.topCenter,
-      overflow: Overflow.visible,
-      children: <Widget>[
-        Positioned(
-          left: 0,
-          right: 0,
-          top: -36,
-          bottom: 0,
-          child: Container(
-            child: Image(
-              fit: BoxFit.cover,
-              color: MunchColors.black40,
-              colorBlendMode: BlendMode.srcOver,
-              image: AssetImage('assets/img/${tab.image}'),
-            ),
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: children,
-        ),
-      ],
-    );
+    return profile;
   }
 
   void _onBar() {
@@ -166,7 +109,7 @@ class SearchHomeProfile extends StatelessWidget {
           child: FutureBuilder(
             future: _title(),
             builder: (context, snapshot) {
-              final style = MTextStyle.h2.copyWith(color: Colors.white);
+              final style = MTextStyle.h2;
 
               if (snapshot.connectionState == ConnectionState.done) {
                 return Text(snapshot.data, style: style);
@@ -186,7 +129,7 @@ class SearchHomeProfile extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 4, left: 24, right: 24),
                   child: Text(
                     "(Not Samantha? Create an account here.)",
-                    style: MTextStyle.h6.copyWith(color: Colors.white),
+                    style: MTextStyle.h6,
                   ),
                 ),
               );
@@ -297,8 +240,8 @@ class SearchHomeActionBar extends StatelessWidget {
         height: 40,
         margin: const EdgeInsets.only(left: 24, right: 24, top: 20, bottom: 24),
         decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(3)),
+          color: MunchColors.whisper100,
+          borderRadius: BorderRadius.all(Radius.circular(4)),
         ),
         child: Row(children: children),
       ),

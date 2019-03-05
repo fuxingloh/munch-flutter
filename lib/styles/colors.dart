@@ -50,7 +50,7 @@ class MunchColors {
   static const Color athens = Color(0xFFF4F5F7);
 
   static const Color peach100 = Color(0xFFfaf0f0);
-  static const Color peach200 = Color(0xFFf0e0e0);
+  static const Color peach200 = Color(0xFFF8D8D8);
 
   static const Color saltpan100 = Color(0xFFF1F9F1);
   static const Color saltpan200 = Color(0xFFE0F0E0);

@@ -30,12 +30,15 @@ class SearchCardHomePopularPlace extends SearchCardWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 24, bottom: 24),
-          child: SearchCardPlaceCollection(places: _places),
+          child: SearchCardMiniPlaceList(places: _places),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 24, right: 24),
-          child: MunchButton.text("Show all popular places",
-              onPressed: onPressed, style: MunchButtonStyle.secondaryOutline),
+          child: MunchButton.text(
+            "Show all popular places",
+            onPressed: onPressed,
+            style: MunchButtonStyle.secondaryOutline,
+          ),
         ),
       ],
     );

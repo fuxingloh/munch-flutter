@@ -28,3 +28,47 @@ class SearchCardPlaceCollection extends StatelessWidget {
     );
   }
 }
+
+class SearchCardMiniPlaceList extends StatelessWidget {
+  final List<Place> places;
+
+  const SearchCardMiniPlaceList({Key key, this.places}) : super(key: key);
+
+  int get itemCount {
+    if (places.length > 1) {
+      return 2;
+    }
+    return places.length;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final width = (MediaQuery.of(context).size.width - 24 * 3) / 2;
+
+    return Stack(
+      children: <Widget>[
+        Opacity(
+          opacity: 0,
+          child: Container(
+            width: width,
+            child: MiniPlaceCard(place: places[0]),
+          ),
+        ),
+        Positioned.fill(
+          child: ListView.separated(
+            padding: const EdgeInsets.only(left: 24, right: 24),
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (_, i) {
+              return Container(
+                width: width,
+                child: MiniPlaceCard(place: places[i]),
+              );
+            },
+            separatorBuilder: (_, i) => SizedBox(width: 24),
+            itemCount: itemCount,
+          ),
+        ),
+      ],
+    );
+  }
+}

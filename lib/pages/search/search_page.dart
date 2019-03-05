@@ -51,10 +51,12 @@ class SearchPage extends StatefulWidget with TabWidget {
       if (viewRip > 1 || openApp > 1) {
         defaults.notify(UserDefaultsKey.notifyGiveFeedbackV1, showGiveFeedback);
 
-        final int countFeedback = await defaults.getCount(UserDefaultsKey.countGiveFeedback);
-        if (viewRip > 3 && countFeedback == 0) {
-          defaults.notify(UserDefaultsKey.notifyGiveFeedbackV2, showGiveFeedback);
-        }
+        Future.delayed(const Duration(milliseconds: 2000), () async {
+          final int countFeedback = await defaults.getCount(UserDefaultsKey.countGiveFeedback);
+          if (viewRip > 3 && countFeedback == 0) {
+            defaults.notify(UserDefaultsKey.notifyGiveFeedbackV2, showGiveFeedback);
+          }
+        });
       }
     });
   }
@@ -127,11 +129,11 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
   }
 
   void _search(SearchQuery searchQuery) {
-    if (searchQuery.feature == SearchFeature.Home) {
-      setState(() => hasHeader = false);
-    } else {
-      setState(() => hasHeader = true);
-    }
+//    if (searchQuery.feature == SearchFeature.Home) {
+//      setState(() => hasHeader = false);
+//    } else {
+//      setState(() => hasHeader = true);
+//    }
 
     _cardList.search(histories.last);
     MunchAnalytic.logSearchQuery(searchQuery: searchQuery);
@@ -161,6 +163,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
 
     return WillPopScope(
       child: Scaffold(
+        backgroundColor: Colors.white,
         resizeToAvoidBottomPadding: false,
         appBar: header,
         body: body,

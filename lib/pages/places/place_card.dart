@@ -169,7 +169,7 @@ class PlaceCardState extends State<PlaceCard> {
           children: [
             AspectRatio(
               aspectRatio: 1 / 0.6,
-              child: _PlaceCardImage(place: place),
+              child: PlaceCardImage(place: place),
             ),
             Container(
               alignment: Alignment.topRight,
@@ -214,10 +214,15 @@ class PlaceCardState extends State<PlaceCard> {
   }
 }
 
-class _PlaceCardImage extends StatelessWidget {
-  const _PlaceCardImage({Key key, this.place}) : super(key: key);
+class PlaceCardImage extends StatelessWidget {
+  const PlaceCardImage({
+    Key key,
+    this.place,
+    this.borderRadius = const BorderRadius.all(Radius.circular(4)),
+  }) : super(key: key);
 
   final Place place;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -225,8 +230,8 @@ class _PlaceCardImage extends StatelessWidget {
 
     if (sizes.isEmpty) {
       return Container(
-        decoration: const BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(4)),
+        decoration: BoxDecoration(
+          borderRadius: borderRadius,
           color: MunchColors.whisper100,
         ),
         padding: const EdgeInsets.all(8),
@@ -238,6 +243,57 @@ class _PlaceCardImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: const BorderRadius.all(Radius.circular(4)),
       child: ShimmerSizeImage(sizes: sizes, fit: BoxFit.cover),
+    );
+  }
+}
+
+class MiniPlaceCard extends StatelessWidget {
+  final Place place;
+
+  const MiniPlaceCard({Key key, this.place}) : super(key: key);
+
+  String get subtitle {
+    final location = place.location.neighbourhood ?? place.location.street ?? place.location.city;
+    final tag =
+        place.tags.firstWhere((t) => t.type == TagType.Cuisine, orElse: () => Tag.restaurant)?.name ?? "Restaurant";
+    return "$tag • $location";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Column column = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AspectRatio(
+          aspectRatio: 1 / 0.6,
+          child: PlaceCardImage(
+            place: place,
+            borderRadius: BorderRadius.all(Radius.circular(3)),
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 6),
+          child: Text(
+            subtitle,
+            maxLines: 1,
+            style: MTextStyle.h6,
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.only(top: 6),
+          child: Text(
+            place.name,
+            style: MTextStyle.h4,
+            maxLines: 1,
+          ),
+        ),
+      ],
+    );
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      child: column,
+      onTap: () => RIPPage.push(context, place),
     );
   }
 }
