@@ -26,7 +26,10 @@ PlaceData _$PlaceDataFromJson(Map<String, dynamic> json) {
           ?.toList(),
       json['user'] == null
           ? null
-          : PlaceDataUser.fromJson(json['user'] as Map<String, dynamic>));
+          : PlaceDataUser.fromJson(json['user'] as Map<String, dynamic>),
+      json['rating'] == null
+          ? null
+          : PlaceRating.fromJson(json['rating'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$PlaceDataToJson(PlaceData instance) => <String, dynamic>{
@@ -34,17 +37,67 @@ Map<String, dynamic> _$PlaceDataToJson(PlaceData instance) => <String, dynamic>{
       'awards': instance.awards,
       'articles': instance.articles,
       'images': instance.images,
-      'user': instance.user
+      'user': instance.user,
+      'rating': instance.rating
     };
 
 PlaceDataUser _$PlaceDataUserFromJson(Map<String, dynamic> json) {
-  return PlaceDataUser(json['savedPlace'] == null
-      ? null
-      : UserSavedPlace.fromJson(json['savedPlace'] as Map<String, dynamic>));
+  return PlaceDataUser(
+      json['savedPlace'] == null
+          ? null
+          : UserSavedPlace.fromJson(json['savedPlace'] as Map<String, dynamic>),
+      json['ratedPlace'] == null
+          ? null
+          : UserRatedPlace.fromJson(
+              json['ratedPlace'] as Map<String, dynamic>));
 }
 
 Map<String, dynamic> _$PlaceDataUserToJson(PlaceDataUser instance) =>
-    <String, dynamic>{'savedPlace': instance.savedPlace};
+    <String, dynamic>{
+      'savedPlace': instance.savedPlace,
+      'ratedPlace': instance.ratedPlace
+    };
+
+PlaceRating _$PlaceRatingFromJson(Map<String, dynamic> json) {
+  return PlaceRating(
+      json['placeId'] as String,
+      json['summary'] == null
+          ? null
+          : PlaceRatingSummary.fromJson(
+              json['summary'] as Map<String, dynamic>),
+      json['updatedMillis'] as int,
+      json['createdMillis'] as int);
+}
+
+Map<String, dynamic> _$PlaceRatingToJson(PlaceRating instance) =>
+    <String, dynamic>{
+      'placeId': instance.placeId,
+      'summary': instance.summary,
+      'updatedMillis': instance.updatedMillis,
+      'createdMillis': instance.createdMillis
+    };
+
+PlaceRatingSummary _$PlaceRatingSummaryFromJson(Map<String, dynamic> json) {
+  return PlaceRatingSummary(
+      (json['average'] as num)?.toDouble(),
+      json['total'] as int,
+      json['star1'] as int,
+      json['star2'] as int,
+      json['star3'] as int,
+      json['star4'] as int,
+      json['star5'] as int);
+}
+
+Map<String, dynamic> _$PlaceRatingSummaryToJson(PlaceRatingSummary instance) =>
+    <String, dynamic>{
+      'average': instance.average,
+      'total': instance.total,
+      'star1': instance.star1,
+      'star2': instance.star2,
+      'star3': instance.star3,
+      'star4': instance.star4,
+      'star5': instance.star5
+    };
 
 Article _$ArticleFromJson(Map<String, dynamic> json) {
   return Article(

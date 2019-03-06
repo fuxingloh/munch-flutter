@@ -11,6 +11,7 @@ import 'package:munch_app/pages/places/cards/rip_card_loading.dart';
 import 'package:munch_app/pages/places/cards/rip_card_location.dart';
 import 'package:munch_app/pages/places/cards/rip_card_menu.dart';
 import 'package:munch_app/pages/places/cards/rip_card_name_tag.dart';
+import 'package:munch_app/pages/places/cards/rip_card_rating.dart';
 import 'package:munch_app/pages/places/cards/rip_card_suggest.dart';
 import 'package:munch_app/pages/places/cards/rip_card_tastebud.dart';
 import 'package:munch_app/pages/places/rip_page.dart';
@@ -32,6 +33,7 @@ class RIPCardDelegator {
     if (RIPCardStatus.isAvailable(data)) widgets.add(RIPCardStatus(data));
     if (RIPCardPreference.isAvailable(data)) widgets.add(RIPCardPreference(data));
     widgets.add(RIPCardNameTag(data));
+    widgets.add(RIPCardRating(data));
 
     if (RIPCardHour.isAvailable(data)) widgets.add(RIPCardHour(data));
     if (RIPCardPrice.isAvailable(data)) widgets.add(RIPCardPrice(data));

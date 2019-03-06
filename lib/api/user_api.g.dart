@@ -124,12 +124,14 @@ const _$UserLocationInputEnumMap = <UserLocationInput, dynamic>{
 
 UserRatedPlace _$UserRatedPlaceFromJson(Map<String, dynamic> json) {
   return UserRatedPlace(
-      json['userId'] as String,
-      json['placeId'] as String,
-      _$enumDecodeNullable(_$UserRatedPlaceRatingEnumMap, json['rating']),
-      _$enumDecodeNullable(_$UserRatedPlaceStatusEnumMap, json['status']),
-      json['createdMillis'] as int,
-      json['updatedMillis'] as int);
+      userId: json['userId'] as String,
+      placeId: json['placeId'] as String,
+      rating:
+          _$enumDecodeNullable(_$UserRatedPlaceRatingEnumMap, json['rating']),
+      status:
+          _$enumDecodeNullable(_$UserRatedPlaceStatusEnumMap, json['status']),
+      createdMillis: json['createdMillis'] as int,
+      updatedMillis: json['updatedMillis'] as int);
 }
 
 Map<String, dynamic> _$UserRatedPlaceToJson(UserRatedPlace instance) =>

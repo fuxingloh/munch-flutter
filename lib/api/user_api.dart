@@ -160,7 +160,14 @@ enum UserLocationInput {
 
 @JsonSerializable()
 class UserRatedPlace {
-  UserRatedPlace(this.userId, this.placeId, this.rating, this.status, this.createdMillis, this.updatedMillis);
+  UserRatedPlace({
+    this.userId,
+    this.placeId,
+    this.rating,
+    this.status,
+    this.createdMillis,
+    this.updatedMillis,
+  });
 
   String userId;
   String placeId;
