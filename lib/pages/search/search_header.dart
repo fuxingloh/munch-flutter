@@ -121,14 +121,14 @@ class SearchTextField extends StatelessWidget {
     color: MunchColors.black75,
   );
 
-  SearchTextField(
-      {Key key,
-      this.icon = MunchIcons.search_header_search,
-      this.hint = 'Search "Chinese"',
-      this.autofocus = false,
-      this.onChanged,
-      this.controller})
-      : super(key: key);
+  SearchTextField({
+    Key key,
+    this.icon = MunchIcons.search_header_search,
+    this.hint = 'Search "Chinese"',
+    this.autofocus = false,
+    this.onChanged,
+    this.controller,
+  }) : super(key: key);
 
   final IconData icon;
   final String hint;
@@ -156,8 +156,7 @@ class SearchTextField extends StatelessWidget {
             maxLines: 1,
             decoration: InputDecoration(
               border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.only(left: 40, right: 16, top: 8, bottom: 8),
+              contentPadding: const EdgeInsets.only(left: 40, right: 16, top: 8, bottom: 8),
               hintText: hint,
               hintStyle: _style,
             ),

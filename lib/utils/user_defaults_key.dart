@@ -8,6 +8,7 @@ enum UserDefaultsKey {
   notifyGiveFeedbackV2,
   countOpenApp,
   countViewRip,
+  countViewContent,
   countGiveFeedback,
 }
 
@@ -30,6 +31,8 @@ class UserDefaults {
         return "count.OpenApp";
       case UserDefaultsKey.countViewRip:
         return "count.ViewRip";
+      case UserDefaultsKey.countViewContent:
+        return "count.ViewContent";
       case UserDefaultsKey.countGiveFeedback:
         return "count.GiveFeedback";
     }

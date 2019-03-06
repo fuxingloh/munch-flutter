@@ -4,49 +4,49 @@ description: Munch Mobile App
 version: 0.21.0+35
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   # Required
-  http: ^0.12.0
+  http: ^0.12.0+1
   intl: ^0.15.7
   json_annotation: ^2.0.0
 
   # Platform Plugins
-  geolocator: ^2.1.1
-  url_launcher: ^4.0.2
-  shared_preferences: ^0.4.3
+  geolocator: ^3.0.1
+  url_launcher: ^5.0.1
+  shared_preferences: ^0.5.1+1
   flutter_webview_plugin: ^0.3.0+2
-  share: ^0.5.3
-  flutter_local_notifications: ^0.4.3
+  share: ^0.6.0+1
+  flutter_local_notifications: ^0.5.2
 
   # Firebase & Authentication
-  google_sign_in: ^3.2.4
-  firebase_auth: ^0.6.6
-  firebase_analytics: ^1.1.0
-  flutter_facebook_login: ^1.2.0
+  google_sign_in: ^4.0.1+1
+  firebase_auth: ^0.8.1+4
+  firebase_analytics: ^2.0.2+1
+  flutter_facebook_login: ^2.0.0
 
   # Core Frameworks
-  rxdart: ^0.20.0
-  sqflite: ^0.13.0+1
-  flutter_cache_store: ^0.3.1-RC2
+  rxdart: ^0.21.0
+  sqflite: ^1.1.0
 
   # Core Helpers
-  cached_network_image: ^0.5.1
+  cached_network_image: ^0.6.2
   latlong: ^0.6.1
 
   # Widgets
-  flutter_spinkit: ^3.0.0
-  flutter_staggered_grid_view: ^0.2.4
-  shimmer: ^0.0.6
-  flutter_range_slider: ^1.0.1
-  google_maps_flutter: ^0.2.0
+  flutter_spinkit: "^3.1.0"
+  flutter_staggered_grid_view: ^0.2.7
+  shimmer: ^1.0.0
+  flutter_range_slider: ^1.1.0
+  google_maps_flutter: ^0.3.0+2
 
 dev_dependencies:
   build_runner: ^1.0.0
+  # flutter packages pub run build_runner build
   json_serializable: ^2.0.0
 
   flutter_test:

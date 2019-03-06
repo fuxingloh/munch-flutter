@@ -31,9 +31,10 @@ class CreditedImage {
 
 @JsonSerializable()
 class Image {
-  Image(this.imageId, this.sizes);
+  Image(this.imageId, this.profile, this.sizes);
 
   String imageId;
+  ImageProfile profile;
   List<ImageSize> sizes;
 
   @JsonKey(ignore: true)
@@ -52,6 +53,19 @@ class Image {
   factory Image.fromJson(Map<String, dynamic> json) => _$ImageFromJson(json);
 
   Map<String, dynamic> toJson() => _$ImageToJson(this);
+}
+
+@JsonSerializable()
+class ImageProfile {
+  String type;
+  String id;
+  String name;
+
+  ImageProfile(this.type, this.id, this.name);
+
+  factory ImageProfile.fromJson(Map<String, dynamic> json) => _$ImageProfileFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ImageProfileToJson(this);
 }
 
 @JsonSerializable()

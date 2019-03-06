@@ -30,7 +30,7 @@ class SearchCardBetweenHeader extends SearchCardWidget {
         title = card['title'],
         super(
           card,
-          margin: SearchCardInsets.only(left: 0, right: 0),
+          margin: const SearchCardInsets.only(left: 0, right: 0),
         );
 
   @override

@@ -10,7 +10,7 @@ import 'package:munch_app/styles/texts.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
 class SearchCardHomeNearby extends SearchCardWidget {
-  SearchCardHomeNearby(SearchCard card) : super(card, margin: SearchCardInsets.only(top: 0));
+  SearchCardHomeNearby(SearchCard card) : super(card, margin: const SearchCardInsets.only(top: 0));
 
   @override
   Widget buildCard(BuildContext context) {

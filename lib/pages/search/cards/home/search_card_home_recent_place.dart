@@ -10,7 +10,7 @@ class SearchCardHomeRecentPlace extends SearchCardWidget {
 
   SearchCardHomeRecentPlace(SearchCard card)
       : _places = Place.fromJsonList(card['places']),
-        super(card, margin: SearchCardInsets.only(left: 0, right: 0));
+        super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context) {

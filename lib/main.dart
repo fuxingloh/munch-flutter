@@ -18,7 +18,6 @@ DateTime pausedDateTime = DateTime.now();
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 final ThemeData theme = ThemeData(
-  brightness: Brightness.light,
   primaryColor: MunchColors.white,
   accentColor: MunchColors.secondary500,
   fontFamily: 'Roboto',
@@ -94,6 +93,7 @@ class MunchTabState extends State<MunchTabPage> with WidgetsBindingObserver, Rou
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
+      backgroundColor: MunchColors.white,
       bottomNavigationBar: MunchBottomBar(
         onTab: _onTab,
         currentIndex: _currentIndex,
@@ -238,8 +238,6 @@ class MunchBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      elevation: 16,
-      color: MunchColors.white,
       child: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: onTab,

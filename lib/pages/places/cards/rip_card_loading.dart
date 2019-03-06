@@ -4,7 +4,7 @@ import 'package:munch_app/pages/places/cards/rip_card.dart';
 class RIPCardLoadingBanner extends RIPCardWidget {
   const RIPCardLoadingBanner()
       : super(null,
-            margin: const RIPCardInsets.only(left: 0, right: 0, top: 0));
+            margin: const RIPCardInsets.only(left: 0.0, right: 0.0, top: 0.0));
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/rendering.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:munch_app/api/authentication.dart';
@@ -76,9 +77,12 @@ class RestfulResponse {
 
   dynamic get next => _body['next'] ?? {};
 
+  bool get hasNext => _body['next'] != null;
+
   dynamic operator [](String key) => _body[key];
 
   RestfulResponse._(http.Response response) {
+    debugPrint('Received RestfulReponse: ${response.reasonPhrase}');
     if (response.body != null) {
       _body = json.decode(response.body);
       _meta = RestfulMeta.fromJson(_body['meta']);

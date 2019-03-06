@@ -10,7 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class RIPCardSuggestEdit extends RIPCardWidget {
   RIPCardSuggestEdit(PlaceData data)
-      : super(data, margin: RIPCardInsets.only(left: 0, right: 0));
+      : super(data, margin: const RIPCardInsets.only(left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {

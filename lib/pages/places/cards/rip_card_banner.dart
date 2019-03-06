@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/components/bottom_sheet.dart';
-import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/pages/places/rip_page.dart';
@@ -46,7 +45,9 @@ class RIPCardBanner extends RIPCardWidget {
       ]);
     }
 
-    return Container();
+    return Container(
+      height: 24,
+    );
   }
 }
 
@@ -109,7 +110,8 @@ class ImageCredit extends StatelessWidget {
           onTap: () => onTap(context),
           child: Padding(
             padding: const EdgeInsets.only(left: 24, bottom: 16, right: 24),
-            child: Text("Image by:\n${image.name}", style: MTextStyle.smallBold.copyWith(color: MunchColors.white), maxLines: 2),
+            child: Text("Image by:\n${image.name}",
+                style: MTextStyle.smallBold.copyWith(color: MunchColors.white), maxLines: 2),
           ),
         ),
       ),
@@ -138,7 +140,6 @@ class ImageCredit extends StatelessWidget {
               icon: const Icon(Icons.person),
               child: Text("More from ${image.name}"),
             ),
-
             MunchBottomSheetTile(
               onPressed: () => Navigator.pop(context),
               icon: const Icon(Icons.close),

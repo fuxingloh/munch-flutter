@@ -9,7 +9,7 @@ import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:share/share.dart';
 import 'package:munch_app/pages/places/cards/rip_card_suggest.dart' as SuggestCard;
 
-class RIPHeader extends StatefulWidget {
+class RIPHeader extends StatelessWidget {
   RIPHeader({this.clear, this.placeData, this.color = MunchColors.white});
 
   final Color color;
@@ -17,23 +17,16 @@ class RIPHeader extends StatefulWidget {
   final PlaceData placeData;
 
   @override
-  RIPHeaderState createState() => RIPHeaderState();
-}
-
-class RIPHeaderState extends State<RIPHeader> {
-  @override
   Widget build(BuildContext context) {
     AppBar appBar = AppBar(
       title: Text(
-        widget.placeData?.place?.name ?? "",
+        placeData?.place?.name ?? "",
         textAlign: TextAlign.center,
-        style: MTextStyle.navHeader.copyWith(
-            color: widget.clear ? widget.color : MunchColors.black),
+        style: MTextStyle.navHeader.copyWith(color: clear ? color : MunchColors.black),
       ),
       backgroundColor: MunchColors.clear,
       elevation: 0,
-      iconTheme: IconThemeData(
-          color: widget.clear ? widget.color : MunchColors.black),
+      iconTheme: IconThemeData(color: clear ? color : MunchColors.black),
       actions: <Widget>[
         IconButton(
           icon: Icon(MunchIcons.navigation_more),
@@ -44,8 +37,8 @@ class RIPHeaderState extends State<RIPHeader> {
 
     return Container(
       decoration: BoxDecoration(
-        color: widget.clear ? MunchColors.clear : MunchColors.white,
-        boxShadow: widget.clear ? null : elevation1,
+        color: clear ? MunchColors.clear : MunchColors.white,
+        boxShadow: clear ? null : elevation1,
       ),
       child: SafeArea(
         child: SizedBox.fromSize(
@@ -65,17 +58,17 @@ class RIPHeaderState extends State<RIPHeader> {
         return MunchBottomSheet(
           children: [
             MunchBottomSheetTile(
-              onPressed: onSuggestEdit,
+              onPressed: () => onSuggestEdit(context),
               icon: Icon(Icons.edit),
               child: Text("Suggest Edits"),
             ),
             MunchBottomSheetTile(
-              onPressed: onShare,
+              onPressed: () => onShare(context),
               icon: Icon(Icons.share),
               child: Text("Share"),
             ),
             MunchBottomSheetTile(
-              onPressed: onCancel,
+              onPressed: () => onCancel(context),
               icon: Icon(Icons.close),
               child: Text("Cancel"),
             ),
@@ -85,18 +78,18 @@ class RIPHeaderState extends State<RIPHeader> {
     );
   }
 
-  void onCancel() {
+  void onCancel(BuildContext context) {
     Navigator.of(context).pop();
   }
 
-  void onShare() {
-    String placeId = widget.placeData?.place?.placeId ?? '';
+  void onShare(BuildContext context) {
+    String placeId = placeData?.place?.placeId ?? '';
     Share.share("https://www.munch.app/places/$placeId");
     MunchAnalytic.logEvent("rip_share");
     Navigator.of(context).pop();
   }
 
-  void onSuggestEdit() {
-    SuggestCard.onSuggestEdit(context, widget.placeData.place);
+  void onSuggestEdit(BuildContext context) {
+    SuggestCard.onSuggestEdit(context, placeData.place);
   }
 }

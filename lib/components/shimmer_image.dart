@@ -44,24 +44,27 @@ class ShimmerSizeImage extends StatelessWidget {
 
     var url = _findUrl(sizes, width: pixelWidth, height: pixelHeight);
     if (url == null) return Container(color: MunchColors.whisper100);
-    return _ShimmerImage(url, width: width, height: minHeight, fit: fit);
+    return _ShimmerImage(url, fit: fit);
   }
 }
 
 class _ShimmerImage extends CachedNetworkImage {
   _ShimmerImage(
     String imageUrl, {
-    @required double width,
-    @required double height,
-    BoxFit fit = BoxFit.cover,
+    @required BoxFit fit,
   }) : super(
           imageUrl: imageUrl,
-          errorWidget: const DecoratedBox(
-            decoration: BoxDecoration(color: MunchColors.whisper100),
-          ),
+          errorWidget: (c, _, e) {
+            return const DecoratedBox(
+              decoration: BoxDecoration(color: MunchColors.whisper100),
+            );
+          },
           fadeOutDuration: const Duration(milliseconds: 0),
-          fadeInDuration: const Duration(milliseconds: 200),
-          placeholder: const Shimmer(),
+          fadeInDuration: const Duration(milliseconds: 0),
+          placeholder: (c, _) => const Shimmer(),
+          // TODO(fuxing) remove once https://github.com/renefloor/flutter_cached_network_image/issues/134 is fixed
+          width: double.infinity,
+          height: double.infinity,
           fit: fit,
         );
 }

@@ -91,8 +91,6 @@ class SearchManager {
 
       MunchAnalytic.logSearchQueryAppend(searchQuery: searchQuery, cards: _cards, page: _page);
     }, onError: (error) {
-      debugPrint(error);
-
       if (error is DeprecatedException) {
         _append([SearchCard.cardId("SearchCardUnsupported")]);
       } else if (error is StructuredException) {

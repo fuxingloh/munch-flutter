@@ -4,7 +4,7 @@ import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/texts.dart';
 
 class SearchCardHeader extends SearchCardWidget {
-  static const insets = SearchCardInsets.only(bottom: 0);
+  static const insets = SearchCardInsets.only(bottom: 0.0);
 
   SearchCardHeader(SearchCard card) : super(card, margin: insets);
 

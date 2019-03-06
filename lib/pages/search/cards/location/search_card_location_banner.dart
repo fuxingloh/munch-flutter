@@ -3,7 +3,7 @@ import 'package:munch_app/pages/filter/filter_area_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 
 class SearchCardLocationBanner extends SearchCardWidget {
-  SearchCardLocationBanner(SearchCard card) : super(card, margin: SearchCardInsets.only(left: 0, right: 0, top: 0));
+  SearchCardLocationBanner(SearchCard card) : super(card, margin: const SearchCardInsets.only(left: 0, right: 0, top: 0));
 
   @override
   Widget buildCard(BuildContext context) {

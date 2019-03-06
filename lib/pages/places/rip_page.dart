@@ -7,7 +7,6 @@ import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/pages/places/cards/rip_card_gallery.dart';
-import 'package:munch_app/pages/places/cards/rip_card_loading.dart';
 import 'package:munch_app/pages/places/rip_footer.dart';
 import 'package:munch_app/pages/places/rip_header.dart';
 import 'package:munch_app/pages/places/rip_image_loader.dart';
@@ -60,6 +59,13 @@ class RIPPageState extends State<RIPPage> {
 
     MunchAnalytic.logEvent("rip_view");
     UserDefaults.instance.count(UserDefaultsKey.countViewRip);
+  }
+
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   _start(PlaceData placeData) {
@@ -163,10 +169,17 @@ class RIPPageState extends State<RIPPage> {
           controller: controller,
           slivers: slivers,
         ),
-        RIPHeader(placeData: data, clear: _clear),
+        header,
       ]),
       bottomNavigationBar: RIPFooter(placeData: data),
     );
+  }
+
+  Widget get header {
+    if (_clear && (data?.images?.isEmpty ?? true)) {
+      return Container();
+    }
+    return RIPHeader(placeData: data, clear: _clear);
   }
 
   void onImage(int i) {

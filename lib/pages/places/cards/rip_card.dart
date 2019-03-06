@@ -56,10 +56,10 @@ class RIPCardDelegator {
 
 class RIPCardInsets extends EdgeInsets {
   const RIPCardInsets.only({
-    double left = 24,
-    double right = 24,
-    double top = 12,
-    double bottom = 12,
+    double left = 24.0,
+    double right = 24.0,
+    double top = 12.0,
+    double bottom = 12.0,
   }) : super.fromLTRB(left, top, right, bottom);
 }
 

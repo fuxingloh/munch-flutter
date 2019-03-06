@@ -46,6 +46,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   GoogleMapController mapController;
 
   FilterResult _result;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   void initState() {
@@ -68,7 +69,6 @@ class FilterBetweenState extends State<FilterBetweenPage> {
     }).then((result) {
       setState(() {
         this._result = result;
-        mapController.clearMarkers();
         refreshMap();
       });
     }, onError: (error) {
@@ -77,7 +77,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   }
 
   void refreshMap() {
-    mapController.clearMarkers();
+    markers.clear();
 
     final points = searchQuery.filter.location.points;
     final List<String> latLngList = points.map((p) => p.latLng).toList(growable: false);
@@ -85,10 +85,15 @@ class FilterBetweenState extends State<FilterBetweenPage> {
     points.forEach((point) {
       var ll = point.latLng.split(",");
       var latLng = LatLng(double.parse(ll[0]), double.parse(ll[1]));
-      mapController.addMarker(MarkerOptions(
+
+      final markerId = MarkerId("between_point_${markers.length}");
+      final Marker marker = Marker(
+        markerId: markerId,
         position: latLng,
-        infoWindowText: InfoWindowText(point.name, null),
-      ));
+        infoWindow: InfoWindow(title: point.name),
+      );
+
+      markers[markerId] = marker;
     });
 
     var box = getBoundingBox(latLngList, 0);
@@ -104,6 +109,7 @@ class FilterBetweenState extends State<FilterBetweenPage> {
   @override
   Widget build(BuildContext context) {
     final googleMap = GoogleMap(
+      markers: Set<Marker>.of(markers.values),
       initialCameraPosition: const CameraPosition(
         target: LatLng(1.305270, 103.8),
         zoom: 11.0,
@@ -240,11 +246,12 @@ class _FilterBetweenBottom extends StatelessWidget {
     ];
 
     if (points.isNotEmpty) {
-      for(var i = 0; i < points.length; i++){
-
-        children.add(_EatBetweenPoint(point: points[i], onRemove: () {
-          onRemove(i);
-        }));
+      for (var i = 0; i < points.length; i++) {
+        children.add(_EatBetweenPoint(
+            point: points[i],
+            onRemove: () {
+              onRemove(i);
+            }));
       }
     } else {
       children.add(SizedBox(height: 8));
@@ -367,7 +374,10 @@ class _EatBetweenPoint extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: Text(point.name, maxLines: 1,),
+                  child: Text(
+                    point.name,
+                    maxLines: 1,
+                  ),
                 ),
                 const SeparatorLine()
               ],

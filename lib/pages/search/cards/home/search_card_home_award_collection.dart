@@ -10,7 +10,7 @@ import 'package:munch_app/styles/texts.dart';
 class SearchCardHomeAwardCollection extends SearchCardWidget {
   SearchCardHomeAwardCollection(SearchCard card)
       : _collections = UserPlaceCollection.fromJsonList(card['collections']),
-        super(card, margin: SearchCardInsets.only(left: 0, right: 0));
+        super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
 
   final List<UserPlaceCollection> _collections;
 

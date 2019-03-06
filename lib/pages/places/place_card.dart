@@ -175,7 +175,6 @@ class PlaceCardState extends State<PlaceCard> {
               alignment: Alignment.topRight,
               child: PlaceHeartButton(onPressed: widget.onHeart),
             ),
-            Positioned.fill(child: PlaceCardStatusOverlay(place: place)),
           ],
         ),
         Container(
@@ -209,7 +208,12 @@ class PlaceCardState extends State<PlaceCard> {
 
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
-      child: column,
+      child: Stack(
+        children: <Widget>[
+          column,
+          Positioned.fill(child: PlaceCardStatusOverlay(place: place)),
+        ],
+      ),
       onTap: onPressed,
     );
   }
@@ -230,7 +234,14 @@ class PlaceCardStatusOverlay extends StatelessWidget {
     final title = type == null ? 'Permanently Closed' : type['title'];
 
     List<Widget> children = [
-      Text(title, style: MTextStyle.h2.copyWith(color: MunchColors.white)),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text(title, style: MTextStyle.h2.copyWith(color: MunchColors.white)),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(top: 0, left: 8, right: 8, bottom: 8),
+        child: Text("Place is not available anymore.",style: MTextStyle.h5.copyWith(color: MunchColors.white)),
+      )
     ];
 
     return Container(

@@ -139,10 +139,10 @@ class SearchCardDelegator {
 
 class SearchCardInsets extends EdgeInsets {
   const SearchCardInsets.only({
-    double left = 24,
-    double right = 24,
-    double top = 18,
-    double bottom = 18,
+    double left = 24.0,
+    double right = 24.0,
+    double top = 18.0,
+    double bottom = 18.0,
   }) : super.fromLTRB(left, top, right, bottom);
 }
 

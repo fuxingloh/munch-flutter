@@ -101,8 +101,10 @@ class _RIPImageContent extends StatelessWidget {
   Widget _buildTitle() {
     if (image.article != null) {
       return Text(image.title, style: MTextStyle.h4, maxLines: 1);
-    } else {
+    } else if (image.instagram != null){
       return Text(image.caption, style: MTextStyle.h4, maxLines: 1);
+    } else {
+      return Container();
     }
   }
 
@@ -134,6 +136,9 @@ class _RIPImageContent extends StatelessWidget {
   }
 
   Widget _buildCaption() {
+    if (image.caption == null) {
+      return Container();
+    }
     return Text(image.caption, style: MTextStyle.regular, maxLines: 3);
   }
 

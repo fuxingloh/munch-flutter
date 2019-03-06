@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:munch_app/api/file_api.dart';
 import 'package:munch_app/api/munch_data.dart';
+import 'package:uuid/uuid.dart';
 
 part 'content_api.g.dart';
 
@@ -87,6 +88,89 @@ class CreatorContent {
 
   static List<CreatorContent> fromJsonList(List<dynamic> list) {
     return list.map((map) => CreatorContent.fromJson(map)).toList(growable: false);
+  }
+
+  @JsonKey(ignore: true)
+  String get slug {
+    String slug = (title ?? "").toLowerCase();
+    slug = slug.replaceAll(RegExp(r' '), '-');
+    slug = slug.replaceAll(RegExp(r'[^0-9a-z-]'), '');
+    return slug;
+  }
+
+  static const Map<String, String> _b2d = {
+    'A': '.',
+    'B': '0',
+    'C': '1',
+    'D': '2',
+    'E': '3',
+    'F': '4',
+    'G': '5',
+    'H': '6',
+    'I': '7',
+    'J': '8',
+    'K': '9',
+    'L': 'A',
+    'M': 'B',
+    'N': 'C',
+    'O': 'D',
+    'P': 'E',
+    'Q': 'F',
+    'R': 'G',
+    'S': 'H',
+    'T': 'I',
+    'U': 'J',
+    'V': 'K',
+    'W': 'L',
+    'X': 'M',
+    'Y': 'N',
+    'Z': 'O',
+    'a': 'P',
+    'b': 'Q',
+    'c': 'R',
+    'd': 'S',
+    'e': 'T',
+    'f': 'U',
+    'g': 'V',
+    'h': 'W',
+    'i': 'X',
+    'j': 'Y',
+    'k': 'Z',
+    'l': '_',
+    'm': 'a',
+    'n': 'b',
+    'o': 'c',
+    'p': 'd',
+    'q': 'e',
+    'r': 'f',
+    's': 'g',
+    't': 'h',
+    'u': 'i',
+    'v': 'j',
+    'w': 'k',
+    'x': 'l',
+    'y': 'm',
+    'z': 'n',
+    '0': 'o',
+    '1': 'p',
+    '2': 'q',
+    '3': 'r',
+    '4': 's',
+    '5': 't',
+    '6': 'u',
+    '7': 'v',
+    '8': 'w',
+    '9': 'x',
+    '+': 'y',
+    '/': 'z',
+  };
+
+  static final _uuid = Uuid();
+
+  @JsonKey(ignore: true)
+  String get cid {
+    final b64 = base64.encode(_uuid.parse(contentId));
+    return b64.split("").map((b64) => _b2d[b64]).where((t) => t != null).join("");
   }
 }
 

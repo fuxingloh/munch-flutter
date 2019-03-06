@@ -35,6 +35,7 @@ class RIPMapPage extends StatefulWidget {
 
 class RIPMapPageState extends State<RIPMapPage> {
   GoogleMapController mapController;
+  Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,7 @@ class RIPMapPageState extends State<RIPMapPage> {
           ),
           compassEnabled: false,
           myLocationEnabled: false,
+          markers: Set<Marker>.of(markers.values),
         ),
         RIPHeader(
           placeData: widget.placeData,
@@ -60,15 +62,19 @@ class RIPMapPageState extends State<RIPMapPage> {
   }
 
   void _onMapCreated(GoogleMapController controller) {
+    final markerId = MarkerId("place");
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: widget.latLng,
+      infoWindow: InfoWindow(
+        title: widget.placeData.place.name,
+        snippet: widget.placeData.place.location.neighbourhood,
+      ),
+    );
+
     setState(() {
       mapController = controller;
-      mapController.addMarker(MarkerOptions(
-        position: widget.latLng,
-        infoWindowText: InfoWindowText(
-          widget.placeData.place.name,
-          widget.placeData.place.location.neighbourhood,
-        ),
-      ));
+      markers[markerId] = marker;
     });
   }
 }

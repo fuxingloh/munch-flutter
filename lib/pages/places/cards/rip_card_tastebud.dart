@@ -3,7 +3,7 @@ import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/styles/separators.dart';
 
 class RIPCardPreference extends RIPCardWidget {
-  RIPCardPreference(PlaceData data) : super(data, margin: RIPCardInsets.only(left: 0, right: 0));
+  RIPCardPreference(PlaceData data) : super(data, margin: const RIPCardInsets.only(left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {

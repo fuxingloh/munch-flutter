@@ -76,8 +76,6 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
 
   SearchCardList _cardList = SearchCardList();
 
-  bool hasHeader = true;
-
   @override
   void initState() {
     super.initState();
@@ -129,12 +127,7 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
   }
 
   void _search(SearchQuery searchQuery) {
-//    if (searchQuery.feature == SearchFeature.Home) {
-//      setState(() => hasHeader = false);
-//    } else {
-//      setState(() => hasHeader = true);
-//    }
-
+    setState(() => {});
     _cardList.search(histories.last);
     MunchAnalytic.logSearchQuery(searchQuery: searchQuery);
   }
@@ -158,14 +151,13 @@ class SearchPageState extends State<SearchPage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    final header = hasHeader ? SearchAppBar(searchQuery) : null;
     final body = SafeArea(child: _cardList);
 
     return WillPopScope(
       child: Scaffold(
         backgroundColor: Colors.white,
         resizeToAvoidBottomPadding: false,
-        appBar: header,
+        appBar: SearchAppBar(searchQuery),
         body: body,
       ),
       onWillPop: () async {

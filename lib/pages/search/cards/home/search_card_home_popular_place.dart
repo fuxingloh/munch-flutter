@@ -13,7 +13,7 @@ class SearchCardHomePopularPlace extends SearchCardWidget {
   SearchCardHomePopularPlace(SearchCard card)
       : _collection = UserPlaceCollection.fromJson(card['collection']),
         _places = Place.fromJsonList(card['places']),
-        super(card, margin: SearchCardInsets.only(bottom: 36, left: 0, right: 0));
+        super(card, margin: const SearchCardInsets.only(bottom: 36, left: 0, right: 0));
 
   @override
   Widget buildCard(BuildContext context) {

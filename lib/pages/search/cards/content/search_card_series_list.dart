@@ -1,5 +1,6 @@
 import 'package:munch_app/api/content_api.dart';
 import 'package:munch_app/components/shimmer_image.dart';
+import 'package:munch_app/pages/contents/content_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/munch_horizontal_snap.dart';
 
@@ -12,7 +13,7 @@ class SearchCardSeriesList extends SearchCardWidget {
       : series = CreatorSeries.fromJson(card['series']),
         contents = CreatorContent.fromJsonList(card['contents']),
         options = card['options'],
-        super(card, margin: SearchCardInsets.only(left: 0, right: 0));
+        super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
 
   double getWidth(BuildContext context) {
     if (options != null && options['expand'] == 'height') {
@@ -46,7 +47,7 @@ class SearchCardSeriesList extends SearchCardWidget {
           },
           itemBuilder: (context, i) {
             return GestureDetector(
-              onTap: () => onContent(contents[i]),
+              onTap: () => onContent(context, contents[i]),
               child: SearchSeriesContentCard(content: contents[i], options: options),
             );
           },
@@ -58,8 +59,8 @@ class SearchCardSeriesList extends SearchCardWidget {
     );
   }
 
-  void onContent(CreatorContent content) {
-    // TODO
+  void onContent(BuildContext context, CreatorContent content) {
+     ContentPage.push(context, content: content);
   }
 }
 
