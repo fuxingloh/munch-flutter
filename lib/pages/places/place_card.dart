@@ -10,127 +10,6 @@ import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';
 import 'package:munch_app/utils/munch_location.dart';
 
-MunchTagView _buildTag(Place place) {
-  const MunchTagStyle priceTagStyle = MunchTagStyle(
-    backgroundColor: MunchColors.peach100,
-    textStyle: TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w700,
-      color: MunchColors.black85,
-    ),
-  );
-  const MunchTagStyle tagStyle = MunchTagStyle();
-  const MunchTagData defaultEmpty = MunchTagData('Restaurant', style: tagStyle);
-
-  List<MunchTagData> list = [];
-
-  if (place.price?.perPax != null) {
-    list.add(MunchTagData("\$${place.price?.perPax}", style: priceTagStyle));
-  }
-
-  place.tags.forEach((tag) {
-    if (tag.type == TagType.Timing) return;
-    return list.add(MunchTagData(tag.name, style: tagStyle));
-  });
-
-  if (list.isEmpty) {
-    list.add(defaultEmpty);
-  }
-  return MunchTagView(tags: list);
-}
-
-RichText _buildLocation(Place place) {
-  const style = const TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w400,
-    color: MunchColors.black75,
-  );
-
-  const period = TextSpan(
-    text: "  •  ",
-    style: TextStyle(color: MunchColors.black, fontWeight: FontWeight.w700),
-  );
-
-  const closing = TextSpan(
-    text: "Closing Soon",
-    style: TextStyle(color: MunchColors.close, fontWeight: FontWeight.w600),
-  );
-
-  const closed = TextSpan(
-    text: "Closed Now",
-    style: TextStyle(color: MunchColors.close, fontWeight: FontWeight.w600),
-  );
-
-  const opening = TextSpan(
-    text: "Opening Soon",
-    style: TextStyle(color: MunchColors.open, fontWeight: FontWeight.w600),
-  );
-
-  const open = TextSpan(
-    text: "Open Now",
-    style: TextStyle(color: MunchColors.open, fontWeight: FontWeight.w600),
-  );
-
-  List<TextSpan> children = [];
-
-  var distance = MunchLocation.instance.distanceAsMetric(place.location.latLng);
-  if (distance != null) {
-    children.add(TextSpan(text: '$distance - '));
-  }
-
-  children.add(TextSpan(text: place.location.neighbourhood));
-
-  switch (HourGrouped(hours: place.hours).isOpen()) {
-    case HourOpen.open:
-      children.addAll([period, open]);
-      break;
-
-    case HourOpen.opening:
-      children.addAll([period, opening]);
-      break;
-
-    case HourOpen.closed:
-      children.addAll([period, closed]);
-      break;
-
-    case HourOpen.closing:
-      children.addAll([period, closing]);
-      break;
-
-    default:
-      break;
-  }
-
-  return RichText(
-    maxLines: 1,
-    text: TextSpan(
-      style: style,
-      children: children,
-    ),
-  );
-}
-
-class PlaceHeartButton extends StatelessWidget {
-  const PlaceHeartButton({Key key, @required this.onPressed}) : super(key: key);
-
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    if (onPressed == null) {
-      return SizedBox();
-    }
-
-    return IconButton(
-      onPressed: onPressed,
-      icon: const Icon(MunchIcons.rip_heart_filled, color: MunchColors.white),
-      iconSize: 24,
-      color: MunchColors.white,
-      padding: const EdgeInsets.all(8),
-    );
-  }
-}
-
 class PlaceCard extends StatefulWidget {
   const PlaceCard({
     Key key,
@@ -173,7 +52,7 @@ class PlaceCardState extends State<PlaceCard> {
             ),
             Container(
               alignment: Alignment.topRight,
-              child: PlaceHeartButton(onPressed: widget.onHeart),
+              child: PlaceCardHeartButton(onPressed: widget.onHeart),
             ),
           ],
         ),
@@ -195,13 +74,13 @@ class PlaceCardState extends State<PlaceCard> {
           margin: const EdgeInsets.only(top: 6),
           alignment: Alignment.centerLeft,
           height: 27,
-          child: _buildTag(place),
+          child: PlaceCardTagList(place: place),
         ),
         Container(
           margin: const EdgeInsets.only(top: 8),
           alignment: Alignment.centerLeft,
           height: 19,
-          child: _buildLocation(place),
+          child: PlaceCardLocation(place: place),
         ),
       ],
     );
@@ -240,7 +119,7 @@ class PlaceCardStatusOverlay extends StatelessWidget {
       ),
       Padding(
         padding: const EdgeInsets.only(top: 0, left: 8, right: 8, bottom: 8),
-        child: Text("Place is not available anymore.",style: MTextStyle.h5.copyWith(color: MunchColors.white)),
+        child: Text("Place is not available anymore.", style: MTextStyle.h5.copyWith(color: MunchColors.white)),
       )
     ];
 
@@ -338,6 +217,141 @@ class MiniPlaceCard extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: column,
       onTap: () => RIPPage.push(context, place),
+    );
+  }
+}
+
+class PlaceCardTagList extends StatelessWidget {
+  final Place place;
+
+  const PlaceCardTagList({Key key, this.place}) : super(key: key);
+
+  static const MunchTagStyle priceTagStyle = MunchTagStyle(
+    backgroundColor: MunchColors.peach100,
+    textStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w700,
+      color: MunchColors.black85,
+    ),
+  );
+  static const MunchTagStyle tagStyle = MunchTagStyle();
+  static const MunchTagData defaultEmpty = MunchTagData('Restaurant', style: tagStyle);
+
+  @override
+  Widget build(BuildContext context) {
+    List<MunchTagData> list = [];
+
+    if (place.price?.perPax != null) {
+      list.add(MunchTagData("\$${place.price?.perPax}", style: priceTagStyle));
+    }
+
+    place.tags.forEach((tag) {
+      if (tag.type == TagType.Timing) return;
+      return list.add(MunchTagData(tag.name, style: tagStyle));
+    });
+
+    if (list.isEmpty) {
+      list.add(defaultEmpty);
+    }
+    return MunchTagView(tags: list);
+  }
+}
+
+class PlaceCardLocation extends StatelessWidget {
+  final Place place;
+
+  const PlaceCardLocation({Key key, this.place}) : super(key: key);
+
+  static const style = const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    color: MunchColors.black75,
+  );
+
+  static const period = TextSpan(
+    text: "  •  ",
+    style: TextStyle(color: MunchColors.black, fontWeight: FontWeight.w700),
+  );
+
+  static const closing = TextSpan(
+    text: "Closing Soon",
+    style: TextStyle(color: MunchColors.close, fontWeight: FontWeight.w600),
+  );
+
+  static const closed = TextSpan(
+    text: "Closed Now",
+    style: TextStyle(color: MunchColors.close, fontWeight: FontWeight.w600),
+  );
+
+  static const opening = TextSpan(
+    text: "Opening Soon",
+    style: TextStyle(color: MunchColors.open, fontWeight: FontWeight.w600),
+  );
+
+  static const open = TextSpan(
+    text: "Open Now",
+    style: TextStyle(color: MunchColors.open, fontWeight: FontWeight.w600),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    List<TextSpan> children = [];
+
+    final distance = MunchLocation.instance.distanceAsMetric(place.location.latLng);
+    if (distance != null) {
+      children.add(TextSpan(text: '$distance - '));
+    }
+
+    children.add(TextSpan(text: place.location.neighbourhood));
+
+    switch (HourGrouped(hours: place.hours).isOpen()) {
+      case HourOpen.open:
+        children.addAll([period, open]);
+        break;
+
+      case HourOpen.opening:
+        children.addAll([period, opening]);
+        break;
+
+      case HourOpen.closed:
+        children.addAll([period, closed]);
+        break;
+
+      case HourOpen.closing:
+        children.addAll([period, closing]);
+        break;
+
+      default:
+        break;
+    }
+
+    return RichText(
+      maxLines: 1,
+      text: TextSpan(
+        style: style,
+        children: children,
+      ),
+    );
+  }
+}
+
+class PlaceCardHeartButton extends StatelessWidget {
+  const PlaceCardHeartButton({Key key, @required this.onPressed}) : super(key: key);
+
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    if (onPressed == null) {
+      return SizedBox();
+    }
+
+    return IconButton(
+      onPressed: onPressed,
+      icon: const Icon(MunchIcons.rip_heart_filled, color: MunchColors.white),
+      iconSize: 24,
+      color: MunchColors.white,
+      padding: const EdgeInsets.all(8),
     );
   }
 }
