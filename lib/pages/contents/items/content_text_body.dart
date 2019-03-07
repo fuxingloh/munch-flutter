@@ -37,8 +37,8 @@ class ContentTextBody extends ContentItemWidget {
         return MTextStyle.h2;
       default:
         return TextStyle(
-          fontSize: 19,
-          height: 1.5,
+          fontSize: 16,
+          height: 1.4,
           color: MunchColors.black80,
         );
     }
