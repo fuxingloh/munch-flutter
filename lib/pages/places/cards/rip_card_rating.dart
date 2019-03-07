@@ -10,9 +10,9 @@ import 'package:munch_app/styles/separators.dart';
 class RIPCardRating extends RIPCardWidget {
   RIPCardRating(PlaceData data)
       : super(
-    data,
-    margin: const RIPCardInsets.only(left: 0, right: 0),
-  );
+          data,
+          margin: const RIPCardInsets.only(left: 0, right: 0),
+        );
 
   @override
   Widget buildCard(BuildContext context, PlaceData data) {
@@ -173,7 +173,7 @@ class _UserRatingStarsState extends State<UserRatingStars> {
       final placeId = widget.data.place.placeId;
       await MunchApi.instance.put('/users/rated/places/$placeId', body: ratedPlace);
     }).catchError(
-          (error) => MunchDialog.showError(context, error),
+      (error) => MunchDialog.showError(context, error),
     );
   }
 }
@@ -244,6 +244,7 @@ class RatingStar extends StatelessWidget {
     return Icon(
       filled ? MunchIcons.rip_rating_filled : MunchIcons.rip_rating,
       size: 24,
+      color: MunchColors.secondary500,
     );
   }
 }
