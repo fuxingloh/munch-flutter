@@ -45,15 +45,14 @@ class SearchPage extends StatefulWidget with TabWidget {
         );
       }
 
-      final int viewRip = await defaults.getCount(UserDefaultsKey.countViewRip);
       final int openApp = await defaults.getCount(UserDefaultsKey.countOpenApp);
 
-      if (viewRip > 1 || openApp > 1) {
+      if (openApp > 2) {
         defaults.notify(UserDefaultsKey.notifyGiveFeedbackV1, showGiveFeedback);
 
         Future.delayed(const Duration(milliseconds: 2000), () async {
           final int countFeedback = await defaults.getCount(UserDefaultsKey.countGiveFeedback);
-          if (viewRip > 3 && countFeedback == 0) {
+          if (openApp > 4 && countFeedback == 0) {
             defaults.notify(UserDefaultsKey.notifyGiveFeedbackV2, showGiveFeedback);
           }
         });

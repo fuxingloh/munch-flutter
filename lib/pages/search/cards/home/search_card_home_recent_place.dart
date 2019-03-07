@@ -1,6 +1,5 @@
 import 'package:munch_app/api/munch_data.dart';
 import 'package:munch_app/pages/places/place_card.dart';
-import 'package:munch_app/pages/search/cards/search_card_place_collection.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/styles/munch_horizontal_snap.dart';
 import 'package:munch_app/styles/texts.dart';
@@ -15,7 +14,6 @@ class SearchCardHomeRecentPlace extends SearchCardWidget {
   @override
   Widget buildCard(BuildContext context) {
     final width = (MediaQuery.of(context).size.width - 48);
-
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
