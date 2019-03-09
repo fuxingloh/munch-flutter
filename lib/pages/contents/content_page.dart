@@ -54,7 +54,7 @@ class ContentPageState extends State<ContentPage> {
 
     controller.addListener(_scrollListener);
     MunchAnalytic.logEvent("content_view");
-    UserDefaults.instance.count(UserDefaultsKey.countViewRip);
+    UserDefaults.instance.count(UserDefaultsKey.countViewContent);
 
     _loadAll();
   }

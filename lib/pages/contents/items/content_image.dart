@@ -5,7 +5,7 @@ import 'package:munch_app/pages/contents/items/content_item.dart';
 
 class ContentImage extends ContentItemWidget {
   ContentImage(CreatorContentItem item, ContentPageState state)
-      : super(item, state, margin: const ContentItemInsets.only(top: 0));
+      : super(item, state);
 
   api.Image get image {
     final image = this.item.body['image'];

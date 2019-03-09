@@ -6,6 +6,7 @@ import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/places/cards/rip_card.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/separators.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class RIPCardRating extends RIPCardWidget {
   RIPCardRating(PlaceData data)
@@ -162,13 +163,15 @@ class _UserRatingStarsState extends State<UserRatingStars> {
       });
 
       Scaffold.of(context).showSnackBar(
-        SnackBar(content: Text("You rated '${widget.data.place.name}'. $count Stars.")),
+        SnackBar(content: Text("You rated '${widget.data.place.name}' $count Stars.")),
       );
 
       UserRatedPlace ratedPlace = UserRatedPlace(
         rating: countToEnum(count),
         status: UserRatedPlaceStatus.published,
       );
+
+      MunchAnalytic.logEvent("rip_click_rating");
 
       final placeId = widget.data.place.placeId;
       await MunchApi.instance.put('/users/rated/places/$placeId', body: ratedPlace);

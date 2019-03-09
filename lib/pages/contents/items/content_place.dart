@@ -5,7 +5,7 @@ import 'package:munch_app/pages/places/place_card.dart';
 
 class ContentPlace extends ContentItemWidget {
   ContentPlace(CreatorContentItem item, ContentPageState state)
-      : super(item, state, margin: const ContentItemInsets.only(top: 24));
+      : super(item, state);
 
   Place get place => state.places[placeId];
 
@@ -21,6 +21,7 @@ class ContentPlace extends ContentItemWidget {
 
   @override
   Widget buildCard(BuildContext context, ContentPageState state, CreatorContentItem item) {
+    // TODO ContentPlace
     if (place == null) {
       return Container(
           // //

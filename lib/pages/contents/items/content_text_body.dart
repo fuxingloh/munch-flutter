@@ -18,13 +18,13 @@ class ContentTextBody extends ContentItemWidget {
   EdgeInsets get insets {
     switch (item.type) {
       case "title":
-        return const EdgeInsets.only(top: 32, bottom: 12);
-      case "h1":
         return const EdgeInsets.only(top: 24, bottom: 12);
+      case "h1":
+        return const EdgeInsets.only(top: 12, bottom: 12);
       case "h2":
         return const EdgeInsets.only(top: 12, bottom: 12);
       default:
-        return const EdgeInsets.only(top: 4, bottom: 32);
+        return const EdgeInsets.only(top: 0, bottom: 12);
     }
   }
 
@@ -32,9 +32,9 @@ class ContentTextBody extends ContentItemWidget {
     switch (item.type) {
       case "title":
       case "h1":
-        return MTextStyle.h1;
-      case "h2":
         return MTextStyle.h2;
+      case "h2":
+        return MTextStyle.h3;
       default:
         return TextStyle(
           fontSize: 16,
