@@ -45,7 +45,9 @@ class SearchCardHomeNearby extends SearchCardWidget {
       SearchPage.state.push(query);
     });
 
-    MunchDialog.showProgress(context, future: future, error: true);
+    MunchDialog.showProgress(context, future: future).catchError((error) {
+      MunchDialog.showError(context, error);
+    });
   }
 
   onEatBetween(BuildContext context) {

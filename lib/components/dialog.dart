@@ -33,7 +33,7 @@ class MunchDialog extends Dialog {
     if (exception is StructuredException) {
       showDialog(
         context: context,
-        builder: (c) => MunchDialog.error(c, title: exception.type ?? type, content: exception.message),
+        builder: (c) => MunchDialog.error(c, title: exception.title ?? type, content: exception.message),
       );
     } else {
       showDialog(
@@ -83,7 +83,7 @@ class MunchDialog extends Dialog {
 
   /// future to close the progress automatically
   /// error to show error dialog automatically
-  static void showProgress(BuildContext context, {Future future, bool error = true}) {
+  static Future showProgress(BuildContext context, {Future future}) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -106,16 +106,15 @@ class MunchDialog extends Dialog {
     );
 
     if (future != null) {
-      var completed = future.whenComplete(() {
+      return future.then((res) {
         Navigator.of(context).pop();
+        return res;
+      }).catchError((err) {
+        Navigator.of(context).pop();
+        throw err;
       });
-
-      if (error) {
-        completed.catchError((error) {
-          MunchDialog.showError(context, error);
-        });
-      }
     }
+    return null;
   }
 
   MunchDialog.error(

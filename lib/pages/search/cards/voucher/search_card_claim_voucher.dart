@@ -1,12 +1,18 @@
+import 'package:munch_app/api/authentication.dart';
+import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/api/file_api.dart' as file_api;
+import 'package:munch_app/pages/voucher/voucher_page.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 
 class SearchCardClaimVoucher extends SearchCardWidget {
   final file_api.Image image;
+  final String voucherId;
 
   SearchCardClaimVoucher(SearchCard card)
       : image = file_api.Image.fromJson(card['image']),
+        voucherId = card['voucherId'],
         super(card);
 
   @override
@@ -23,5 +29,20 @@ class SearchCardClaimVoucher extends SearchCardWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void onTap(BuildContext context) {
+    Authentication.instance.requireAuthentication(context).then((state) {
+      if (state == AuthenticationState.loggedIn) {
+        MunchAnalytic.logEvent("voucher_claim", parameters: {
+          "voucherId": voucherId,
+          "from": "search_card",
+        });
+        VoucherPage.push(context, voucherId: voucherId);
+      }
+    }).catchError((error) {
+      MunchDialog.showError(context, error);
+    });
   }
 }

@@ -53,6 +53,19 @@ class StructuredException implements Exception {
         return null;
     }
   }
+
+  String get title {
+    switch (type) {
+      case "munch.restful.core.exception.ForbiddenException":
+        return "Forbidden (403)";
+
+      case "munch.restful.core.exception.JsonException":
+        return "Data Parsing Error (JSON)";
+
+      default:
+        return type;
+    }
+  }
 }
 
 class UnknownException extends StructuredException {
@@ -69,10 +82,7 @@ class NotFoundException extends StructuredException {
 
 class UnavailableException extends StructuredException {
   UnavailableException()
-      : super(
-            code: 502,
-            type: "Service Unavailable",
-            message: "Server temporary down, try again later.");
+      : super(code: 502, type: "Service Unavailable", message: "Server temporary down, try again later.");
 }
 
 class DeprecatedException extends StructuredException {
@@ -80,6 +90,5 @@ class DeprecatedException extends StructuredException {
       : super(
             code: 410,
             type: 'App Update Required',
-            message:
-                'Your application version is not supported. Please update the app.');
+            message: 'Your application version is not supported. Please update the app.');
 }
