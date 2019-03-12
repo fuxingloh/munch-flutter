@@ -3,7 +3,7 @@ import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/api/file_api.dart' as file_api;
-import 'package:munch_app/pages/voucher/voucher_page.dart';
+import 'package:munch_app/pages/vouchers/voucher_page.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
 
 class SearchCardClaimVoucher extends SearchCardWidget {
@@ -35,7 +35,7 @@ class SearchCardClaimVoucher extends SearchCardWidget {
   void onTap(BuildContext context) {
     Authentication.instance.requireAuthentication(context).then((state) {
       if (state == AuthenticationState.loggedIn) {
-        MunchAnalytic.logEvent("voucher_claim", parameters: {
+        MunchAnalytic.logEvent("voucher_claim_show", parameters: {
           "voucherId": voucherId,
           "from": "search_card",
         });

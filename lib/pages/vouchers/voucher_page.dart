@@ -6,6 +6,7 @@ import 'package:munch_app/components/shimmer_image.dart';
 import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/texts.dart';
+import 'package:munch_app/utils/munch_analytic.dart';
 import 'package:pin_code_view/pin_code_view.dart';
 
 class VoucherPage extends StatefulWidget {
@@ -76,6 +77,10 @@ class _VoucherPageState extends State<VoucherPage> {
   }
 
   void onPasscode(String passcode) {
+    MunchAnalytic.logEvent("voucher_claim_attempt", parameters: {
+      "voucherId": widget.voucherId,
+    });
+
     Future future = MunchApi.instance
         .post("/vouchers/${widget.voucherId}/claim", body: {'passcode': passcode})
         .then((res) => Voucher.fromJson(res.data))
@@ -86,6 +91,10 @@ class _VoucherPageState extends State<VoucherPage> {
         });
 
     MunchDialog.showProgress(context, future: future).then((_) {
+      MunchAnalytic.logEvent("voucher_claim_success", parameters: {
+        "voucherId": widget.voucherId,
+      });
+
       MunchDialog.showOkay(context, title: "You have claimed the voucher.");
     }).catchError((error) {
       MunchDialog.showError(context, error);
@@ -206,6 +215,10 @@ class _VoucherBar extends StatelessWidget {
   }
 
   void onForStaff(BuildContext context) {
+    MunchAnalytic.logEvent("voucher_show_passcode", parameters: {
+      "voucherId": voucher?.voucherId,
+    });
+
     _VoucherPasscode.push(context).then((passcode) {
       if (passcode == null) return;
       onPasscode(passcode);
