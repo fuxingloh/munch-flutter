@@ -1,9 +1,7 @@
-import 'package:munch_app/api/user_api.dart';
 import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/filter/filter_between_page.dart';
 import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/pages/search/search_page.dart';
-import 'package:munch_app/styles/buttons.dart';
 import 'package:munch_app/styles/colors.dart';
 import 'package:munch_app/styles/icons.dart';
 import 'package:munch_app/styles/texts.dart';

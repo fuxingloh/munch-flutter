@@ -17,6 +17,11 @@ class MTextStyle {
     fontWeight: FontWeight.w600,
     color: MunchColors.black75,
   );
+  static const TextStyle h3White = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: MunchColors.white,
+  );
   static const TextStyle h4 = TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,

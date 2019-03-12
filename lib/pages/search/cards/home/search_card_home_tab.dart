@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:munch_app/api/authentication.dart';
 import 'package:munch_app/api/user_api.dart';
+import 'package:munch_app/components/dialog.dart';
 import 'package:munch_app/pages/filter/filter_area_page.dart';
 import 'package:munch_app/pages/filter/filter_between_page.dart';
 import 'package:munch_app/pages/filter/filter_page.dart';
@@ -8,6 +9,8 @@ import 'package:munch_app/pages/search/search_card.dart';
 import 'package:munch_app/pages/suggest/suggest_page.dart';
 import 'package:munch_app/styles/elevations.dart';
 import 'package:munch_app/styles/icons.dart';
+import 'package:munch_app/styles/munch_horizontal_snap.dart';
+import 'package:munch_app/utils/munch_location.dart';
 
 class SearchCardHomeTab extends SearchCardWidget {
   SearchCardHomeTab(SearchCard card) : super(card, margin: const SearchCardInsets.only(left: 0, right: 0));
@@ -22,59 +25,58 @@ class _SearchCardHomeTabChild extends StatefulWidget {
 }
 
 class _SearchCardHomeTabChildState extends State<_SearchCardHomeTabChild> {
-  static const List<_HomeTab> tabs = [
-    _HomeTab.search,
-  ];
-
-  _HomeTab tab = tabs[0];
-
   final profile = SearchHomeProfile();
 
   @override
   Widget build(BuildContext context) {
-    return profile;
+    final width = MediaQuery.of(context).size.width - 48;
+
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(bottom: 24),
+          child: profile,
+        ),
+        MunchHorizontalSnap(
+          itemWidth: width,
+          sampleBuilder: (context) {
+            return SearchHomeFeatureSlide(slide: _FeatureSlide.between);
+          },
+          itemBuilder: (context, i) {
+            final slide = _FeatureSlide.slides[i];
+            return GestureDetector(
+              onTap: () => onTap(context, slide),
+              child: SearchHomeFeatureSlide(slide: slide),
+            );
+          },
+          itemCount: _FeatureSlide.slides.length,
+          spacing: 16,
+          padding: const EdgeInsets.only(left: 24, right: 24),
+        ),
+      ],
+    );
   }
 
-  void _onBar() {
-    final searchQuery = SearchPage.state.searchQuery;
-    Future<SearchQuery> future;
-
-    if (tab == _HomeTab.between) {
-      future = FilterBetweenPage.push(context, searchQuery);
-    } else if (tab == _HomeTab.search) {
-      future = SuggestPage.push(context, searchQuery);
-    } else if (tab == _HomeTab.location) {
-      future = FilterAreaPage.push(
-        context,
-        fullscreenDialog: true,
-      ).then((area) {
-        if (area == null) return null;
-
-        var query = SearchQuery.search();
-        query.filter.location.type = SearchFilterLocationType.Where;
-        query.filter.location.areas = [area];
-        return query;
-      });
-    }
-
-    if (future == null) return;
-
-    // With Future of SearchQuery execute SearchQuery
-    future.then((searchQuery) {
-      if (searchQuery == null) return;
-
-      SearchPage.state.push(searchQuery);
-    });
-  }
-
-  void _onRight() {
+  void onTap(BuildContext context, _FeatureSlide slide) {
     final searchQuery = SearchPage.state.searchQuery;
 
-    FilterPage.push(context, searchQuery).then((searchQuery) {
-      if (searchQuery != null && searchQuery is SearchQuery) {
+    if (slide == _FeatureSlide.between) {
+      FilterBetweenPage.push(context, searchQuery).then((searchQuery) {
+        if (searchQuery == null) return;
+
         SearchPage.state.push(searchQuery);
-      }
-    });
+      });
+    } else if (slide == _FeatureSlide.nearby) {
+      Future future = MunchLocation.instance.request(force: true, permission: true).then((latLng) {
+        if (latLng == null) return;
+
+        SearchQuery query = SearchQuery.search();
+        query.filter.location.type = SearchFilterLocationType.Nearby;
+        SearchPage.state.push(query);
+      });
+
+      MunchDialog.showProgress(context, future: future, error: true);
+    }
   }
 }
 
@@ -96,7 +98,7 @@ class SearchHomeProfile extends StatelessWidget {
     final profile = await UserProfile.get();
     final name = profile?.name ?? "Samantha";
 
-    return "${_salutation()}, $name. Feeling hungry?";
+    return "${_salutation()}, $name. Meeting someone for a meal?";
   }
 
   @override
@@ -153,140 +155,70 @@ class SearchHomeProfile extends StatelessWidget {
   }
 }
 
-class SearchHomeTabCell extends StatelessWidget {
-  SearchHomeTabCell(this.text, this.selected);
+class _FeatureSlide {
+  final String title;
+  final String backgroundImage;
+  final MunchButtonStyle buttonStyle;
+  final String buttonText;
 
-  final String text;
-  final bool selected;
+  const _FeatureSlide({this.title, this.backgroundImage, this.buttonStyle, this.buttonText});
+
+  static const List<_FeatureSlide> slides = [between, nearby];
+
+  static const _FeatureSlide between = _FeatureSlide(
+    title: "Find the ideal spot for everyone with EatBetween.",
+    backgroundImage: "Home_Feature_EatBetween.png",
+    buttonStyle: MunchButtonStyle.secondary,
+    buttonText: "Try EatBetween",
+  );
+
+  static const _FeatureSlide nearby = _FeatureSlide(
+    title: "Explore places around you.",
+    backgroundImage: "Home_Feature_Nearby.png",
+    buttonStyle: MunchButtonStyle.primary,
+    buttonText: "Discover Nearby",
+  );
+}
+
+class SearchHomeFeatureSlide extends StatelessWidget {
+  final _FeatureSlide slide;
+
+  const SearchHomeFeatureSlide({Key key, @required this.slide}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 19,
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
+    return Column(
+      children: <Widget>[
+        AspectRatio(
+          aspectRatio: 330 / 198,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.all(Radius.circular(3)),
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/img/${slide.backgroundImage}'),
+              ),
+            ),
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16, top: 16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(child: Text(slide.title, style: MTextStyle.h4White)),
+                      Expanded(child: Container()),
+                    ],
+                  ),
+                ),
+                MunchButton.text(slide.buttonText, onPressed: null, style: slide.buttonStyle),
+              ],
             ),
           ),
-        ),
-        Positioned(
-          left: 0,
-          right: 0,
-          bottom: 3,
-          height: 3,
-          child: Container(
-            height: 3,
-            color: selected ? MunchColors.white : MunchColors.clear,
-          ),
-        ),
+        )
       ],
     );
   }
-}
-
-class SearchHomeActionBar extends StatelessWidget {
-  const SearchHomeActionBar({
-    Key key,
-    this.tab,
-    this.onBar,
-    this.onRight,
-  }) : super(key: key);
-
-  final _HomeTab tab;
-  final VoidCallback onBar;
-  final VoidCallback onRight;
-
-  @override
-  Widget build(BuildContext context) {
-    List<Widget> children = [
-      Padding(
-        padding: const EdgeInsets.only(top: 10, bottom: 10, left: 12, right: 10),
-        child: Icon(tab.leftIcon, size: 20),
-      ),
-      Expanded(
-        child: Text(
-          tab.hint,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: MunchColors.black75,
-          ),
-        ),
-      ),
-    ];
-
-    if (tab.rightIcon != null) {
-      children.add(Container(
-        width: 1,
-        color: MunchColors.black20,
-      ));
-
-      children.add(GestureDetector(
-        onTap: onRight,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-          child: Icon(tab.rightIcon, size: 24),
-        ),
-      ));
-    }
-
-    return GestureDetector(
-      onTap: onBar,
-      child: Container(
-        height: 40,
-        margin: const EdgeInsets.only(left: 24, right: 24, top: 20, bottom: 24),
-        decoration: const BoxDecoration(
-          color: MunchColors.whisper100,
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-        ),
-        child: Row(children: children),
-      ),
-    );
-  }
-}
-
-class _HomeTab {
-  static const between = _HomeTab(
-    title: 'EatBetween',
-    image: 'search_card_home_tab_between.jpg',
-    leftIcon: MunchIcons.filter_between,
-    hint: 'Try EatBetween',
-    message: 'Enter everyone’s location and we’ll find the most ideal spot for a meal together.',
-  );
-
-  static const search = _HomeTab(
-    title: 'Search',
-    image: 'search_card_home_tab_search.jpg',
-    leftIcon: MunchIcons.search_header_search,
-    rightIcon: MunchIcons.search_header_filter,
-    hint: 'Search e.g. Italian in Orchard',
-    message: 'Search anything on Munch and we’ll give you the best recommendations.',
-  );
-  static const location = _HomeTab(
-    title: 'Neighbourhoods',
-    image: 'search_card_home_tab_location.jpg',
-    leftIcon: MunchIcons.search_header_search,
-    hint: 'Search Location',
-    message: 'Enter a location and we’ll tell you what’s delicious around.',
-  );
-
-  const _HomeTab({
-    this.title,
-    this.image,
-    this.leftIcon,
-    this.rightIcon,
-    this.hint,
-    this.message,
-  });
-
-  final String title;
-  final String image;
-  final IconData leftIcon;
-  final IconData rightIcon;
-  final String hint;
-  final String message;
 }

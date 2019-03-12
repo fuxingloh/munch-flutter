@@ -18,6 +18,7 @@ import 'package:munch_app/pages/search/cards/search_card_injected.dart';
 import 'package:munch_app/pages/search/cards/search_card_local.dart';
 import 'package:munch_app/pages/search/cards/search_card_place.dart';
 import 'package:munch_app/pages/search/cards/search_card_tag.dart';
+import 'package:munch_app/pages/search/cards/voucher/search_card_claim_voucher.dart';
 import 'package:munch_app/utils/munch_analytic.dart';
 
 export 'package:flutter/widgets.dart';
@@ -92,8 +93,8 @@ class SearchCardDelegator {
       case "HomeTab_2018-11-29":
         return SearchCardHomeTab(card);
 
-      case "HomeNearby_2018-12-10":
-        return SearchCardHomeNearby(card);
+//      case "HomeNearby_2018-12-10":
+//        return SearchCardHomeNearby(card);
 
       case "HomePopularPlace_2018-12-10":
         return SearchCardHomePopularPlace(card);
@@ -130,6 +131,9 @@ class SearchCardDelegator {
 
       case "SeriesList_2019-02-25":
         return SearchCardSeriesList(card);
+
+      case "ClaimVoucher_2019-03-11":
+        return SearchCardClaimVoucher(card);
     }
 
     debugPrint('Required Card ${card.cardId} Not Found.');
