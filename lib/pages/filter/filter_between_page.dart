@@ -315,6 +315,7 @@ class _FilterBetweenAction extends StatelessWidget {
       return MunchButton.text(
         FilterManager.countTitle(count: result.count, postfix: "Places"),
         onPressed: onApply,
+        style: MunchButtonStyle.primary,
       );
     } else {
       return MunchButton.text("No Results", onPressed: null, style: fadedStyle);
