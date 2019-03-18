@@ -22,8 +22,7 @@ class MunchLocation {
   }
 
   Future<bool> isEnabled() async {
-    // TODO: I think this is causing delay
-
+    // TODO(fuxing): This may be causing a delay, need to investigate
     PermissionStatus permission = await PermissionHandler().checkPermissionStatus(PermissionGroup.location);
 
     switch (permission) {
@@ -31,6 +30,21 @@ class MunchLocation {
       case PermissionStatus.restricted:
         return true;
 
+      default:
+        return false;
+    }
+  }
+
+  Future<bool> _requestPermission() async {
+    final response = await PermissionHandler().requestPermissions([PermissionGroup.location]);
+    switch (response[PermissionGroup.location]) {
+      case PermissionStatus.granted:
+      case PermissionStatus.restricted:
+        return true;
+
+      case PermissionStatus.denied:
+      // TODO(fuxing): show this after location is denied
+      // await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.location);
       default:
         return false;
     }
@@ -46,10 +60,15 @@ class MunchLocation {
     }
 
     if (permission) {
-      await PermissionHandler().shouldShowRequestPermissionRationale(PermissionGroup.location);
-      return _request(force: force).timeout(timeout);
-    }
+      if (await _requestPermission()) {
+        return _request(force: force).timeout(timeout);
+      }
 
+      throw StructuredException(
+        type: "Location Services Error",
+        message: "Location services permission is required but disabled.",
+      );
+    }
     return null;
   }
 
