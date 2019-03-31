@@ -175,7 +175,7 @@ class _FeatureSlide {
   );
 
   static const _FeatureSlide nearby = _FeatureSlide(
-    title: "Explore places around you.",
+    title: "Discover nearby & explore places around you.",
     backgroundImage: "Home_Feature_Nearby.png",
     buttonStyle: MunchButtonStyle.primary,
     buttonText: "Discover Nearby",
@@ -189,38 +189,34 @@ class SearchHomeFeatureSlide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        AspectRatio(
-          aspectRatio: 330 / 198,
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(3)),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/img/${slide.backgroundImage}'),
-              ),
-            ),
-            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16, top: 16),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(4)),
+        color: MunchColors.whisper100,
+      ),
+      padding: const EdgeInsets.only(left: 20, right: 4, bottom: 16, top: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Expanded(child: Text(slide.title, style: MTextStyle.h4White)),
-                      Expanded(child: Container()),
-                    ],
-                  ),
+                Text(slide.title, style: MTextStyle.h5),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: Text(slide.buttonText, style: MTextStyle.h5.copyWith(color: MunchColors.secondary700)),
                 ),
-                MunchButton.text(slide.buttonText, onPressed: null, style: slide.buttonStyle),
               ],
             ),
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: const Icon(MunchIcons.map_next),
+          ),
+        ],
+      ),
     );
   }
 }

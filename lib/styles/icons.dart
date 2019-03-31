@@ -72,4 +72,5 @@ class MunchIcons {
   static const IconData location_bookmark_filled = const IconData(0xe831, fontFamily: _kFontFam);
   static const IconData location_bookmark = const IconData(0xe832, fontFamily: _kFontFam);
   static const IconData rip_rating = const IconData(0xe833, fontFamily: _kFontFam);
+  static const IconData map_next = const IconData(0xe834, fontFamily: _kFontFam);
 }
