@@ -269,7 +269,7 @@ class MunchBottomBarItem extends BottomNavigationBarItem {
 
   MunchBottomBarItem({@required IconData icon, @required String text})
       : super(
-          icon: Icon(icon),
-          title: Text(text, style: style),
-        );
+    icon: Icon(icon),
+    title: Text(text, style: style),
+  );
 }

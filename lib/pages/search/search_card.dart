@@ -29,6 +29,7 @@ export 'package:munch_app/styles/buttons.dart';
 export 'package:munch_app/styles/colors.dart';
 
 class SearchCardDelegator {
+
   /// This will only work if all the card height is implemented properly
   static double offset(BuildContext context, List<SearchCard> cards, String uniqueId) {
     double offset = 0;
